@@ -1,0 +1,32 @@
+.icon-sm {
+    width: 18px;
+    height: 18px;
+}
+
+.mr-2 {
+    margin-right: 2px;
+}
+
+.mr-4 {
+    margin-right: 6px;
+}
+
+.mr-6 {
+    margin-right: 6px;
+}
+
+.ml-6 {
+    margin-left: 6px;
+}
+
+.mr-8 {
+    margin-right: 8px;
+}
+
+.ml-8 {
+    margin-left: 8px;
+}
+
+.b {
+    font-weight: bold;
+}
