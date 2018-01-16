@@ -52,7 +52,7 @@
             hide() {
                 setTimeout(() => {
                     this.alert = false;
-                }, 3000);
+                }, 6000);
             },
 
             showError(message) {
@@ -77,9 +77,10 @@
 
 <style scoped>
     .alert-flash {
-        position: fixed;
+        position: absolute;
         left: 25px;
         bottom: 25px;
-        width: 300px;
+        width: 400px;
+        z-index: 99;
     }
 </style>

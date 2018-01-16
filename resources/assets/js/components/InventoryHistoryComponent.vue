@@ -1,5 +1,14 @@
 <template>
     <div>
+        <div class="panel-default panel" v-if="loading">
+            <div class="panel-body text-center" style="min-height: 300px">
+                <div style="line-height: 300px">
+                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+
         <div class="panel panel-default" v-if="response.inventories.data.length">
             <div class="panel-heading clearfix">
                 <adjust-qtty-component :item="item"></adjust-qtty-component>
@@ -65,7 +74,7 @@
             </div>
         </div>
 
-        <div class="well well-sm" v-else>
+        <div class="well well-sm" v-if="!loading && response.inventories.data.length == 0">
             Click on any item on the left to view its stock movement;
         </div>
     </div>
@@ -77,6 +86,7 @@ import eventHub from '../events.js'
     export default {
         data () {
             return {
+                loading: false,
                 item: {
                     name: null,
                     qtty: null,
@@ -92,6 +102,8 @@ import eventHub from '../events.js'
 
         methods: {
             getItemInventory (item, page = null) {
+                this.loading = true
+
                 if (page) {
                     return axios.get('/ajax/inventory/' + item.id + '?page=' + page).then((response) => {
                         this.response = response.data
@@ -100,6 +112,7 @@ import eventHub from '../events.js'
 
                 return axios.get('/ajax/inventory/' + item.id).then((response) => {
                     this.response = response.data
+                    this.loading = false
                 })
             }
         },

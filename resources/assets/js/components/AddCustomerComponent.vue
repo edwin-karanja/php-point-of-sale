@@ -48,6 +48,12 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
+                                    <span v-if="!creating.active">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </span>
+                                    <span v-if="creating.active">
+                                        <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                                    </span>
                                     {{ buttonText }}
                                 </button>
                             </div>
@@ -100,6 +106,8 @@
             },
 
             store () {
+                this.creating.active = true
+
                 if (this.editing.id) {
                     this.update();
                     return;
@@ -107,6 +115,7 @@
 
                 axios.post('/ajax/customers', this.creating.form).then((response) => {
                     if (response.status == 200) {
+                        this.creating.active = false
                         this.closeModal()
 
                         eventHub.$emit('customer-created')
@@ -116,6 +125,7 @@
 
                 }).catch((error) => {
                     if (error.response.status === 422) {
+                        this.creating.active = false
                         this.creating.errors = error.response.data.errors
                     }
                 })
@@ -126,6 +136,7 @@
                 axios.patch('/ajax/customers/' + id, this.creating.form).then((response) => {
 
                     if (response.status == 200) {
+                        this.creating.active = false
                         this.editing.id = null
                         this.closeModal()
 
@@ -136,6 +147,7 @@
 
                 }).catch((error) => {
                     if (error.response.status === 422) {
+                        this.creating.active = false
                         this.creating.errors = error.response.data.errors
                     }
                 })

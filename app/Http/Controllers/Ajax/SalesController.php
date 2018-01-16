@@ -59,7 +59,7 @@ class SalesController extends AjaxController
             $oldQtty = $it->qtty;
             $newQtty = $oldQtty - $item['qtty_sold'];
 
-            event(new QuantityModified($it, auth()->user(), $newQtty , $oldQtty, $sale));
+            event(new QuantityModified($it, auth()->user(), $newQtty , $oldQtty, $sale, 'Sale'));
         }
 
         return $saleTotal;

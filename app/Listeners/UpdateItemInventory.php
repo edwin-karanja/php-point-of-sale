@@ -23,7 +23,7 @@ class UpdateItemInventory implements ShouldQueue
             Inventory::create([
                 'item_id' => $event->item->id,
                 'user_id' => $event->user->id,
-                'comments' => $event->sale ? 'Sale No#-' . $event->sale->id : 'Manual entry of item quantity',
+                'comments' => $event->sale ? $event->model . ' No# ' . $event->sale->id : 'Manual entry of item quantity',
                 'trans_inventory' => $event->quantity - $event->oldQtty
             ]);
         }

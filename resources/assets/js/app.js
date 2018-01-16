@@ -36,6 +36,7 @@ Vue.component('totals-component', require('./components/Sales/TotalsComponent.vu
  */
 Vue.component('purchases-component', require('./components/Purchases/PurchasesComponent.vue'));
 Vue.component('purchases-cart-component', require('./components/Purchases/CartComponent.vue'));
+Vue.component('purchases-totals-component', require('./components/Purchases/TotalsComponent.vue'));
 
 
 /**

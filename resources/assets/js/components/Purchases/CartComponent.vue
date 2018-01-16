@@ -45,7 +45,6 @@
                                     <strong>{{ errors['items.' + index + '.qtty_purchased'][0] }}</strong>
                                 </span>
                             </div>
-
                         </td>
                         <td class="total" v-html="itemTotal(item)"></td>
                     </tr>
@@ -88,13 +87,13 @@
                 this.errors['item.' + index + 'selling_price'] = null
                 this.errors['item.' + index + 'qtty_sold'] = null
 
-                eventHub.$emit('item-removed-from-cart', item)
+                eventHub.$emit('purchases.item-removed-from-cart', item)
             },
 
             itemTotal (item) {
                 let total = parseFloat(item.buying_price * item.qtty_purchased).toFixed(2)
 
-                eventHub.$emit('compute-item-total', item)
+                eventHub.$emit('purchases.compute-item-total', item)
 
                 return total
             }
@@ -110,17 +109,17 @@
                 this.addToCart(item)
             }))
 
-            // eventHub.$on('sale-completed', (() => {
-            //     this.errors = []
+            eventHub.$on('purchase-completed', (() => {
+                this.errors = []
 
-            //     for (let i=0; i <= this.cartItems.length; i++) {
-            //         this.removeFromCart(this.cartItems[i])
-            //     }
-            // }))
+                for (let i=0; i <= this.cartItems.length; i++) {
+                    this.removeFromCart(this.cartItems[i])
+                }
+            }))
 
-            // eventHub.$on('errors-in-cart', ((error) => {
-            //     this.errors = error.response.data.errors
-            // }))
+            eventHub.$on('errors-in-cart', ((error) => {
+                this.errors = error.response.data.errors
+            }))
         }
     }
 </script>

@@ -22,12 +22,14 @@ class QuantityModified
 
     public $sale;
 
+    public $model;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Item $item, User $user, $quantity, $oldQtty = null, $sale = null)
+    public function __construct(Item $item, User $user, $quantity, $oldQtty = null, $sale = null, $model = 'default')
     {
         $this->quantity = $quantity;
 
@@ -38,5 +40,7 @@ class QuantityModified
         $this->oldQtty = $oldQtty;
 
         $this->sale = $sale;
+
+        $this->model = $model;
     }
 }

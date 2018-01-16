@@ -40,6 +40,12 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
+                                    <span v-if="!creating.active">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </span>
+                                    <span v-if="creating.active">
+                                        <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                                    </span>
                                     {{ buttonText }}
                                 </button>
                             </div>
@@ -92,6 +98,8 @@
             },
 
             store () {
+                this.creating.active = true
+
                 if (this.editing.id) {
                     this.update();
                     return;
@@ -103,9 +111,11 @@
                     eventHub.$emit('item-created')
 
                     eventHub.$emit('success-alert', "New item added.")
+                    this.creating.active = false
 
                 }).catch((error) => {
                     if (error.response.status === 422) {
+                        this.creating.active = false
                         this.creating.errors = error.response.data.errors
                     }
                 })
@@ -114,6 +124,7 @@
             update () {
                 let id = this.editing.id;
                 axios.post('/ajax/items/' + id, this.creating.form).then(() => {
+                    this.creating.active = false
                     this.editing.id = null
                     this.closeModal()
 
@@ -123,6 +134,7 @@
 
                 }).catch((error) => {
                     if (error.response.status === 422) {
+                        this.creating.active = false
                         this.creating.errors = error.response.data.errors
                     }
                 })

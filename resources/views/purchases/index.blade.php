@@ -13,7 +13,7 @@
         </div>
 
         <div class="col-md-4">
-
+            <purchases-totals-component></purchases-totals-component>
         </div>
     </div>
 

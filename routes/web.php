@@ -56,6 +56,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/suppliers', 'SupplierController@index');
 
     /**
+     * Settings
+     */
+    Route::get('/settings', 'SettingsController@index');
+
+    /**
      * Sales
      */
     Route::group(['prefix' => 'sales', 'as' => 'sales.'], function () {
@@ -103,6 +108,13 @@ Route::group(['middleware' => ['auth']], function () {
          */
         Route::group(['prefix' => 'sales', 'as' => 'sales.'], function () {
             Route::post('/', 'SalesController@store')->name('store');
+        });
+
+        /**
+         * Purchases Ajax calls
+         */
+        Route::group(['prefix' => 'purchases', 'as' => 'purchases.'], function () {
+            Route::post('/', 'PurchasesController@store')->name('store');
         });
     });
 });

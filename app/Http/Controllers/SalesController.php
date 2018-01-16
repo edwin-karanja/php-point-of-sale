@@ -14,7 +14,7 @@ class SalesController extends Controller
 
     public function recent()
     {
-        $sales = Sale::latest()->get();
+        $sales = Sale::paginate(20);
 
         return view('sales.recent', compact('sales'));
     }
