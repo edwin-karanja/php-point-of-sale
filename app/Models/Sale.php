@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Customer;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filters\Sale\SaleFilters;
 
 class Sale extends Model
 {
@@ -15,6 +17,11 @@ class Sale extends Model
     public function setUserIdAttribute($value)
     {
         $this->attributes['user_id'] = auth()->user()->id;
+    }
+
+    public function scopeFilter(Builder $builder, $request)
+    {
+        return (new SaleFilters($request))->filter($builder);
     }
 
     public function user()

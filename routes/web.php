@@ -58,7 +58,20 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Settings
      */
-    Route::get('/settings', 'SettingsController@index');
+    Route::group(['prefix' => 'settings', 'as' => 'settings.', 'namespace' => 'Settings'], function () {
+        Route::get('/', 'SettingsController@index');
+
+        Route::group(['prefix' => 'change_password', 'as' => 'change_password.'], function () {
+            Route::get('/', 'ChangePasswordController@index')->name('index');
+            Route::post('/', 'ChangePasswordController@store')->name('store');
+        });
+
+        Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
+            Route::get('/', 'ProfileController@index')->name('index');
+            Route::post('/', 'ProfileController@store')->name('store');
+        });
+    });
+
 
     /**
      * Sales

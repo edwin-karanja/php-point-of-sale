@@ -38,6 +38,10 @@ Vue.component('purchases-component', require('./components/Purchases/PurchasesCo
 Vue.component('purchases-cart-component', require('./components/Purchases/CartComponent.vue'));
 Vue.component('purchases-totals-component', require('./components/Purchases/TotalsComponent.vue'));
 
+/**
+ * Suppliers Components
+ */
+// Vue.component('suppliers-component', require('./components/Supplier/SuppliersComponent.vue'));
 
 /**
  * Helpers

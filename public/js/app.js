@@ -1381,7 +1381,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(14);
-module.exports = __webpack_require__(113);
+module.exports = __webpack_require__(116);
 
 
 /***/ }),
@@ -1429,9 +1429,14 @@ Vue.component('purchases-cart-component', __webpack_require__(100));
 Vue.component('purchases-totals-component', __webpack_require__(105));
 
 /**
+ * Suppliers Components
+ */
+// Vue.component('suppliers-component', require('./components/Supplier/SuppliersComponent.vue'));
+
+/**
  * Helpers
  */
-Vue.component('paginate-component', __webpack_require__(110));
+Vue.component('paginate-component', __webpack_require__(113));
 
 var app = new Vue({
   el: '#app'
@@ -49730,15 +49735,18 @@ if (false) {
 }
 
 /***/ }),
-/* 110 */
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(111)
+var __vue_script__ = __webpack_require__(114)
 /* template */
-var __vue_template__ = __webpack_require__(112)
+var __vue_template__ = __webpack_require__(115)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49777,7 +49785,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 111 */
+/* 114 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49863,7 +49871,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 112 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -49961,7 +49969,7 @@ if (false) {
 }
 
 /***/ }),
-/* 113 */
+/* 116 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -12,9 +12,9 @@ class SalesController extends Controller
         return view('sales.index');
     }
 
-    public function recent()
+    public function recent(Request $request)
     {
-        $sales = Sale::paginate(20);
+        $sales = Sale::filter($request)->paginate();
 
         return view('sales.recent', compact('sales'));
     }
