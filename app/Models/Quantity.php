@@ -9,6 +9,8 @@ class Quantity extends Model
 {
     protected $table = 'item-quantities';
 
+    protected $touches = ['item'];
+
     public $fillable = [
         'item_id', 'quantity'
     ];
