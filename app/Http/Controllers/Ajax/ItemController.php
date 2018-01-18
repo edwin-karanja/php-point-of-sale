@@ -11,6 +11,7 @@ use App\Http\Requests\Ajax\ItemCreateRequest;
 use App\Models\Category;
 use App\Events\QuantityModified;
 use App\Http\Requests\Ajax\ItemUpdateRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ItemController extends AjaxController
 {
@@ -70,6 +71,31 @@ class ItemController extends AjaxController
         ]);
     }
 
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,bin,xls,csv',
+        ]);
+
+        try {
+            $this->importData($request);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'errorMsg' => $e->getMessage()
+            ], 500);
+        }
+
+        return response()->json(['success' => true]); //@TODO add proper response
+    }
+
+    public function download()
+    {
+        $file = public_path(). "/download/products.xlsx";
+
+        return response()->download($file, 'import_products_template.xlsx');
+    }
+
     public function setCustomColumnsNames()
     {
         return [
@@ -80,7 +106,8 @@ class ItemController extends AjaxController
             'reorder_level' => 'Reorder Level',
             'category_id' => 'Category',
             'updated_at_human' => 'Last Updated',
-            'qtty' => 'Quantity'
+            'qtty' => 'Quantity',
+            'cat' => 'Category'
         ];
     }
 
@@ -94,12 +121,39 @@ class ItemController extends AjaxController
     public function setVisibleColumns()
     {
         return [
-            'name', 'buying_price', 'selling_price', 'reorder_level', 'category_id', 'qtty', 'updated_at_human'
+            'name', 'buying_price', 'selling_price', 'reorder_level', 'cat', 'qtty', 'updated_at_human'
         ];
     }
 
     protected function getDatabaseColumnNames()
     {
         return array_merge(Schema::getColumnListing($this->builder->getModel()->getTable()), $this->builder->getModel()->getAppends());
+    }
+
+    public function importData($request)
+    {
+        Excel::filter('chunk')->load($request->file)
+            ->takeColumns(4)
+            ->ignoreEmpty()
+            ->chunk(50, function($reader) {
+
+            $filtered = $reader->filter(function ($row) {
+                return !is_null($row->name);
+            });
+
+            foreach($filtered->all() as $product) {
+
+                $item = Item::firstOrCreate(
+                    ['name' => $product->name],
+                    [
+                        'buying_price' => $product->buying ?? 0,
+                        'selling_price' => $product->selling ?? 0,
+                        'category_id' => Category::firstOrCreate(['name' => $product->category])->id
+                    ]
+                );
+
+                // event(new QuantityModified($item, $request->user(), 0));
+            }
+        }, false);
     }
 }
