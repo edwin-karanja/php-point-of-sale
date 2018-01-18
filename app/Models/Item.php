@@ -12,6 +12,24 @@ class Item extends Model
 {
     use SoftDeletes;
 
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     static::created( function ($item) {
+    //         $item->quantity->create([
+    //             'quantity' => request('qtty')
+    //         ]);
+    //     });
+
+    //     static::updated( function ($item) {
+
+    //         $item->quantity->update([
+    //             'quantity' => request('qtty')
+    //         ]);
+    //     });
+    // }
+
     protected $dates = [
         'deleted_at'
     ];
@@ -25,12 +43,21 @@ class Item extends Model
     ];
 
     protected $appends = [
-        'updated_at_human', 'qtty'
+        'updated_at_human', 'qtty', 'cat'
     ];
 
     public function getAppends()
     {
         return $this->appends;
+    }
+
+    public function getCatAttribute()
+    {
+        if ($this->category) {
+            return $this->category->name;
+        }
+
+        return null;
     }
 
     public function getUpdatedAtHumanAttribute()
