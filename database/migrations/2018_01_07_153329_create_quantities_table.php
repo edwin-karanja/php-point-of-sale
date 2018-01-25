@@ -16,7 +16,7 @@ class CreateQuantitiesTable extends Migration
         Schema::create('item-quantities', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('item_id')->unsigned()->index();
-            $table->integer('quantity');
+            $table->integer('quantity')->unsigned()->nullable()->default(0);
             $table->timestamps();
         });
     }
