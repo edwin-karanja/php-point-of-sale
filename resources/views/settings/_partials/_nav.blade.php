@@ -13,6 +13,20 @@
                     Change password
                 </a>
             </li>
+
+                <li class="{{ return_if(on_page('settings/roles'), 'active') }}">
+                    <a href="/settings/roles">
+                        <i class="fa fa-cogs"></i>
+                        Roles
+                    </a>
+                </li>
+                <li class="{{ return_if(on_page('settings/permissions'), 'active') }}">
+                    <a href="/settings/permissions">
+                        <i class="fa fa-cogs"></i>
+                        Permissions
+                    </a>
+                </li>
+
         </ul>
     </div>
 
