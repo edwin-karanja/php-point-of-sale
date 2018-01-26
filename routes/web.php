@@ -22,6 +22,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', 'DashboardController@index');
 
+
     /**
      * Categories
      */
@@ -70,6 +71,24 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/', 'ProfileController@index')->name('index');
             Route::post('/', 'ProfileController@store')->name('store');
         });
+
+        Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () {
+            Route::get('/', 'RolesController@index')->name('index');
+            Route::get('/create', 'RolesController@create')->name('create');
+            Route::post('/store', 'RolesController@store')->name('store');
+            Route::get('/{role}/assign', 'RolesController@assign')->name('assign');
+            Route::post('/{role}/assign', 'RolesController@assignPermissions')->name('assign.perms');
+            Route::get('/{role}/edit', 'RolesController@edit')->name('edit');
+            Route::post('/{role}/update', 'RolesController@update')->name('update');
+        });
+
+        Route::group(['prefix' => 'permissions', 'as' => 'permissions.'], function () {
+            Route::get('/', 'PermissionsController@index')->name('index');
+            Route::get('/create', 'PermissionsController@create')->name('create');
+            Route::post('/store', 'PermissionsController@store')->name('store');
+            Route::get('/{permission}/edit', 'PermissionsController@edit')->name('edit');
+            Route::post('/{permission}/update', 'PermissionsController@update')->name('update');
+        });
     });
 
 
@@ -93,6 +112,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::group(['prefix' => 'items', 'as' => 'items.'], function () {
             Route::get('/', 'ItemController@index')->name('index');
             Route::post('/', 'ItemController@store')->name('store');
+            Route::post('/import', 'ItemController@import')->name('import');
+            Route::get('/download_sample', 'ItemController@download')->name('download');
             Route::post('/{item}', 'ItemController@update')->name('update');
             Route::delete('/{id}', 'ItemController@delete')->name('delete');
         });

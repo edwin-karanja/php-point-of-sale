@@ -119,6 +119,8 @@
                         let data = response.data
                         this.closeModal()
 
+                        eventHub.$emit('item-created')
+
                         eventHub.$emit('success-alert', 'All your records have been successfully uploaded and inserted.');
                     }
 

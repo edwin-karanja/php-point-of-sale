@@ -1381,7 +1381,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(14);
-module.exports = __webpack_require__(116);
+module.exports = __webpack_require__(118);
 
 
 /***/ }),
@@ -1436,7 +1436,8 @@ Vue.component('purchases-totals-component', __webpack_require__(105));
 /**
  * Helpers
  */
-Vue.component('paginate-component', __webpack_require__(113));
+Vue.component('paginate-component', __webpack_require__(110));
+Vue.component('excel-upload-component', __webpack_require__(113));
 
 var app = new Vue({
   el: '#app'
@@ -43442,11 +43443,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -43573,9 +43569,9 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _c("button", { staticClass: "btn btn-primary pull-right" }, [
-            _vm._v("\n                Excel Import\n            ")
-          ]),
+          _c("excel-upload-component", {
+            attrs: { url: "/ajax/items/import" }
+          }),
           _vm._v(" "),
           _vm.response.createColumns
             ? _c("add-item-component", {
@@ -43630,21 +43626,13 @@ var render = function() {
                       _vm._v(" "),
                       _vm._l(_vm.response.displayColumns, function(column) {
                         return _c("td", { key: column }, [
-                          column === "category_id" && item.category
-                            ? _c("span", [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(item.category.name || "-") +
-                                    "\n                            "
-                                )
-                              ])
-                            : _c("span", [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(item[column] || "-") +
-                                    "\n                            "
-                                )
-                              ])
+                          _c("span", [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(item[column] || "-") +
+                                "\n                            "
+                            )
+                          ])
                         ])
                       }),
                       _vm._v(" "),
@@ -45542,6 +45530,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (page) {
                 return axios.get('/ajax/inventory/' + item.id + '?page=' + page).then(function (response) {
                     _this.response = response.data;
+                    _this.loading = false;
                 });
             }
 
@@ -49735,18 +49724,15 @@ if (false) {
 }
 
 /***/ }),
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(114)
+var __vue_script__ = __webpack_require__(111)
 /* template */
-var __vue_template__ = __webpack_require__(115)
+var __vue_template__ = __webpack_require__(112)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49785,7 +49771,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 114 */
+/* 111 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49871,7 +49857,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 115 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -49969,7 +49955,485 @@ if (false) {
 }
 
 /***/ }),
+/* 113 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(114)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(116)
+/* template */
+var __vue_template__ = __webpack_require__(117)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Helpers/UploadExcelComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-684af5f0", Component.options)
+  } else {
+    hotAPI.reload("data-v-684af5f0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 114 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(115);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("32c39dc8", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-684af5f0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./UploadExcelComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-684af5f0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./UploadExcelComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 115 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.btn-file {\n    position: relative;\n    overflow: hidden;\n}\n.btn-file input[type=file] {\n    position: absolute;\n    top: 0;\n    right: 0;\n    min-width: 100%;\n    min-height: 100%;\n    font-size: 100px;\n    text-align: right;\n    filter: alpha(opacity=0);\n    opacity: 0;\n    outline: none;\n    background: white;\n    cursor: inherit;\n    display: block;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
 /* 116 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__events_js__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['url'],
+
+    data: function data() {
+        return {
+            filename: '',
+            uploading: false,
+            upload: {
+                file: null,
+                errors: []
+            }
+        };
+    },
+
+
+    methods: {
+        fileSelected: function fileSelected() {
+            var input = $('#file-upload'),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+
+            this.setInputText(numFiles, label);
+        },
+        downloadSample: function downloadSample() {
+            this.closeModal();
+            window.location.href = '/ajax/items/download_sample';
+        },
+        setInputText: function setInputText(numFiles, label) {
+            this.filename = numFiles > 1 ? numFiles + ' files selected' : label;
+        },
+        openModal: function openModal() {
+            $('#importModal').modal('show');
+        },
+        closeModal: function closeModal() {
+            this.upload.file = null;
+            this.upload.errors = [];
+            $('#importModal').modal('hide');
+        },
+        uploadExcel: function uploadExcel() {
+            var _this = this;
+
+            this.uploading = true;
+            var input = $('#file-upload');
+            this.upload.file = input.get(0).files[0];
+
+            var formData = new FormData();
+            formData.append('file', this.upload.file);
+
+            axios.post(this.url, formData).then(function (response) {
+                if (response.status === 200) {
+                    var data = response.data;
+                    _this.closeModal();
+
+                    __WEBPACK_IMPORTED_MODULE_0__events_js___default.a.$emit('item-created');
+
+                    __WEBPACK_IMPORTED_MODULE_0__events_js___default.a.$emit('success-alert', 'All your records have been successfully uploaded and inserted.');
+                }
+
+                //  eventHub.$emit('error-alert', data.errorMsg);
+            }).catch(function (error) {
+                _this.uploading = false;
+                if (error.response.status === 422) {
+                    _this.upload.errors = error.response.data.errors;
+                    return;
+                }
+
+                if (error.response.status === 500) {
+                    __WEBPACK_IMPORTED_MODULE_0__events_js___default.a.$emit('error-alert', error.response.data.errorMsg);
+                }
+            });
+        }
+    },
+
+    mounted: function mounted() {
+        console.log('Component mounted.');
+    }
+});
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-primary pull-right mr-4",
+        on: {
+          click: function($event) {
+            $event.preventDefault()
+            _vm.openModal($event)
+          }
+        }
+      },
+      [_vm._v("\n        Excel Import\n    ")]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "importModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "myModalLabel"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        _vm.closeModal($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h4",
+                  { staticClass: "modal-title", attrs: { id: "myModalLabel" } },
+                  [_vm._v("Upload Excel")]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c(
+                  "form",
+                  {
+                    attrs: { action: "#", enctype: "multipart/form-data" },
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        _vm.uploadExcel($event)
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-group",
+                        class: { "has-error": _vm.upload.errors["file"] }
+                      },
+                      [
+                        _c("div", { staticClass: "input-group" }, [
+                          _c("label", { staticClass: "input-group-btn" }, [
+                            _c("span", { staticClass: "btn btn-primary" }, [
+                              _vm._v(
+                                "\n                                    Browse Excel File... "
+                              ),
+                              _c("input", {
+                                staticStyle: { display: "none" },
+                                attrs: { type: "file", id: "file-upload" },
+                                on: { change: _vm.fileSelected }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.filename,
+                                expression: "filename"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", readonly: "" },
+                            domProps: { value: _vm.filename },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.filename = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _vm.upload.errors.file
+                          ? _c("span", { staticClass: "help-block" }, [
+                              _c("strong", [
+                                _vm._v(_vm._s(_vm.upload.errors.file[0]))
+                              ])
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "submit" }
+                        },
+                        [
+                          !this.uploading
+                            ? _c("span", [
+                                _c("i", {
+                                  staticClass: "fa fa-upload",
+                                  attrs: { "aria-hidden": "true" }
+                                })
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          this.uploading
+                            ? _c("span", [
+                                _c("i", {
+                                  staticClass: "fa fa-spinner fa-spin",
+                                  attrs: { "aria-hidden": "true" }
+                                })
+                              ])
+                            : _vm._e(),
+                          _vm._v(
+                            "\n                            Upload Excel\n                        "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary pull-right",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              _vm.downloadSample($event)
+                            }
+                          }
+                        },
+                        [
+                          _vm._m(0),
+                          _vm._v(
+                            "\n                            Download Sample\n                        "
+                          )
+                        ]
+                      )
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-default",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        _vm.closeModal($event)
+                      }
+                    }
+                  },
+                  [_vm._v("Close")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", [
+      _c("i", {
+        staticClass: "fa fa-download",
+        attrs: { "aria-hidden": "true" }
+      })
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-684af5f0", module.exports)
+  }
+}
+
+/***/ }),
+/* 118 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

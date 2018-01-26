@@ -107,6 +107,7 @@ import eventHub from '../events.js'
                 if (page) {
                     return axios.get('/ajax/inventory/' + item.id + '?page=' + page).then((response) => {
                         this.response = response.data
+                        this.loading = false
                     })
                 }
 

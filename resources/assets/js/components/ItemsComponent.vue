@@ -6,9 +6,7 @@
                 <input type="text" class="form-control" v-model="searchText">
             </div>
 
-            <button class="btn btn-primary pull-right">
-                Excel Import
-            </button>
+            <excel-upload-component :url="'/ajax/items/import'"></excel-upload-component>
 
             <add-item-component v-if="response.createColumns"
                  :customColumns="response.customColumns"
@@ -36,10 +34,7 @@
                     <tr v-for="(item, index) in filteredItems" :key="item.id">
                         <td>{{ index + 1 }}</td>
                         <td v-for="column in response.displayColumns" :key="column">
-                            <span v-if="column === 'category_id' && item.category">
-                                {{ item.category.name || '-'}}
-                            </span>
-                            <span v-else>
+                            <span>
                                 {{ item[column] || '-' }}
                             </span>
                         </td>

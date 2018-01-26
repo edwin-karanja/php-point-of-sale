@@ -47,6 +47,7 @@ Vue.component('purchases-totals-component', require('./components/Purchases/Tota
  * Helpers
  */
 Vue.component('paginate-component', require('./components/Helpers/PaginateComponent.vue'));
+Vue.component('excel-upload-component', require('./components/Helpers/UploadExcelComponent.vue'));
 
 const app = new Vue({
     el: '#app'

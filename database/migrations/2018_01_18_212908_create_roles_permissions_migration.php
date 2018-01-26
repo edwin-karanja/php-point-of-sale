@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersPermissionsTable extends Migration
+class CreateRolesPermissionsMigration extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateUsersPermissionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_permissions', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
+        Schema::create('roles_permissions', function (Blueprint $table) {
+            $table->integer('role_id')->unsigned();
             $table->integer('permission_id')->unsigned();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
             $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');
 
-            $table->primary(['user_id', 'permission_id']);
+            $table->primary(['role_id', 'permission_id']);
         });
     }
 
@@ -31,6 +31,6 @@ class CreateUsersPermissionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_permissions');
+        Schema::dropIfExists('roles_permissions');
     }
 }
