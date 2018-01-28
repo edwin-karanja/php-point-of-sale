@@ -43443,6 +43443,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -43546,27 +43557,33 @@ var render = function() {
         { staticClass: "panel-body" },
         [
           _c("div", { staticClass: "col-md-6" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.searchText,
-                  expression: "searchText"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "text" },
-              domProps: { value: _vm.searchText },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c("div", { staticClass: "input-group" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.searchText,
+                    expression: "searchText"
                   }
-                  _vm.searchText = $event.target.value
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text" },
+                domProps: { value: _vm.searchText },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.searchText = $event.target.value
+                  }
                 }
-              }
-            })
+              }),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
           ]),
           _vm._v(" "),
           _c("excel-upload-component", {
@@ -43686,7 +43703,24 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon primary" }, [
+      _c("i", { staticClass: "fa fa-search" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon primary" }, [
+      _c("i", { staticClass: "fa fa-search" })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -43891,6 +43925,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -44006,7 +44041,10 @@ var render = function() {
           }
         }
       },
-      [_vm._v("\n        Add Item\n    ")]
+      [
+        _c("i", { staticClass: "fa fa-plus" }),
+        _vm._v("\n        Add Item\n    ")
+      ]
     ),
     _vm._v(" "),
     _c(
@@ -45160,6 +45198,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         showItemInventory: function showItemInventory(item) {
             this.selected = item;
             __WEBPACK_IMPORTED_MODULE_0__events_js___default.a.$emit('show-item-inventory', item);
+        },
+        clearSearch: function clearSearch() {
+            this.searchText = '';
         }
     },
 
@@ -45237,6 +45278,15 @@ var render = function() {
         attrs: { type: "text", placeholder: "Search by name or quantity." },
         domProps: { value: _vm.searchText },
         on: {
+          keyup: function($event) {
+            if (
+              !("button" in $event) &&
+              _vm._k($event.keyCode, "esc", 27, $event.key)
+            ) {
+              return null
+            }
+            _vm.clearSearch($event)
+          },
           input: function($event) {
             if ($event.target.composing) {
               return
@@ -45280,7 +45330,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.qtty))])
+                    _c("td", [_vm._v(_vm._s(item.qtty || "-"))])
                   ]
                 )
               })
@@ -45416,6 +45466,10 @@ exports.push([module.i, "\n.green[data-v-4dfe50c4] {\n    fill: rgba(13, 226, 77
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__events_js__);
+//
+//
+//
+//
 //
 //
 //
@@ -45709,10 +45763,18 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    !_vm.loading && _vm.response.inventories.data.length == 0
+    !_vm.loading && _vm.response.inventories.data.length == 0 && _vm.item.name
       ? _c("div", { staticClass: "well well-sm" }, [
           _vm._v(
-            "\n        Click on any item on the left to view its stock movement;\n    "
+            "\n        That item has no stock movement, add item quantity to view its history.\n    "
+          )
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.loading && _vm.item.name === null
+      ? _c("div", { staticClass: "well well-sm" }, [
+          _vm._v(
+            "\n        Click on any item on the left to view its stock movement.\n    "
           )
         ])
       : _vm._e()
@@ -46800,7 +46862,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.dropdown-content[data-v-7b64a58b] {\n    margin-top: 10px;\n    display: float;\n    position: absolute;\n    background-color: #f9f9f9;\n    width: 80%;\n    -webkit-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\n            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\n    z-index: 1;\n    border-radius: 5px;\n}\n.active2[data-v-7b64a58b] {\n    background-color: chocolate\n}\n", ""]);
+exports.push([module.i, "\n.dropdown-content[data-v-7b64a58b] {\n    margin-top: 10px;\n    display: float;\n    position: absolute;\n    background-color: #f9f9f9;\n    width: 80%;\n    -webkit-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\n            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\n    z-index: 1;\n    border-radius: 5px;\n}\n.active2[data-v-7b64a58b] {\n    background-color: #cec5c5;\n}\n", ""]);
 
 // exports
 
@@ -46847,6 +46909,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -46856,6 +46930,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             searchText: null,
             items: [],
             item: {},
+            selectedIndex: 0,
             sort: {
                 key: 'id',
                 order: 'asc'
@@ -46876,12 +46951,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             __WEBPACK_IMPORTED_MODULE_0__events_js___default.a.$emit('add-to-cart', item);
             this.searchText = '';
             document.getElementById('search').focus();
+        },
+        clearSearch: function clearSearch() {
+            this.searchText = null;
+        },
+        selectedItem: function selectedItem(item) {
+            return this.filteredItems.indexOf(item) == this.selectedIndex;
+        },
+        moveDown: function moveDown() {
+            if (this.selectedIndex == this.filteredItems.length - 1) {
+                return;
+            }
+
+            this.selectedIndex += 1;
+        },
+        moveUp: function moveUp() {
+            if (this.selectedIndex == 0) {
+                return;
+            }
+
+            this.selectedIndex -= 1;
         }
     },
 
     computed: {
         filteredItems: function filteredItems() {
             var _this2 = this;
+
+            this.selectedIndex = 0;
 
             if (this.searchText) {
                 var data = this.items;
@@ -46930,9 +47027,7 @@ var render = function() {
   return _c("div", { staticClass: "panel panel-default" }, [
     _c("div", { staticClass: "panel-body" }, [
       _c("div", { staticClass: "input-group" }, [
-        _c("span", { staticClass: "input-group-addon" }, [
-          _vm._v("\n                Search Item\n            ")
-        ]),
+        _vm._m(0),
         _vm._v(" "),
         _c("input", {
           directives: [
@@ -46952,6 +47047,44 @@ var render = function() {
           },
           domProps: { value: _vm.searchText },
           on: {
+            keyup: [
+              function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "up", 38, $event.key)
+                ) {
+                  return null
+                }
+                _vm.moveUp($event)
+              },
+              function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "down", 40, $event.key)
+                ) {
+                  return null
+                }
+                _vm.moveDown($event)
+              },
+              function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "esc", 27, $event.key)
+                ) {
+                  return null
+                }
+                _vm.clearSearch($event)
+              },
+              function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key)
+                ) {
+                  return null
+                }
+                _vm.addToCart(_vm.filteredItems[_vm.selectedIndex])
+              }
+            ],
             input: function($event) {
               if ($event.target.composing) {
                 return
@@ -46963,7 +47096,10 @@ var render = function() {
         _vm._v(" "),
         _c(
           "span",
-          { staticClass: "input-group-addon", attrs: { id: "basic-addon2" } },
+          {
+            staticClass: "input-group-addon primary",
+            attrs: { id: "basic-addon2" }
+          },
           [
             _c(
               "svg",
@@ -46997,30 +47133,32 @@ var render = function() {
               "tbody",
               _vm._l(_vm.filteredItems, function(item, index) {
                 return _c("tr", { key: item.id }, [
-                  _c(
-                    "td",
-                    { class: { active: _vm.filteredItems.indexOf(item) == 0 } },
-                    [
-                      _c("span", [
-                        _vm._v(_vm._s(index + 1) + ": " + _vm._s(item.name))
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-default pull-right",
-                          on: {
-                            click: function($event) {
-                              _vm.addToCart(item)
-                            }
+                  _c("td", { class: { active2: _vm.selectedItem(item) } }, [
+                    _c("span", [
+                      _vm._v(_vm._s(index + 1) + ": " + _vm._s(item.name))
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success pull-right btn-sm",
+                        on: {
+                          click: function($event) {
+                            _vm.addToCart(item)
                           }
-                        },
-                        [_c("i", { staticClass: "fa fa-share" })]
-                      ),
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-share" })]
+                    ),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "center-block" }, [
+                      _c("b", [_vm._v("Qtty:")]),
                       _vm._v(" "),
-                      _c("span", [_vm._v("Quantity: " + _vm._s(item.qtty))])
-                    ]
-                  )
+                      _c("span", { staticClass: "badge" }, [
+                        _vm._v(_vm._s(item.qtty || 0))
+                      ])
+                    ])
+                  ])
                 ])
               })
             )
@@ -47035,7 +47173,17 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon primary" }, [
+      _c("i", { staticClass: "fa fa-search" }),
+      _vm._v("\n                Search Item\n            ")
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -47144,6 +47292,8 @@ exports.push([module.i, "\n.green[data-v-353b391a] {\n    fill: rgb(16, 148, 104
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__events_js__);
+//
+//
 //
 //
 //
@@ -47309,9 +47459,11 @@ var render = function() {
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(_vm.cartItems[index].name))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(_vm.cartItems[index].qtty))]),
+              _c("td", [_vm._v(_vm._s(_vm.cartItems[index].qtty || "-"))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(_vm.cartItems[index].buying_price))]),
+              _c("td", [
+                _vm._v(_vm._s(_vm.cartItems[index].buying_price || "-"))
+              ]),
               _vm._v(" "),
               _c("td", [
                 _c(
@@ -47435,19 +47587,21 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("th", [_vm._v("##")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Name")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Current stock")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Buying Price")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Price")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Quantity")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Total")])
+      _c("tr", [
+        _c("th", [_vm._v("##")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Current stock")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("B.Price")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("S.Price")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Qtty")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total")])
+      ])
     ])
   }
 ]
@@ -48389,7 +48543,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.dropdown-content[data-v-22b3ea02] {\n    margin-top: 10px;\n    display: float;\n    position: absolute;\n    background-color: #f9f9f9;\n    width: 80%;\n    -webkit-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\n            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\n    z-index: 1;\n    border-radius: 5px;\n}\n.active2[data-v-22b3ea02] {\n    background-color: chocolate\n}\n", ""]);
+exports.push([module.i, "\n.dropdown-content[data-v-22b3ea02] {\n    margin-top: 10px;\n    display: float;\n    position: absolute;\n    background-color: #f9f9f9;\n    width: 80%;\n    -webkit-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\n            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\n    z-index: 1;\n    border-radius: 5px;\n}\n.active2[data-v-22b3ea02] {\n    background-color: #cec5c5;\n}\n", ""]);
 
 // exports
 
@@ -48436,6 +48590,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -48444,6 +48610,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             searchText: null,
             items: [],
+            selectedIndex: 0,
             sort: {
                 key: 'id',
                 order: 'asc'
@@ -48464,6 +48631,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             __WEBPACK_IMPORTED_MODULE_0__events_js___default.a.$emit('purchases.add-to-cart', item);
             this.searchText = '';
             document.getElementById('search').focus();
+        },
+        clearSearch: function clearSearch() {
+            this.searchText = null;
+        },
+        selectedItem: function selectedItem(item) {
+            return this.filteredItems.indexOf(item) == this.selectedIndex;
+        },
+        moveDown: function moveDown() {
+            if (this.selectedIndex == this.filteredItems.length - 1) {
+                return;
+            }
+
+            this.selectedIndex += 1;
+        },
+        moveUp: function moveUp() {
+            if (this.selectedIndex == 0) {
+                return;
+            }
+
+            this.selectedIndex -= 1;
         }
     },
 
@@ -48514,9 +48701,7 @@ var render = function() {
   return _c("div", { staticClass: "panel panel-default" }, [
     _c("div", { staticClass: "panel-body" }, [
       _c("div", { staticClass: "input-group" }, [
-        _c("span", { staticClass: "input-group-addon" }, [
-          _vm._v("\n                Search Item\n            ")
-        ]),
+        _vm._m(0),
         _vm._v(" "),
         _c("input", {
           directives: [
@@ -48536,6 +48721,44 @@ var render = function() {
           },
           domProps: { value: _vm.searchText },
           on: {
+            keyup: [
+              function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "up", 38, $event.key)
+                ) {
+                  return null
+                }
+                _vm.moveUp($event)
+              },
+              function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "down", 40, $event.key)
+                ) {
+                  return null
+                }
+                _vm.moveDown($event)
+              },
+              function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "esc", 27, $event.key)
+                ) {
+                  return null
+                }
+                _vm.clearSearch($event)
+              },
+              function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key)
+                ) {
+                  return null
+                }
+                _vm.addToCart(_vm.filteredItems[_vm.selectedIndex])
+              }
+            ],
             input: function($event) {
               if ($event.target.composing) {
                 return
@@ -48547,7 +48770,10 @@ var render = function() {
         _vm._v(" "),
         _c(
           "span",
-          { staticClass: "input-group-addon", attrs: { id: "basic-addon2" } },
+          {
+            staticClass: "input-group-addon primary",
+            attrs: { id: "basic-addon2" }
+          },
           [
             _c(
               "svg",
@@ -48581,30 +48807,32 @@ var render = function() {
               "tbody",
               _vm._l(_vm.filteredItems, function(item, index) {
                 return _c("tr", { key: item.id }, [
-                  _c(
-                    "td",
-                    { class: { active: _vm.filteredItems.indexOf(item) == 0 } },
-                    [
-                      _c("span", [
-                        _vm._v(_vm._s(index + 1) + ": " + _vm._s(item.name))
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-default pull-right",
-                          on: {
-                            click: function($event) {
-                              _vm.addToCart(item)
-                            }
+                  _c("td", { class: { active2: _vm.selectedItem(item) } }, [
+                    _c("span", [
+                      _vm._v(_vm._s(index + 1) + ": " + _vm._s(item.name))
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success pull-right btn-sm",
+                        on: {
+                          click: function($event) {
+                            _vm.addToCart(item)
                           }
-                        },
-                        [_c("i", { staticClass: "fa fa-share" })]
-                      ),
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-share" })]
+                    ),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "center-block" }, [
+                      _c("b", [_vm._v("Qtty:")]),
                       _vm._v(" "),
-                      _c("span", [_vm._v("Quantity: " + _vm._s(item.qtty))])
-                    ]
-                  )
+                      _c("span", { staticClass: "badge" }, [
+                        _vm._v(_vm._s(item.qtty || 0))
+                      ])
+                    ])
+                  ])
                 ])
               })
             )
@@ -48619,7 +48847,17 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon primary" }, [
+      _c("i", { staticClass: "fa fa-search" }),
+      _vm._v("\n                Search Item\n            ")
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -48728,6 +48966,8 @@ exports.push([module.i, "\n.green[data-v-6bcc77f9] {\n    fill: rgb(16, 148, 104
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__events_js__);
+//
+//
 //
 //
 //
@@ -49081,19 +49321,21 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("th", [_vm._v("##")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Name")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Current stock")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("B.Price")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("S.Price")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Quantity")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Total")])
+      _c("tr", [
+        _c("th", [_vm._v("##")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Current stock")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("B.Price")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("S.Price")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Quantity")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total")])
+      ])
     ])
   }
 ]
@@ -50116,6 +50358,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -50217,7 +50460,10 @@ var render = function() {
           }
         }
       },
-      [_vm._v("\n        Excel Import\n    ")]
+      [
+        _c("i", { staticClass: "fa fa-upload" }),
+        _vm._v("\n        Excel Import\n    ")
+      ]
     ),
     _vm._v(" "),
     _c(
