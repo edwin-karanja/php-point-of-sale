@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Inventory;
 use App\Models\Item;
+use Carbon\Carbon;
 
 class InventoryController extends AjaxController
 {
@@ -53,7 +54,8 @@ class InventoryController extends AjaxController
             'item_id' => $item->id,
             'user_id' => auth()->user()->id,
             'comments' => request('comments'),
-            'trans_inventory' => request('adjustment')
+            'trans_inventory' => request('adjustment'),
+            'trans_date' => Carbon::now()
         ]);
     }
 }

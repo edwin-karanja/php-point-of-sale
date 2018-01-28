@@ -6,6 +6,7 @@ use App\Events\QuantityModified;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\Inventory;
+use Carbon\Carbon;
 
 class UpdateItemInventory implements ShouldQueue
 {
@@ -24,7 +25,8 @@ class UpdateItemInventory implements ShouldQueue
                 'item_id' => $event->item->id,
                 'user_id' => $event->user->id,
                 'comments' => $event->sale ? $event->model . ' No# ' . $event->sale->id : 'Manual entry of item quantity',
-                'trans_inventory' => $event->quantity - $event->oldQtty
+                'trans_inventory' => $event->quantity - $event->oldQtty,
+                'trans_date' => Carbon::now()
             ]);
         }
 
