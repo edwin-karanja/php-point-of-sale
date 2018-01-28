@@ -8,9 +8,11 @@ use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
+    public $paginate = 15;
+
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::paginate($this->paginate);
 
         return view('category.index', compact('categories'));
     }
@@ -28,7 +30,7 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        $categories = Category::all();
+        $categories = Category::paginate($this->paginate);
 
         return view('category.index', compact('category', 'categories'));
     }
