@@ -3,9 +3,9 @@
 @section('page-title')
     Recent Sales
 
-    <a href="{{ route('sales.index') }}" class="btn btn-primary pull-right">
-        @svg('icon-cart')
-        Sales Register
+    <a href="{{ route('sales.index') }}" class="pull-right">
+        <i class="fa fa-shopping-cart"></i>
+        <b>Sales Register</b>
     </a>
 @endsection
 
@@ -13,7 +13,8 @@
     <div class="panel panel-default">
 
         <div class="panel-body">
-            Filters
+            <p><b>Filters</b></p>
+            <p><b>More filters</b></p>
         </div>
     </div>
 

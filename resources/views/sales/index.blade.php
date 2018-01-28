@@ -3,9 +3,9 @@
 @section('page-title')
     Sales
 
-    <a href="{{ route('sales.recent') }}" class="btn btn-primary pull-right">
-        @svg('icon-menu')
-        Recent Sales
+    <a href="{{ route('sales.recent') }}" class="pull-right">
+        <i class="fa fa-bars"></i>
+        <b>Recent Sales</b>
     </a>
 @endsection
 
