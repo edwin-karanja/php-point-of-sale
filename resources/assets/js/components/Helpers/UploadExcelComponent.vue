@@ -1,6 +1,7 @@
 <template>
     <div>
         <button class="btn btn-primary pull-right mr-4" @click.prevent="openModal">
+            <i class="fa fa-upload"></i>
             Excel Import
         </button>
 

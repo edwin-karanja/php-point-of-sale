@@ -74,8 +74,12 @@
             </div>
         </div>
 
-        <div class="well well-sm" v-if="!loading && response.inventories.data.length == 0">
-            Click on any item on the left to view its stock movement;
+        <div class="well well-sm" v-if="!loading && response.inventories.data.length == 0 && item.name">
+            That item has no stock movement, add item quantity to view its history.
+        </div>
+
+        <div class="well well-sm" v-if="!loading && item.name === null">
+            Click on any item on the left to view its stock movement.
         </div>
     </div>
 </template>
