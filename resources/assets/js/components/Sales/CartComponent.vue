@@ -4,13 +4,15 @@
         <div class="panel-body">
             <table class="table table-striped">
                 <thead>
-                    <th>##</th>
-                    <th>Name</th>
-                    <th>Current stock</th>
-                    <th>Buying Price</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
+                    <tr>
+                        <th>##</th>
+                        <th>Name</th>
+                        <th>Current stock</th>
+                        <th>B.Price</th>
+                        <th>S.Price</th>
+                        <th>Qtty</th>
+                        <th>Total</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(item, index) in cartItems" :key="item.id">
@@ -18,8 +20,8 @@
                             <svg @click="removeFromCart(item)" class="icon-sm green" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M8 6V4c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2h5a1 1 0 0 1 0 2h-1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8H3a1 1 0 1 1 0-2h5zM6 8v12h12V8H6zm8-2V4h-4v2h4zm-4 4a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z"/></svg>
                         </td>
                         <td>{{ cartItems[index].name }}</td>
-                        <td>{{ cartItems[index].qtty}}</td>
-                        <td>{{ cartItems[index].buying_price }}</td>
+                        <td>{{ cartItems[index].qtty || '-'}}</td>
+                        <td>{{ cartItems[index].buying_price || '-' }}</td>
                         <td>
                             <div class="col-xs-10 form-group" :class="{'has-error': errors['items.' + index + '.selling_price']}">
                                 <input type="text" :id="'item-' + item.id + '-sp'" class="form-control" v-model="cartItems[index].selling_price">

@@ -1,7 +1,7 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading clear-fix">
-            <input type="text" class="form-control" placeholder="Search by name or quantity." v-model="searchText">
+            <input type="text" class="form-control" placeholder="Search by name or quantity." @keyup.esc="clearSearch" v-model="searchText">
         </div>
 
         <div class="panel-body">
@@ -19,7 +19,7 @@
                         <td>
                             <a :id="'item-' + item.id" href="#" @click.prevent="showItemInventory(item)">{{ item.name }}</a>
                         </td>
-                        <td>{{ item.qtty }}</td>
+                        <td>{{ item.qtty || '-' }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -61,6 +61,10 @@ import eventHub from '../events.js'
             showItemInventory (item) {
                 this.selected = item
                 eventHub.$emit('show-item-inventory', item)
+            },
+
+            clearSearch () {
+                this.searchText = ''
             }
         },
 

@@ -4,13 +4,15 @@
         <div class="panel-body">
             <table class="table table-striped">
                 <thead>
-                    <th>##</th>
-                    <th>Name</th>
-                    <th>Current stock</th>
-                    <th>B.Price</th>
-                    <th>S.Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
+                    <tr>
+                        <th>##</th>
+                        <th>Name</th>
+                        <th>Current stock</th>
+                        <th>B.Price</th>
+                        <th>S.Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(item, index) in cartItems" :key="item.id">

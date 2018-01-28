@@ -3,7 +3,18 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="col-md-6">
-                <input type="text" class="form-control" v-model="searchText">
+                <div class="input-group">
+                    <span class="input-group-addon primary">
+                        <i class="fa fa-search"></i>
+                    </span>
+
+                    <input type="text" class="form-control" v-model="searchText">
+
+                    <span class="input-group-addon primary">
+                        <i class="fa fa-search"></i>
+                    </span>
+                </div>
+
             </div>
 
             <excel-upload-component :url="'/ajax/items/import'"></excel-upload-component>
