@@ -24,6 +24,9 @@ class CreateSalesTable extends Migration
             $table->text('comments')->nullable();
             $table->decimal('sale_total', 12, 2)->nullable();
             $table->string('sale_type')->nullable()->default('sale'); // allow printing of quotation
+            $table->decimal('amount_paid', 12, 2)->nullable();
+            $table->decimal('balance_due', 12, 2)->nullable();
+            $table->string('payment_status')->nullable();
             $table->timestamps();
         });
     }

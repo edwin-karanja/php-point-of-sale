@@ -28,7 +28,8 @@ class SaleStoreRequest extends FormRequest
             'items.*.qtty_sold' => 'required|numeric|min:1',
             'items.*.selling_price' => 'required|numeric|min:1',
             'customer.id' => 'required',
-            'payment_mode' => 'required'
+            'payment_mode' => 'required',
+            'amount_tendered' => 'required|numeric'
         ];
     }
 
@@ -42,6 +43,7 @@ class SaleStoreRequest extends FormRequest
             'items.*.selling_price.numeric' => 'Price must be numeric',
             'items.*.selling_price.min' => 'Price must be > 0',
             'items.*.selling_price.required' => 'Price is required',
+            'amount_tendered.required' => 'Enter the tendered amount'
         ];
     }
 }

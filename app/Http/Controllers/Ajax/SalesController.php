@@ -23,8 +23,7 @@ class SalesController extends AjaxController
         $sale = Sale::create($data);
 
         $saleTotal = $this->storeSaleItemsAndComputeSalesTotal($request, $sale);
-
-        $sale->update(['sale_total' => $saleTotal]);
+        $sale->concludeSale($saleTotal);
 
         return response()->json(['success' => true]);
 
@@ -37,6 +36,7 @@ class SalesController extends AjaxController
         $data['customer_id'] = $request->customer['id'];
         $data['user_id'] = auth()->user()->id;
         $data['mpesa_ref_no'] = $request->mpesa_ref;
+        $data['amount_paid'] = $request->amount_tendered;
 
         return $data;
     }

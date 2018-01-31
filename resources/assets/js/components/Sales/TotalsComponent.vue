@@ -61,7 +61,7 @@
             </table>
         </div>
 
-        <div class="panel-footer" :class="{'mpesa-green': sale.payment_mode == 'mpesa'}">
+        <div class="panel-footer" :class="{'mpesa-green': sale.payment_mode == 'mpesa', 'yellow': sale.payment_mode == 'oncredit'}">
             <table class="table">
                 <tbody>
                     <tr>
@@ -82,20 +82,29 @@
                             </div>
                         </td>
                     </tr>
+                    <!-- <tr v-if="sale.payment_mode == 'oncredit'">
+                        <th>Partial payment</th>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" @change="updateFormPayment" v-model="sale.partial_payment">
+                            </div>
+                        </td>
+                    </tr> -->
                     <tr>
                         <th>Amount Tendered</th>
                         <td>
-                            <div class="form-group" :class="{'has-error': tendered_error}">
-                                <input type="text" class="form-control" v-model="tendered" :disabled="sale.payment_mode === 'mpesa'">
+                            <div class="form-group" :class="{'has-error': errors['amount_tendered']}">
+                                <input type="text" class="form-control" v-model="sale.amount_tendered" :disabled="sale.payment_mode === 'mpesa'">
 
-                                <span class="help-block" v-if="tendered_error">
-                                    <strong>{{ tendered_error }}</strong>
+                                <span class="help-block" v-if="errors['amount_tendered']">
+                                    <strong>{{ errors['amount_tendered'][0] }}</strong>
                                 </span>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <th>Change due</th>
+                        <th v-if="sale.payment_mode == 'cash' || sale.payment_mode == 'mpesa'">Change due</th>
+                        <th v-if="sale.payment_mode == 'oncredit'">Payment balance</th>
                         <td class="b">Kshs. {{ getBalance || 0 }}</td>
                     </tr>
                 </tbody>
@@ -133,10 +142,9 @@
                     },
                     payment_mode: 'cash',
                     mpesa_ref: null,
+                    partial_payment: 0
                 },
                 errors: [],
-                tendered: null,
-                tendered_error: null,
                 searchCustomer: null,
                 response: {
                     customers: [],
@@ -170,9 +178,12 @@
 
             updateFormPayment () {
                 if (this.sale.payment_mode === 'mpesa') {
-                    this.tendered = this.getTotals
+                    this.sale.amount_tendered = this.getTotals
+                    this.errors['amount_tendered'] = null
                 } else if (this.sale.payment_mode === 'cash') {
                     this.sale.mpesa_ref = null
+                } else {
+                    this.errors['amount_tendered'] = null
                 }
             },
 
@@ -182,13 +193,6 @@
 
             postSale () {
                 this.sale.active = true
-
-                if (!this.tendered) {
-                    this.tendered_error = 'Enter the tendered amount';
-                    this.sale.active = false
-                    return;
-                }
-                this.tendered_error = null
 
                 axios.post('/ajax/sales', this.sale).then((response) => {
                     if (response.status === 200) {
@@ -273,8 +277,8 @@
             },
 
             getBalance () {
-                if (this.sale.items.length && this.tendered) {
-                    return this.tendered - this.getTotals
+                if (this.sale.items.length && this.sale.amount_tendered) {
+                    return Math.abs(this.sale.amount_tendered - this.getTotals)
                 }
             }
         },
@@ -322,5 +326,9 @@
 
     .mpesa-green {
         background-color: rgba(167, 250, 167, 0.801);
+    }
+
+    .yellow {
+        background-color: #e4e14d;
     }
 </style>

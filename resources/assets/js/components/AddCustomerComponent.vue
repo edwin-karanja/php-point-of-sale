@@ -1,6 +1,7 @@
 <template>
     <div>
         <button class="btn btn-primary pull-right mr-4" @click.prevent="addCustomer" :class="{'disabled': disabled}">
+            <i class="fa fa-plus"></i>
             Add Customer
         </button>
 

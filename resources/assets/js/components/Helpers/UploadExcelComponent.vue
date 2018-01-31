@@ -1,7 +1,7 @@
 <template>
     <div>
         <button class="btn btn-primary pull-right mr-4" @click.prevent="openModal">
-            <i class="fa fa-upload"></i>
+            <svg class="icon-sm color-w" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M13 5.41V17a1 1 0 0 1-2 0V5.41l-3.3 3.3a1 1 0 0 1-1.4-1.42l5-5a1 1 0 0 1 1.4 0l5 5a1 1 0 1 1-1.4 1.42L13 5.4zM3 17a1 1 0 0 1 2 0v3h14v-3a1 1 0 0 1 2 0v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3z"/></svg>
             Excel Import
         </button>
 
@@ -34,7 +34,7 @@
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">
                                 <span v-if="!this.uploading">
-                                    <i class="fa fa-upload" aria-hidden="true"></i>
+                                    <svg class="icon-sm color-w" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M13 5.41V17a1 1 0 0 1-2 0V5.41l-3.3 3.3a1 1 0 0 1-1.4-1.42l5-5a1 1 0 0 1 1.4 0l5 5a1 1 0 1 1-1.4 1.42L13 5.4zM3 17a1 1 0 0 1 2 0v3h14v-3a1 1 0 0 1 2 0v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3z"/></svg>
                                 </span>
                                 <span v-if="this.uploading">
                                     <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
@@ -168,5 +168,9 @@
         background: white;
         cursor: inherit;
         display: block;
+    }
+
+    .color-w {
+        fill: white;
     }
 </style>

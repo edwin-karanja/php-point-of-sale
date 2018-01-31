@@ -14,7 +14,7 @@ class SalesController extends Controller
 
     public function recent(Request $request)
     {
-        $sales = Sale::filter($request)->paginate();
+        $sales = Sale::filter($request)->withCount('items')->paginate();
 
         return view('sales.recent', compact('sales'));
     }

@@ -13,7 +13,7 @@ class CreateQuantitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('item-quantities', function (Blueprint $table) {
+        Schema::create('item_quantities', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('item_id')->unsigned()->index();
             $table->integer('quantity')->unsigned()->nullable()->default(0);
@@ -28,6 +28,6 @@ class CreateQuantitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('item-quantities');
+        Schema::dropIfExists('item_quantities');
     }
 }

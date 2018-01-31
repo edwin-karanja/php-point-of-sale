@@ -49,7 +49,11 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Customers
      */
-    Route::get('/customers', 'CustomerController@index');
+
+    Route::group(['prefix' => 'customers', 'as' => 'customer.', 'namespace' => 'Customer'], function () {
+        Route::get('/', 'CustomerController@index');
+        Route::get('/{customer}/account', 'CustomerSalesController@index')->name('account');
+    });
 
     /**
      * Suppliers

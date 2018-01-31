@@ -1,11 +1,31 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading clear-fix">
-            <input type="text" class="form-control" placeholder="Search by name or quantity." @keyup.esc="clearSearch" v-model="searchText">
+            <div class="input-group">
+                <span class="input-group-addon primary">
+                    <i class="fa fa-search"></i>
+                </span>
+
+                <input type="text" class="form-control" placeholder="Search by name or quantity." @keyup.esc="clearSearch" v-model="searchText">
+
+                <span class="input-group-addon primary">
+                    <i class="fa fa-search"></i>
+                </span>
+            </div>
+
         </div>
 
         <div class="panel-body">
-            <table class="table" v-if="response.items">
+            <div class="panel-default panel" v-if="loading">
+                <div class="panel-body text-center" style="min-height: 300px">
+                    <div style="line-height: 300px">
+                        <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                        <span><b>Loading...</b></span>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table table-bordered table-responsive table-condensed" v-if="response.items && !loading">
                 <thead>
                     <tr>
                         <th>##</th>
@@ -37,6 +57,7 @@ import eventHub from '../events.js'
     export default {
         data () {
             return {
+                loading: true,
                 response: {
                     items: []
                 },
@@ -54,6 +75,7 @@ import eventHub from '../events.js'
         methods: {
             getItems () {
                 return axios.get('/ajax/inventory').then((response) => {
+                    this.loading = false
                     this.response = response.data;
                 })
             },

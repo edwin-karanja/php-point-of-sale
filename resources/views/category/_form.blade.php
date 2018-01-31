@@ -37,7 +37,8 @@
 
             @if (isset($category))
                 <a href="{{ route('category.index') }}" class="pull-right btn btn-link">
-                        Cancel
+                    <i class="fa fa-close red"></i>
+                    <b>Cancel</b>
                 </a>
             @endif
         </div>

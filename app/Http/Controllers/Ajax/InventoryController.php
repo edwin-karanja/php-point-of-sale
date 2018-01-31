@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Inventory;
 use App\Models\Item;
+use App\Models\Quantity;
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
+use App\Rules\PositiveValue;
 
 class InventoryController extends AjaxController
 {
@@ -36,12 +39,16 @@ class InventoryController extends AjaxController
     public function store(Item $item, Request $request)
     {
         $request->validate([
-            'adjustment' => 'required|numeric',
+            'adjustment' => ['required','numeric', new PositiveValue($item)],
             'comments' => 'required|min:5'
         ]);
 
         $newQtty = $item->qtty + $request->adjustment;
-        $item->quantity()->update(['quantity' => $newQtty]);
+
+        Quantity::updateOrCreate(
+            ['item_id' => $item->id],
+            ['quantity' => $newQtty]
+        );
 
         $this->updateInventory($item);
 

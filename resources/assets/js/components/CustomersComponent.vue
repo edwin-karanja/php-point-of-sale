@@ -6,7 +6,8 @@
                 <input type="text" class="form-control" placeholder="Search by any column" v-model="searchText">
             </div>
 
-            <button class="btn btn-primary pull-right">
+            <button class="btn btn-primary pull-right disabled">
+                <i class="fa fa-upload"></i>
                 Excel Import
             </button>
 
@@ -44,7 +45,7 @@
                 </tbody>
             </table>
             <p v-else>
-                No customers created yet, add one from the button in the top right.
+                <b>No customers created yet, add one from the button in the top right.</b>
             </p>
         </div>
     </div>
