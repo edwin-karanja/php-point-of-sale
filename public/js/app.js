@@ -1431,7 +1431,8 @@ Vue.component('purchases-totals-component', __webpack_require__(107));
 /**
  * Suppliers Components
  */
-// Vue.component('suppliers-component', require('./components/Supplier/SuppliersComponent.vue'));
+Vue.component('suppliers-component', __webpack_require__(135));
+Vue.component('create-supplier-component', __webpack_require__(138));
 
 /**
  * Helpers
@@ -50943,6 +50944,773 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(136)
+/* template */
+var __vue_template__ = __webpack_require__(137)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Supplier/SuppliersComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-18acdef2", Component.options)
+  } else {
+    hotAPI.reload("data-v-18acdef2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 136 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__events_js__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            response: {
+                suppliers: [],
+                columns: [],
+                customColumns: [],
+                createColumns: [],
+                displayColumns: []
+            },
+            searchText: null
+        };
+    },
+
+
+    methods: {
+        getSuppliers: function getSuppliers() {
+            var _this = this;
+
+            return axios.get('/ajax/suppliers').then(function (response) {
+                _this.response = response.data;
+            });
+        },
+        createSupplier: function createSupplier() {
+            __WEBPACK_IMPORTED_MODULE_0__events_js___default.a.$emit('create-supplier');
+        }
+    },
+
+    mounted: function mounted() {
+        this.getSuppliers();
+
+        __WEBPACK_IMPORTED_MODULE_0__events_js___default.a.$on('supplier-created', this.getSuppliers);
+    }
+});
+
+/***/ }),
+/* 137 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "panel panel-default" }, [
+      _c(
+        "div",
+        { staticClass: "panel-body" },
+        [
+          _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "input-group" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.searchText,
+                    expression: "searchText"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text" },
+                domProps: { value: _vm.searchText },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.searchText = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.response.createColumns
+            ? _c("create-supplier-component", {
+                attrs: {
+                  customColumns: _vm.response.customColumns,
+                  createColumns: _vm.response.createColumns
+                }
+              })
+            : _vm._e()
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "panel panel-default" }, [
+      _vm.response.suppliers.length
+        ? _c("div", { staticClass: "panel-body" }, [
+            _c("table", { staticClass: "table" }, [
+              _c("thead", [
+                _c(
+                  "tr",
+                  [
+                    _c("th", [_vm._v("##")]),
+                    _vm._v(" "),
+                    _vm._l(_vm.response.displayColumns, function(column) {
+                      return _c("th", { key: column }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(
+                              _vm.response.customColumns[column] || column
+                            ) +
+                            "\n                        "
+                        )
+                      ])
+                    }),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Actions")])
+                  ],
+                  2
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.response.suppliers, function(supplier, index) {
+                  return _c(
+                    "tr",
+                    { key: supplier.id },
+                    [
+                      _c("td", [_vm._v(_vm._s(index + 1))]),
+                      _vm._v(" "),
+                      _vm._l(_vm.response.displayColumns, function(column) {
+                        return _c("td", { key: column }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(supplier[column] || "-") +
+                              "\n                        "
+                          )
+                        ])
+                      })
+                    ],
+                    2
+                  )
+                })
+              )
+            ])
+          ])
+        : _c("div", { staticClass: "panel-body" }, [
+            _c("div", { staticClass: "well well-sm b" }, [
+              _vm._v("No supplier created yet. "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-link",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.createSupplier($event)
+                    }
+                  }
+                },
+                [_vm._v("Create a supplier?")]
+              )
+            ])
+          ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon primary" }, [
+      _c("i", { staticClass: "fa fa-search" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon primary" }, [
+      _c("i", { staticClass: "fa fa-search" })
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-18acdef2", module.exports)
+  }
+}
+
+/***/ }),
+/* 138 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(139)
+/* template */
+var __vue_template__ = __webpack_require__(140)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Supplier/CreateSupplierComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5cad5ac9", Component.options)
+  } else {
+    hotAPI.reload("data-v-5cad5ac9", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 139 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__events_js__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['customColumns', 'createColumns'],
+
+    data: function data() {
+        return {
+            supplierModal: null,
+            title: '<b>Create a suplier</b>',
+            creating: {
+                active: false,
+                form: {},
+                errors: []
+            },
+            buttonText: 'Create Supplier'
+        };
+    },
+
+
+    methods: {
+        createSupplier: function createSupplier() {
+            this.supplierModal.modal('show');
+        },
+        closeModal: function closeModal() {
+            this.supplierModal.modal('hide');
+
+            this.resetForm();
+        },
+        resetForm: function resetForm() {
+            this.creating.form = {};
+            this.creating.errors = [];
+        },
+        store: function store() {
+            var _this = this;
+
+            this.creating.active = true;
+
+            axios.post('/ajax/suppliers', this.creating.form).then(function () {
+                _this.closeModal();
+
+                _this.creating.active = false;
+
+                __WEBPACK_IMPORTED_MODULE_0__events_js___default.a.$emit('supplier-created');
+                eventHub.$emit('success-alert', "Supplier added successfully.");
+            }).catch(function (error) {
+                if (error.response.status === 422) {
+                    _this.creating.active = false;
+                    _this.creating.errors = error.response.data.errors;
+                }
+            });
+        }
+    },
+
+    mounted: function mounted() {
+        this.supplierModal = $('#createSupplierModal');
+
+        __WEBPACK_IMPORTED_MODULE_0__events_js___default.a.$on('create-supplier', this.createSupplier);
+    }
+});
+
+/***/ }),
+/* 140 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-primary pull-right mr-4",
+        on: {
+          click: function($event) {
+            $event.preventDefault()
+            _vm.createSupplier($event)
+          }
+        }
+      },
+      [
+        _c("i", { staticClass: "fa fa-plus" }),
+        _vm._v("\n        Create Supplier\n    ")
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "createSupplierModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "myModalLabel"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        _vm.closeModal($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("h4", {
+                  staticClass: "modal-title",
+                  attrs: { id: "myModalLabel" },
+                  domProps: { innerHTML: _vm._s(_vm.title) }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c(
+                  "form",
+                  {
+                    staticClass: "form-horizontal",
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        _vm.store($event)
+                      },
+                      keyup: function($event) {
+                        if (
+                          !("button" in $event) &&
+                          _vm._k($event.keyCode, "esc", 27, $event.key)
+                        ) {
+                          return null
+                        }
+                        _vm.closeModal($event)
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "row" },
+                      _vm._l(_vm.createColumns, function(column) {
+                        return _c(
+                          "div",
+                          {
+                            key: column,
+                            staticClass: "form-group",
+                            class: { "has-error": _vm.creating.errors[column] }
+                          },
+                          [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "col-md-4 control-label",
+                                attrs: { for: column }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(_vm.customColumns[column] || column)
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-6" }, [
+                              column == "description"
+                                ? _c("textarea", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.creating.form[column],
+                                        expression: "creating.form[column]"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      id: column,
+                                      cols: "30",
+                                      rows: "5"
+                                    },
+                                    domProps: {
+                                      value: _vm.creating.form[column]
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.creating.form,
+                                          column,
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                : _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.creating.form[column],
+                                        expression: "creating.form[column]"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      id: column,
+                                      type: "text",
+                                      autofocus: ""
+                                    },
+                                    domProps: {
+                                      value: _vm.creating.form[column]
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.creating.form,
+                                          column,
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
+                              _vm._v(" "),
+                              _vm.creating.errors[column]
+                                ? _c("span", { staticClass: "help-block" }, [
+                                    _c("strong", [
+                                      _vm._v(
+                                        _vm._s(_vm.creating.errors[column][0])
+                                      )
+                                    ])
+                                  ])
+                                : _vm._e()
+                            ])
+                          ]
+                        )
+                      })
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "col-md-6 col-md-offset-4" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "submit" }
+                          },
+                          [
+                            !_vm.creating.active
+                              ? _c("span", [
+                                  _c("i", {
+                                    staticClass: "fa fa-plus",
+                                    attrs: { "aria-hidden": "true" }
+                                  })
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.creating.active
+                              ? _c("span", [
+                                  _c("i", {
+                                    staticClass: "fa fa-spinner fa-spin",
+                                    attrs: { "aria-hidden": "true" }
+                                  })
+                                ])
+                              : _vm._e(),
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.buttonText) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-default",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        _vm.closeModal($event)
+                      }
+                    }
+                  },
+                  [_vm._v("Close")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5cad5ac9", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

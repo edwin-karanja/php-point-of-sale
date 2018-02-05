@@ -142,6 +142,14 @@ Route::group(['middleware' => ['auth']], function () {
         });
 
         /**
+         * Supplier ajax calls
+         */
+        Route::group(['prefix' => 'suppliers', 'as' => 'supplier.'], function () {
+            Route::get('/', 'SupplierController@index')->name('index');
+            Route::post('/', 'SupplierController@store')->name('store');
+        });
+
+        /**
          * Sales Ajax calls
          */
         Route::group(['prefix' => 'sales', 'as' => 'sales.'], function () {

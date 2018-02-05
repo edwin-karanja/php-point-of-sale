@@ -5,6 +5,6 @@
 @endsection
 
 @section('front-content')
-    Suppliers data
+    <suppliers-component></suppliers-component>
 
 @endsection

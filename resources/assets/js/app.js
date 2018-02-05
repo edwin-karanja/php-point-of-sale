@@ -41,7 +41,8 @@ Vue.component('purchases-totals-component', require('./components/Purchases/Tota
 /**
  * Suppliers Components
  */
-// Vue.component('suppliers-component', require('./components/Supplier/SuppliersComponent.vue'));
+Vue.component('suppliers-component', require('./components/Supplier/SuppliersComponent.vue'));
+Vue.component('create-supplier-component', require('./components/Supplier/CreateSupplierComponent.vue'));
 
 /**
  * Helpers
