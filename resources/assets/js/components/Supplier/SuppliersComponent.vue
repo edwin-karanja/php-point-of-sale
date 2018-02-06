@@ -43,7 +43,13 @@
                         <tr v-for="(supplier, index) in response.suppliers" :key="supplier.id">
                             <td>{{ index + 1 }}</td>
                             <td v-for="column in response.displayColumns" :key="column">
-                                {{ supplier[column] || '-' }}
+                                <span v-if="column == 'name'">
+                                    <a :href="'suppliers/' + supplier.id" >{{ supplier[column] || '-' }}</a>
+                                </span>
+
+                                <span v-else>
+                                    {{ supplier[column] || '-' }}
+                                </span>
                             </td>
                         </tr>
                     </tbody>
@@ -76,7 +82,7 @@
 
         methods: {
             getSuppliers () {
-                return axios.get('/ajax/suppliers').then((response) => {
+                return axios.get('/suppliers/ajax').then((response) => {
                     this.response = response.data
                 })
             },

@@ -56,9 +56,20 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     /**
-     * Suppliers
+     * Suppliers routes
      */
-    Route::get('/suppliers', 'SupplierController@index');
+    Route::group(['prefix' => 'suppliers', 'as' => 'supplier.', 'namespace' => 'Supplier'], function () {
+        Route::get('/', 'SupplierController@index')->name('index');
+
+        Route::group(['prefix' => 'ajax', 'as' => 'ajax.', 'namespace' => 'Ajax'], function () {
+            Route::get('/', 'SupplierController@index')->name('index');
+            Route::post('/', 'SupplierController@store')->name('store');
+            Route::get('/{supplier}/bankings', 'SupplierBankingController@index')->name('banking.index');
+            Route::post('/{supplier}/bankings', 'SupplierBankingController@store')->name('banking.store');
+        });
+
+        Route::get('/{supplier}', 'SupplierMetaController@index')->name('meta');
+    });
 
     /**
      * Settings
@@ -144,7 +155,7 @@ Route::group(['middleware' => ['auth']], function () {
         /**
          * Supplier ajax calls
          */
-        Route::group(['prefix' => 'suppliers', 'as' => 'supplier.'], function () {
+        Route::group(['prefix' => 'suppliers', 'as' => 'supplier.', 'middleware' => 'Supplier'], function () {
             Route::get('/', 'SupplierController@index')->name('index');
             Route::post('/', 'SupplierController@store')->name('store');
         });

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Ajax;
+namespace App\Http\Controllers\Supplier\Ajax;
 
 use App\Models\Supplier;
 use Illuminate\Http\Request;

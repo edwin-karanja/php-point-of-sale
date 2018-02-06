@@ -1,12 +1,33 @@
 <template>
-    <div>
-        <button class="btn btn-primary pull-right mr-4" @click.prevent="createSupplier" :class="{'disabled': disabled}">
-            <i class="fa fa-plus"></i>
-            Create Supplier
-        </button>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Banking - Info</b>
+
+            <a href="#" class="pull-right" @click.prevent="openCreateBankings">
+                <i class="fa fa-plus"></i>
+                <b>Add</b>
+            </a>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>##</th>
+                        <th v-for="column in response.columns" :key="column">{{ response.customColumns[column] }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(meta, index) in response.bankings" :key="meta.id">
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ meta.bank_name }}</td>
+                        <td>{{ meta.bank_account_number }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="createSupplierModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" id="bankingsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -14,15 +35,14 @@
                     <h4 class="modal-title" id="myModalLabel" v-html="title"></h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" @submit.prevent="store" @keyup.esc="closeModal">
+                    <form class="form-horizontal" @submit.prevent="store">
                         <div class="row">
-                                <div class="form-group" v-for="column in createColumns" :class="{'has-error' : creating.errors[column]}" :key="column">
-                                    <label :for="column" class="col-md-4 control-label">{{ customColumns[column] || column }}</label>
+                                <div class="form-group" v-for="column in response.columns" :class="{'has-error' : creating.errors[column]}" :key="column">
+                                    <label :for="column" class="col-md-4 control-label">{{ response.customColumns[column] || column }}</label>
 
                                     <div class="col-md-6">
-                                        <textarea v-if="column == 'description'" :id="column" cols="30" rows="5" class="form-control" v-model="creating.form[column]"></textarea>
 
-                                        <input v-else :id="column" type="text" class="form-control" v-model="creating.form[column]" autofocus>
+                                        <input :id="column" type="text" class="form-control" v-model="creating.form[column]" value="">
 
                                         <span class="help-block" v-if="creating.errors[column]">
                                             <strong>{{ creating.errors[column][0] }}</strong>
@@ -56,36 +76,36 @@
 </template>
 
 <script>
-    import EventHub from '../../events.js';
-
     export default {
-        props: ['customColumns', 'createColumns', 'disabled'],
+        props: ['supplier'],
 
         data () {
             return {
-                supplierModal: null,
-                title: '<b>Create a suplier</b>',
+                title: 'Create banking details.',
+                buttonText: 'Save',
+                bankingsModal: null,
                 creating: {
                     active: false,
                     form: {},
                     errors: []
                 },
-                buttonText: 'Create Supplier'
+                response: {
+                    bankings: [],
+                    columns: [],
+                    customColumns: []
+                }
             };
         },
 
         methods: {
-            createSupplier () {
-                this.supplierModal.modal('show');
-            },
-
-            closeModal () {
-                this.supplierModal.modal('hide')
-
-                this.resetForm()
+            getSupplierBankings () {
+                return axios.get('/suppliers/ajax/' + this.supplier.id + '/bankings').then((response) => {
+                    this.response = response.data
+                })
             },
 
             resetForm () {
+                this.creating.active = false
                 this.creating.form = {}
                 this.creating.errors = []
             },
@@ -93,27 +113,34 @@
             store () {
                 this.creating.active = true
 
-                axios.post('/suppliers/ajax', this.creating.form).then(() => {
+                axios.post('/suppliers/ajax/' + this.supplier.id + '/bankings', this.creating.form).then(() => {
+                    this.getSupplierBankings()
+
                     this.closeModal()
-
-                    this.creating.active = false;
-
-                    EventHub.$emit('supplier-created')
-                    eventHub.$emit('success-alert', "Supplier added successfully.")
-
                 }).catch((error) => {
                     if (error.response.status === 422) {
                         this.creating.active = false
                         this.creating.errors = error.response.data.errors
                     }
                 })
+
+            },
+
+            openCreateBankings () {
+                this.bankingsModal.modal('show')
+            },
+
+            closeModal () {
+                this.bankingsModal.modal('hide')
+
+                this.resetForm()
             }
         },
 
         mounted() {
-            this.supplierModal = $('#createSupplierModal')
+            this.getSupplierBankings()
 
-            EventHub.$on('create-supplier', this.createSupplier)
+            this.bankingsModal = $('#bankingsModal')
         }
     }
 </script>

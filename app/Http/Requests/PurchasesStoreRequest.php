@@ -28,7 +28,7 @@ class PurchasesStoreRequest extends FormRequest
             'items.*.qtty_purchased' => 'required|numeric|min:1',
             'items.*.buying_price' => 'required|numeric|min:1',
             'items.*.selling_price' => 'required|numeric|min:1',
-            'supplier.id' => 'nullable|numeric'
+            'supplier.id' => 'required|numeric'
         ];
     }
 
@@ -44,6 +44,7 @@ class PurchasesStoreRequest extends FormRequest
             'items.*.buying_price.numeric' => 'Price must be numeric',
             'items.*.buying_price.min' => 'Price must be > 0',
             'items.*.buying_price.required' => 'Price is required',
+            'supplier.id.required' => 'Please select a supplier'
         ];
     }
 }
