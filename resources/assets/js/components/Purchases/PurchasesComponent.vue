@@ -130,6 +130,10 @@
 
         mounted() {
             this.getItems()
+
+            document.getElementById('search').focus()
+
+            eventHub.$on('purchase-completed', this.getItems)
         }
     }
 </script>

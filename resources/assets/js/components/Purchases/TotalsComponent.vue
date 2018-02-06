@@ -2,9 +2,8 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div v-if="purchase.supplier.id">
-                <p class="b">Name: <span class="pull-right">{{ purchase.supplier.name }}</span></p>
-                <p class="b">Gender: <span class="pull-right">{{ purchase.supplier.gender }}</span></p>
-                <p class="b">Due Balance: <span class="pull-right">NULL</span></p>
+                <p class="b">Name: <span class="pull-right">{{ purchase.supplier.name.toUpperCase() }}</span></p>
+                <p class="b">Last purchase: <span class="pull-right">{{ purchase.supplier.last_supply_date || '-'}}</span></p>
                 <hr>
                 <a href="#" class="pull-right" @click.prevent="removeSupplier">Remove</a>
             </div>
@@ -18,7 +17,12 @@
                     <strong>{{ errors['supplier.id'][0] }}</strong>
                 </span>
 
-                <button class="btn btn-primary">Add Supplier</button>
+                <create-supplier-component
+                 :disabled="purchase.items.length == 0"
+                 :customColumns="response.customColumns"
+                 :createColumns="response.createColumns"
+                >
+                </create-supplier-component>
 
                 <table class="table dropdown-content" v-if="filteredSuppliers.length">
                     <tbody>
@@ -107,13 +111,13 @@
 
         methods: {
             getSuppliers () {
-                return axios.get('/ajax/suppliers').then((response) => {
+                return axios.get('/suppliers/ajax').then((response) => {
                     this.response = response.data
                 })
             },
 
             selectSupplier (supplier) {
-                this.purchase.customer = supplier
+                this.purchase.supplier = supplier
                 this.searchSupplier = null
             },
 
@@ -211,7 +215,7 @@
         },
 
         mounted() {
-            // this.getCustomers()
+            this.getSuppliers()
 
             eventHub.$on('purchases.compute-item-total', ((item) => {
                 var index = this.purchase.items.indexOf(item)
@@ -229,7 +233,7 @@
                 this.purchase.items.splice(index, 1)
             }))
 
-            // eventHub.$on('customer-created', this.getCustomers)
+            eventHub.$on('supplier-created', this.getSuppliers)
         }
     }
 </script>
