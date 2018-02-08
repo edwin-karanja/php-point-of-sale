@@ -10,8 +10,9 @@ class CustomerSalesController extends Controller
 {
     public function index(Customer $customer)
     {
-        $customer->load('sales');
+        $recentSale = $customer->sales()->withPayment()->recent()->first();
+        $balanceDue = $customer->sales()->withPartialOrZeroPayment()->sum('balance_due');
 
-        return view('customer.account', compact('customer'));
+        return view('customer.account', compact('customer', 'recentSale', 'balanceDue'));
     }
 }
