@@ -22,6 +22,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', 'DashboardController@index');
 
+    Route::post('/keep-token-alive', function() {
+        return 'hit...'; //https://stackoverflow.com/q/31449434/470749
+    });
+
 
     /**
      * Categories
@@ -53,6 +57,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'customers', 'as' => 'customer.', 'namespace' => 'Customer'], function () {
         Route::get('/', 'CustomerController@index');
         Route::get('/{customer}/account', 'CustomerSalesController@index')->name('account');
+
+        Route::group(['prefix' => 'ajax', 'as' => 'ajax.', 'namespace' => 'Ajax'], function () {
+            Route::get('/{customer}/purchases', 'CustomerPurchasesController@index');
+            Route::post('/{customer}/purchases/{id}', 'CustomerPurchasesController@store');
+            Route::get('/{customer}/payments', 'CustomerPaymentsController@index');
+            Route::post('/{customer}/payments/{id}', 'CustomerPaymentsController@store');
+            Route::get('/{customer}/overview', 'CustomerOverviewController@index');
+            Route::get('/{customer}/monthly-purchases', 'ChartsController@monthly');
+        });
     });
 
     /**
