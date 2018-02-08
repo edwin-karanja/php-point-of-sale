@@ -73,9 +73,9 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="b">{{ $sale->sale_total }}</td>
-                            <td class="b">{{ $sale->balance_due }}</td>
-                            <td>{{ $sale->mpesa_ref_no }}</td>
+                            <td class="b">Kshs. {{ $sale->sale_total or '-' }}</td>
+                            <td class="b">Kshs. {{ $sale->balance_due or '-' }}</td>
+                            <td>{{ $sale->mpesa_ref_no or '-' }}</td>
                             <td><span class="badge">{{ $sale->items_count }}</span></td>
                             <td>{{ $sale->created_at->toDayDateTimeString() }}</td>
                         </tr>

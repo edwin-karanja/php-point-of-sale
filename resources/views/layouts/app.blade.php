@@ -22,6 +22,7 @@
 
         <div class="container-fluid">
             <alert-component></alert-component>
+            <page-refresh-component></page-refresh-component>
             @include('layouts.partials.alerts._alerts')
             @yield('content')
         </div>
