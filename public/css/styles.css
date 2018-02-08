@@ -82,6 +82,10 @@
   border-color: rgb(212, 63, 58);
 }
 
+.badge-lg {
+  width: 10em;
+}
+
 .pulse {
     margin: 100px;
     display: block;

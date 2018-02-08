@@ -50,6 +50,16 @@ Vue.component('banking-component', require('./components/Supplier/BankingCompone
  */
 Vue.component('paginate-component', require('./components/Helpers/PaginateComponent.vue'));
 Vue.component('excel-upload-component', require('./components/Helpers/UploadExcelComponent.vue'));
+Vue.component('page-refresh-component', require('./components/Helpers/PageRefreshComponent.vue'));
+
+/**
+ * Customer components
+ */
+Vue.component('customer-account-receipts-component', require('./components/Customer/AccountReceiptsComponent.vue'));
+Vue.component('customer-credit-payments-component', require('./components/Customer/AccountPaymentsComponent.vue'));
+Vue.component('customer-account-overview-component', require('./components/Customer/AccountOverviewComponent.vue'));
+Vue.component('customer-monthly-sales', require('./components/Customer/CustomerMonthlySales.vue'));
+
 
 const app = new Vue({
     el: '#app'

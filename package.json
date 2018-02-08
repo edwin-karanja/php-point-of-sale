@@ -19,6 +19,7 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
+        "chart.js": "^2.7.1",
         "font-awesome": "^4.7.0",
         "v-autocomplete": "^1.8.1"
     }
