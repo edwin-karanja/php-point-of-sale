@@ -22,10 +22,10 @@ class CreateSalesTable extends Migration
             $table->tinyInteger('sale_status')->nullable()->default(0); // capture suspended sales
             $table->string('payment_mode')->default('cash');
             $table->text('comments')->nullable();
-            $table->decimal('sale_total', 12, 2)->nullable();
-            $table->string('sale_type')->nullable()->default('sale'); // allow printing of quotation
-            $table->decimal('amount_paid', 12, 2)->nullable();
-            $table->decimal('balance_due', 12, 2)->nullable();
+            $table->decimal('sale_total', 12, 2)->default(0);
+            $table->string('sale_type')->default('sale'); // allow printing of quotation
+            $table->decimal('amount_paid', 12, 2)->default(0);
+            $table->decimal('balance_due', 12, 2)->default(0);
             $table->string('payment_status')->nullable();
             $table->timestamps();
         });
