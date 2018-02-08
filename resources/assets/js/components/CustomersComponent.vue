@@ -35,6 +35,9 @@
                         <td v-for="column in response.displayColumns" :key="column">
                             <span v-if="column == 'gender' && customer.gender == 'M'">Male</span>
                             <span v-else-if="column == 'gender' && customer.gender == 'F'">Female</span>
+                            <span v-else-if="column == 'name'">
+                                <a :href="'customers/' + customer.id + '/account'">{{ customer[column] || '-' }}</a>
+                            </span>
                             <span v-else>{{ customer[column] || '-' }}</span>
                         </td>
                         <td>
