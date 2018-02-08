@@ -9,6 +9,7 @@ use App\Http\Requests\SaleStoreRequest;
 use App\Models\SaleItems;
 use App\Events\QuantityModified;
 use App\Models\Item;
+use App\Models\Payments;
 
 class SalesController extends AjaxController
 {
@@ -25,8 +26,12 @@ class SalesController extends AjaxController
         $saleTotal = $this->storeSaleItemsAndComputeSalesTotal($request, $sale);
         $sale->concludeSale($saleTotal);
 
-        return response()->json(['success' => true]);
+        Payments::create([
+            'sale_id' => $sale->id,
+            'amount_paid' => $request->payment_mode == 'cash' ? $sale->fresh()->sale_total : $request->amount_tendered,
+        ]);
 
+        return response()->json(['success' => true]);
     }
 
     protected function prepareSaleData($request) {
