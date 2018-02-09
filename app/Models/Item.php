@@ -12,24 +12,6 @@ class Item extends Model
 {
     use SoftDeletes;
 
-    // protected static function boot()
-    // {
-    //     parent::boot();
-
-    //     static::created( function ($item) {
-    //         $item->quantity->create([
-    //             'quantity' => request('qtty')
-    //         ]);
-    //     });
-
-    //     static::updated( function ($item) {
-
-    //         $item->quantity->update([
-    //             'quantity' => request('qtty')
-    //         ]);
-    //     });
-    // }
-
     protected $dates = [
         'deleted_at'
     ];

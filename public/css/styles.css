@@ -12,6 +12,14 @@
     color: red;
 }
 
+.grey {
+  color: #ABB2B9;
+}
+
+.dark-grey {
+  color: #566573
+}
+
 .mr-2 {
     margin-right: 2px;
 }

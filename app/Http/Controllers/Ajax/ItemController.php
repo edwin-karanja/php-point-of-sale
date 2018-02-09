@@ -121,7 +121,7 @@ class ItemController extends AjaxController
     public function setVisibleColumns()
     {
         return [
-            'name', 'buying_price', 'selling_price', 'reorder_level', 'cat', 'qtty', 'updated_at_human'
+            'name', 'buying_price', 'selling_price', 'cat', 'qtty', 'updated_at_human'
         ];
     }
 

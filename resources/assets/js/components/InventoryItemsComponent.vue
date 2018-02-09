@@ -25,17 +25,15 @@
                 </div>
             </div>
 
-            <table class="table table-bordered table-responsive table-condensed" v-if="response.items && !loading">
+            <table class="table table-responsive" v-if="response.items && !loading">
                 <thead>
                     <tr>
-                        <th>##</th>
                         <th>Item</th>
                         <th>Quantity</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, index) in filteredItems" :key="item.id" :class="{'active': item.id === selected.id}">
-                        <td>{{ index + 1 }}</td>
+                    <tr v-for="item in filteredItems" :key="item.id" :class="{'active': item.id === selected.id}">
                         <td>
                             <a :id="'item-' + item.id" href="#" @click.prevent="showItemInventory(item)">{{ item.name }}</a>
                         </td>
@@ -83,6 +81,8 @@ import eventHub from '../events.js'
             showItemInventory (item) {
                 this.selected = item
                 eventHub.$emit('show-item-inventory', item)
+
+                // location.hash = '#item-' + item.id
             },
 
             clearSearch () {
@@ -138,3 +138,23 @@ import eventHub from '../events.js'
         }
     }
 </script>
+
+
+<style scoped lang="scss">
+    tr:hover {
+        background-color: #F5F8FC;
+    }
+
+    .table > thead > tr > th {
+        font-size: 14px;
+        font-weight: semibold;
+        color: #4A4A4A;
+        text-transform: uppercase;
+        background-color: #F5F8FC;
+    }
+
+    .table > tbody > tr.active > td, .table > tbody > tr.active > th, .table > tfoot > tr > td.active, .table > tfoot > tr > th.active, .table > tfoot > tr.active > td, .table > tfoot > tr.active > th {
+        background-color: #f5f5f5;
+        font-weight: bold;
+    }
+</style>

@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            <table class="table table-condensed table-striped table-responsive" v-if="response.items.length && !loading">
+            <table class="table table-responsive" v-if="response.items.length && !loading">
                 <thead>
                     <tr>
                         <th>##</th>
@@ -54,20 +54,33 @@
                     <tr v-for="(item, index) in filteredItems" :key="item.id">
                         <td>{{ index + 1 }}</td>
                         <td v-for="column in response.displayColumns" :key="column">
-                            <span>
+                            <span v-if="column == 'name'">
+                                {{ trimLength(item[column]) }}
+                            </span>
+                            <span v-else-if="column == 'qtty'" class="badge">
+                                {{ item[column] || 0 }}
+                            </span>
+                            <span class="b" v-else-if="column == 'buying_price' || column == 'selling_price'">
+                                {{ parseInt(item[column]).toLocaleString('en-US') }}
+                            </span>
+                            <span v-else>
                                 {{ item[column] || '-' }}
                             </span>
                         </td>
-                        <td>
-                            <a class="mr-4" href="#" @click.prevent="edit(item)">
-                                <b>Edit</b>
-                            </a>
-                            <a class="mr-4" :href="'inventory#item-' + item.id" >
-                                <b>Inventory</b>
-                            </a>
-                            <a href="#" @click.prevent="destroy(item.id)">
-                                <svg @click="removeFromCart(item)" class="icon-sm green" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M8 6V4c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2h5a1 1 0 0 1 0 2h-1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8H3a1 1 0 1 1 0-2h5zM6 8v12h12V8H6zm8-2V4h-4v2h4zm-4 4a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z"/></svg>
-                            </a>
+                        <td width="12%">
+                            <div class="to-hide">
+                                <a class="mr-4" href="#" @click.prevent="edit(item)">
+                                    <b>Edit</b>
+                                </a>
+                                |
+                                <a class="mr-4" :href="'inventory#item-' + item.id" >
+                                    <b>Stocks</b>
+                                </a>
+                                |
+                                <a href="#" @click.prevent="destroy(item.id)">
+                                    <i @click="removeFromCart(item)" class="fa fa-trash-o dark-grey"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -126,6 +139,10 @@
 
                     eventHub.$emit('success-alert', 'Item deleted.')
                 })
+            },
+
+            trimLength (str, length = 40) {
+                return  str.length > length ? str.substring(0, length - 3) + "..." : str.substring(0, length)
             }
         },
 
@@ -165,10 +182,32 @@
     }
 </script>
 
+<style scoped lang="scss">
+    tr:hover {
+        background-color: #F5F8FC;
+    }
 
-<style scoped>
-.green {
-    fill: rgb(148, 18, 13);
-    cursor: pointer;
-}
+    tr:hover > td > div.to-hide {
+        display: inline;
+    }
+
+    .table > thead > tr > th {
+        font-size: 14px;
+        font-weight: semibold;
+        color: #4A4A4A;
+        text-transform: uppercase;
+        background-color: #F5F8FC;
+    }
+
+    .table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
+        padding: 15px;
+        line-height: 1.6;
+        vertical-align: top;
+        border-top: 1px solid #ddd;
+    }
+
+    .to-hide {
+        display: none;
+        font-size: 14px;
+    }
 </style>
