@@ -8,6 +8,10 @@
   cursor: pointer;
 }
 
+.fill-grey {
+  fill: #566573
+}
+
 .red {
     color: red;
 }
@@ -90,8 +94,37 @@
   border-color: rgb(212, 63, 58);
 }
 
-.badge-lg {
-  width: 10em;
+button {
+  text-align: center;
+  display: block;
+  cursor: pointer;
+}
+
+.btn-startup{
+  font-size: 16px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.18);
+  line-height: 1.5;
+  padding: .5em 1em;
+  border: none;
+  background-image: linear-gradient(-180deg, 	#80D1F3 0%, #4A90E2 100%);
+  box-shadow: 0 1px 2px 0 rgba(74,144,226,0.44), 	0 2px 8px 0 rgba(0,0,0,0.14);
+  border-radius: 6px;
+}
+
+.btn-startup:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px 0 rgba(74,144,226,0.20), 0 4px 9px 0 rgba(0,0,0,0.20);
+}
+
+.mkt-icon {
+  display: inline-flex;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: #008DF5;
 }
 
 .pulse {
@@ -245,4 +278,9 @@
   height: 200px !important;
   -webkit-transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
   transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+}
+
+.side-nav > div > ul > li > a {
+  color: #566573;
+  font-weight: bold;
 }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="btn btn-primary pull-right mr-4" @click.prevent="addItem">
+        <button class="btn btn-primary pull-right mr-4 btn-startup" @click.prevent="addItem">
             <i class="fa fa-plus"></i>
             Add Item
         </button>
@@ -14,10 +14,10 @@
                     <h4 class="modal-title" id="myModalLabel" v-html="title"></h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" @submit.prevent="store">
+                    <form id="add-item" class="form-horizontal" @submit.prevent="store">
                         <div class="row">
                                 <div class="form-group" v-for="column in createColumns" :class="{'has-error' : creating.errors[column]}" :key="column">
-                                    <label :for="column" class="col-md-4 control-label">{{ customColumns[column] || column }}</label>
+                                    <label :for="column" id="lbl" class="col-md-4 control-label">{{ customColumns[column] || column }}</label>
 
                                     <div class="col-md-6">
                                         <div v-if="column == 'category_id'" class="input-group">
@@ -163,5 +163,10 @@
 <style scoped>
     .hand {
         cursor: pointer
+    }
+
+    #lbl {
+        text-align: left;
+        padding-left: 0px;
     }
 </style>

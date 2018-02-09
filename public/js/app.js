@@ -74181,7 +74181,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\n.hand[data-v-50cb6c80] {\n    cursor: pointer\n}\n", ""]);
+exports.push([module.i, "\n.hand[data-v-50cb6c80] {\n    cursor: pointer\n}\n#lbl[data-v-50cb6c80] {\n    text-align: left;\n    padding-left: 0px;\n}\n", ""]);
 
 // exports
 
@@ -74365,7 +74365,7 @@ var render = function() {
     _c(
       "button",
       {
-        staticClass: "btn btn-primary pull-right mr-4",
+        staticClass: "btn btn-primary pull-right mr-4 btn-startup",
         on: {
           click: function($event) {
             $event.preventDefault()
@@ -74428,6 +74428,7 @@ var render = function() {
                   "form",
                   {
                     staticClass: "form-horizontal",
+                    attrs: { id: "add-item" },
                     on: {
                       submit: function($event) {
                         $event.preventDefault()
@@ -74452,7 +74453,7 @@ var render = function() {
                               "label",
                               {
                                 staticClass: "col-md-4 control-label",
-                                attrs: { for: column }
+                                attrs: { for: column, id: "lbl" }
                               },
                               [
                                 _vm._v(
@@ -81984,7 +81985,7 @@ var render = function() {
     _c(
       "button",
       {
-        staticClass: "btn btn-primary pull-right mr-4",
+        staticClass: "btn btn-primary pull-right mr-4 btn-startup",
         on: {
           click: function($event) {
             $event.preventDefault()
@@ -82014,7 +82015,7 @@ var render = function() {
             })
           ]
         ),
-        _vm._v("\n        Excel Import\n    ")
+        _vm._v("\n        Import\n    ")
       ]
     ),
     _vm._v(" "),

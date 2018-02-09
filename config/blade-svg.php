@@ -68,5 +68,5 @@ return [
     |
     */
 
-    'class' => 'icon-sm',
+    'class' => 'icon-sm fill-grey',
 ];

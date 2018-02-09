@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default side-nav">
     <div class="panel-body">
         <ul class="nav nav-pills nav-stacked">
             <li class="{{ return_if(on_page('dashboard'), 'active') }}">
