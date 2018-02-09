@@ -167,6 +167,6 @@
 
     #lbl {
         text-align: left;
-        padding-left: 0px;
+        padding-left: 40px;
     }
 </style>

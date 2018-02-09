@@ -74181,7 +74181,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\n.hand[data-v-50cb6c80] {\n    cursor: pointer\n}\n#lbl[data-v-50cb6c80] {\n    text-align: left;\n    padding-left: 0px;\n}\n", ""]);
+exports.push([module.i, "\n.hand[data-v-50cb6c80] {\n    cursor: pointer\n}\n#lbl[data-v-50cb6c80] {\n    text-align: left;\n    padding-left: 40px;\n}\n", ""]);
 
 // exports
 
