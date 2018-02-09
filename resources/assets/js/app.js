@@ -51,6 +51,8 @@ Vue.component('banking-component', require('./components/Supplier/BankingCompone
 Vue.component('paginate-component', require('./components/Helpers/PaginateComponent.vue'));
 Vue.component('excel-upload-component', require('./components/Helpers/UploadExcelComponent.vue'));
 Vue.component('page-refresh-component', require('./components/Helpers/PageRefreshComponent.vue'));
+Vue.component('ellipsis-nav', require('./components/Helpers/EllipsisNavComponent.vue'));
+
 
 /**
  * Customer components

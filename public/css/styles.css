@@ -122,9 +122,9 @@ button {
 
 .mkt-icon {
   display: inline-flex;
-  padding: 10px;
+  padding: 5px;
   border-radius: 50%;
-  background-color: #008DF5;
+  background-color:#B7BFBB
 }
 
 .pulse {
@@ -283,4 +283,8 @@ button {
 .side-nav > div > ul > li > a {
   color: #566573;
   font-weight: bold;
+}
+
+.modal-content {
+  border-top: 8px solid #06B05B;
 }

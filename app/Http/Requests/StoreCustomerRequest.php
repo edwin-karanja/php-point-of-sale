@@ -26,10 +26,6 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:customers',
-            'gender' => [
-                'required',
-                Rule::in(['M', 'F'])
-            ],
             'telephone' => 'nullable|numeric',
             'email' => 'nullable|email'
         ];

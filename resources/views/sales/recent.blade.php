@@ -20,7 +20,7 @@
 
     <div class="panel panel-default">
         <div class="panel-body">
-            <table class="table table-bordered table-striped table-condensed">
+            <table class="table table-responsive">
                 <thead>
                     <tr>
                         <th>##</th>

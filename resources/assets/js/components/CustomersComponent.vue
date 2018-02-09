@@ -22,27 +22,32 @@
 
     <div class="panel panel-default">
         <div class="panel-body">
-            <table class="table table-condensed" v-if="response.customers.length">
+            <table class="table table-responsive" v-if="response.customers.length">
                 <thead>
                     <tr>
                         <th>##</th>
                         <th v-for="column in response.displayColumns" :key="column">{{ response.customColumns[column] }}</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(customer, index) in filteredCustomers" :key="customer.id">
                         <td>{{ index + 1 }}</td>
                         <td v-for="column in response.displayColumns" :key="column">
-                            <span v-if="column == 'gender' && customer.gender == 'M'">Male</span>
-                            <span v-else-if="column == 'gender' && customer.gender == 'F'">Female</span>
-                            <span v-else-if="column == 'name'">
+                            <span v-if="column == 'name'">
                                 <a :href="'customers/' + customer.id + '/account'">{{ customer[column] || '-' }}</a>
                             </span>
                             <span v-else>{{ customer[column] || '-' }}</span>
                         </td>
-                        <td>
-                            <a class="mr-4" href="#" @click.prevent="edit(customer)">Edit</a>
-                            <a href="#" @click.prevent="destroy(customer.id)">Delete</a>
+                        <td width="12%">
+                            <div class="to-hide">
+                                <a class="mr-4" href="#" @click.prevent="edit(customer)">
+                                    <b>Edit</b>
+                                </a>
+                                <a href="#" @click.prevent="destroy(customer.id)">
+                                    <i class="fa fa-trash-o grey"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -133,3 +138,33 @@
         }
     }
 </script>
+
+<style scoped>
+    tr:hover {
+        background-color: #F5F8FC;
+    }
+
+    tr:hover > td > div.to-hide {
+        display: inline;
+    }
+
+    .table > thead > tr > th {
+        font-size: 14px;
+        font-weight: semibold;
+        color: #4A4A4A;
+        text-transform: uppercase;
+        background-color: #F5F8FC;
+    }
+
+    .table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
+        padding: 15px;
+        line-height: 1.6;
+        vertical-align: top;
+        border-top: 1px solid #ddd;
+    }
+
+    .to-hide {
+        display: none;
+        font-size: 14px;
+    }
+</style>

@@ -1,65 +1,67 @@
 <template>
-    <div class="panel panel-default">
-        <div class="panel-heading">Receipts</div>
+    <div class="mt-10">
+        <div v-if="response.purchases.data.length">
+            <table class="table table-responsive ">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Payment mode</th>
+                        <th>Total</th>
+                        <th>Balance</th>
+                        <th>Action</th>
+                        <th>Receipt & Payments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="receipt in response.purchases.data" :key="receipt.id">
+                        <td>{{ getDate(receipt.created_at) }}</td>
+                        <td>
+                            <span v-if="receipt.payment_status == 'FULLY PAID'" class="label label-success">
+                                {{ receipt.payment_status }}
+                            </span>
 
-        <div class="panel-body">
-            <div v-if="response.purchases.data.length">
-                <table class="table table-striped table-responsive table-bordered table-condensed">
-                    <thead>
-                        <tr>
-                            <th>##</th>
-                            <th>Receipt</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Total</th>
-                            <th>Balance</th>
-                            <th>Action</th>
-                            <th>Payments</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(receipt, index) in response.purchases.data" :key="receipt.id">
-                            <td>{{ index + 1 }}</td>
-                            <td>
-                                <b><a href="#">rcpt#{{ receipt.id }}</a></b>
-                            </td>
-                            <td>{{ getDate(receipt.created_at) }}</td>
-                            <td>
-                                <span v-if="receipt.payment_status == 'FULLY PAID'" class="label label-success">
-                                    {{ receipt.payment_status }}
-                                </span>
+                            <span v-else-if="receipt.payment_status == 'PARTIALLY PAID'" class="label label-primary">
+                                {{ receipt.payment_status }}
+                            </span>
 
-                                <span v-else-if="receipt.payment_status == 'PARTIALLY PAID'" class="label label-primary">
-                                    {{ receipt.payment_status }}
-                                </span>
+                            <span v-else class="label label-danger">
+                                {{ receipt.payment_status }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge upper">
+                                {{ receipt.payment_mode }}
+                            </span>
+                        </td>
+                        <td class="b">{{ parseInt(receipt.sale_total).toLocaleString('en-US') || '-' }}</td>
+                        <td class="b">
+                            {{ receipt.balance_due ?
+                                    parseInt(receipt.balance_due).toLocaleString('en-US') :
+                                    receipt.balance_due || '-' }}
+                        </td>
+                        <td>
+                            <a href="#" @click.prevent="openModal(receipt)" v-if="receipt.payment_status != 'FULLY PAID'" class="btn btn-default btn-xs"><b>Pay</b></a>
+                            <span v-else>
+                                <i class="fa fa-check"></i>
+                            </span>
+                        </td>
+                        <td width="20%">
+                            <div class="to-hide">
+                                <b><a @click.prevent=loadReceipt(receipt) href="#">rcpt#{{ receipt.id }}</a></b> ||
+                                <b><a @click.prevent=viewPayments(receipt) href="">Payments</a></b> ||
+                                <b><a @click.prevent=returnGoods(receipt) href="#">Return</a></b>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-                                <span v-else class="label label-danger">
-                                    {{ receipt.payment_status }}
-                                </span>
-                            </td>
-                            <td class="b">{{ parseInt(receipt.sale_total).toLocaleString('en-US') || '-' }}</td>
-                            <td class="b">
-                                {{ receipt.balance_due ?
-                                        parseInt(receipt.balance_due).toLocaleString('en-US') :
-                                        receipt.balance_due || '-' }}
-                            </td>
-                            <td>
-                                <a href="#" @click.prevent="openModal(receipt)" v-if="receipt.payment_status != 'FULLY PAID'" class="btn btn-default btn-xs"><b>Pay</b></a>
-                                <span v-else><i class="fa fa-check"></i></span>
-                            </td>
-                            <td>
-                                <b><a href="">Payments</a></b>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <paginate-component for="purchases" :pagination="response.purchases"></paginate-component>
+        </div>
 
-                <paginate-component for="purchases" :pagination="response.purchases"></paginate-component>
-            </div>
-
-            <div class="well well-sm" v-else>
-                <b>No purchases for this customer yet.</b>
-            </div>
+        <div class="well well-sm" v-else>
+            <b>No purchases for this customer yet.</b>
         </div>
 
         <!-- Modal -->
@@ -187,7 +189,19 @@
             getDate (timestamp) {
                 let ts = new Date(timestamp)
 
-                return ts.toDateString()
+                return ts.toString().split(' ').slice(1,4).join('-');
+            },
+
+            loadReceipt (receipt) {
+
+            },
+
+            viewPayments (receipt) {
+
+            },
+
+            returnGoods (receipt) {
+
             }
         },
 
@@ -204,3 +218,41 @@
         }
     }
 </script>
+
+<style scoped>
+    .mt-10 {
+        margin-top: 10px;
+    }
+
+    .upper {
+        text-transform: uppercase;
+    }
+
+    tr:hover {
+        background-color: #F5F8FC;
+    }
+
+    tr:hover > td > div.to-hide {
+        display: inline;
+    }
+
+    .table > thead > tr > th {
+        font-size: 14px;
+        font-weight: semibold;
+        color: #4A4A4A;
+        text-transform: uppercase;
+        background-color: #F5F8FC;
+    }
+
+    .table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
+        padding: 15px;
+        line-height: 1.6;
+        vertical-align: top;
+        border-top: 1px solid #ddd;
+    }
+
+    .to-hide {
+        display: none;
+        font-size: 14px;
+    }
+</style>

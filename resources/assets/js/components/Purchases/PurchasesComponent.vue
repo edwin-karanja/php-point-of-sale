@@ -69,7 +69,7 @@
 
             addToCart (item) {
                 eventHub.$emit('purchases.add-to-cart', item)
-                this.searchText = ''
+                this.searchText = null
                 document.getElementById('search').focus()
             },
 
@@ -100,6 +100,8 @@
 
         computed: {
             filteredItems () {
+                this.selectedIndex = 0
+
                 if (this.searchText) {
                     let data = this.items
 

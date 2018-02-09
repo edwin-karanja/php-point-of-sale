@@ -37,7 +37,11 @@
                         <td>
                             <a :id="'item-' + item.id" href="#" @click.prevent="showItemInventory(item)">{{ item.name }}</a>
                         </td>
-                        <td>{{ item.qtty || '-' }}</td>
+                        <td>
+                            <span class="badge">
+                                {{ item.qtty || 0 }}
+                            </span>
+                        </td>
                     </tr>
                 </tbody>
             </table>

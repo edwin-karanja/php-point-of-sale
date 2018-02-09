@@ -12,7 +12,7 @@ class CustomerPurchasesController extends Controller
     public function index(Customer $customer)
     {
         $data = [
-            'purchases' => $customer->sales()->recent()->paginate(15)
+            'purchases' => $customer->sales()->recent()->paginate(5)
         ];
 
         return response()->json($data);

@@ -9,4 +9,7 @@
     <p>You are logged in!</p>
     <p>Welcome to the dashboard</p>
 
+
+
+
 @endsection

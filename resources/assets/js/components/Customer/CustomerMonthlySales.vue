@@ -1,5 +1,8 @@
 <template>
-    <canvas id="customerMonthlyPurchases" width="400" height="400"></canvas>
+    <div class="col-md-10 graph">
+        <canvas id="customerMonthlyPurchases"></canvas>
+    </div>
+
 </template>
 
 <script>
@@ -90,3 +93,9 @@
         }
     }
 </script>
+
+<style scoled>
+    .graph {
+        max-height: 500px;
+    }
+</style>

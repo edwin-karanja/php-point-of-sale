@@ -60,7 +60,6 @@ class CustomerController extends AjaxController
     {
         return [
             'name' => 'Name',
-            'gender' => 'Gender',
             'picture' => 'Picture',
             'telephone' => 'Telephone',
             'email' => 'Email',
@@ -71,14 +70,14 @@ class CustomerController extends AjaxController
     public function setCreateColumns()
     {
         return [
-            'name', 'gender', 'telephone', 'email'
+            'name', 'telephone', 'email'
         ];
     }
 
     public function setVisibleColumns()
     {
         return [
-            'name', 'gender', 'telephone', 'email'
+            'name', 'telephone', 'email'
         ];
     }
 }

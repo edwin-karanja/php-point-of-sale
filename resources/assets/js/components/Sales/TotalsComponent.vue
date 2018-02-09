@@ -82,14 +82,6 @@
                             </div>
                         </td>
                     </tr>
-                    <!-- <tr v-if="sale.payment_mode == 'oncredit'">
-                        <th>Partial payment</th>
-                        <td>
-                            <div class="form-group">
-                                <input type="text" class="form-control" @change="updateFormPayment" v-model="sale.partial_payment">
-                            </div>
-                        </td>
-                    </tr> -->
                     <tr>
                         <th>Amount Tendered</th>
                         <td>
@@ -200,6 +192,7 @@
                         this.removeCustomer()
                         this.tendered = null
                         this.errors = []
+                        this.payment_mode = 'cash'
 
                         eventHub.$emit('sale-completed')
                         eventHub.$emit('success-alert', 'Sale completed successfully.')

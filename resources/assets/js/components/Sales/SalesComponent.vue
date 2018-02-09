@@ -2,6 +2,7 @@
     <div class="panel panel-default">
         <div class="panel-body">
 
+
             <div class="input-group">
                 <span class="input-group-addon primary">
                     <i class="fa fa-search"></i>
@@ -21,6 +22,10 @@
                     <b>Sales</b>
                 </span>
             </div>
+
+
+            <!-- <ellipsis-nav class="pull-right"></ellipsis-nav> -->
+
 
             <table class="table dropdown-content" v-if="filteredItems.length">
                 <tbody>
@@ -70,7 +75,7 @@ import eventHub from '../../events.js'
 
             addToCart (item) {
                 eventHub.$emit('add-to-cart', item)
-                this.searchText = ''
+                this.searchText = null
                 document.getElementById('search').focus()
             },
 
