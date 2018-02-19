@@ -7,7 +7,13 @@
 
 require('./bootstrap');
 
+
 window.Vue = require('vue');
+import VeeValidate from 'vee-validate';
+
+Vue.use(VeeValidate, {
+    errorBagName: 'vErrors'
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -43,7 +49,8 @@ Vue.component('purchases-totals-component', require('./components/Purchases/Tota
  */
 Vue.component('suppliers-component', require('./components/Supplier/SuppliersComponent.vue'));
 Vue.component('create-supplier-component', require('./components/Supplier/CreateSupplierComponent.vue'));
-Vue.component('banking-component', require('./components/Supplier/BankingComponent.vue'));
+Vue.component('supplier-bankings', require('./components/Supplier/SupplierBankings.vue'));
+Vue.component('supplier-contacts', require('./components/Supplier/SupplierContacts.vue'));
 
 /**
  * Helpers
@@ -52,6 +59,7 @@ Vue.component('paginate-component', require('./components/Helpers/PaginateCompon
 Vue.component('excel-upload-component', require('./components/Helpers/UploadExcelComponent.vue'));
 Vue.component('page-refresh-component', require('./components/Helpers/PageRefreshComponent.vue'));
 Vue.component('ellipsis-nav', require('./components/Helpers/EllipsisNavComponent.vue'));
+Vue.component('date-range-picker', require('./components/Helpers/DateRangePicker.vue'));
 
 
 /**
@@ -61,8 +69,23 @@ Vue.component('customer-account-receipts-component', require('./components/Custo
 Vue.component('customer-credit-payments-component', require('./components/Customer/AccountPaymentsComponent.vue'));
 Vue.component('customer-account-overview-component', require('./components/Customer/AccountOverviewComponent.vue'));
 Vue.component('customer-monthly-sales', require('./components/Customer/CustomerMonthlySales.vue'));
-
+Vue.component('customer-profile', require('./components/Customer/CustomerProfile.vue'));
+Vue.component('customer-contacts', require('./components/Customer/CustomerContacts.vue'));
 
 const app = new Vue({
-    el: '#app'
+
+    el: '#app',
+    data: {},
+    created: function () {
+        var eventHub = require('./events.js')
+
+        window.addEventListener('keyup', function(event) {
+            eventHub.$emit('key-pressed', event)
+
+            // If down arrow was pressed....
+            if (event.keyCode == 40) {
+
+            }
+        });
+    }
 });
