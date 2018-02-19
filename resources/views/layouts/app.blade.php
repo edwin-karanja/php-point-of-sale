@@ -12,6 +12,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('css/daterangepicker.css') }}" rel="stylesheet"> -->
+    <!-- <link href="{{ asset('css/semantic.min.css') }}" rel="stylesheet"> -->
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 
     @yield('styles')
@@ -31,6 +33,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+
+    <!-- <script src="{{ asset('js/semantic.min.js') }}"></script> -->
 
     @yield('scripts')
 </body>

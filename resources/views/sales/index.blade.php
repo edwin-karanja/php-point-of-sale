@@ -13,7 +13,7 @@
     <div class="row">
         <div class="col-md-8">
             <sales-component></sales-component>
-            <br>
+
             <cart-component></cart-component>
         </div>
 
