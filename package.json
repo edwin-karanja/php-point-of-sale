@@ -16,11 +16,14 @@
         "jquery": "^3.2",
         "laravel-mix": "^1.0",
         "lodash": "^4.17.4",
+        "semantic-ui-css": "^2.2.14",
         "vue": "^2.5.7"
     },
     "dependencies": {
         "chart.js": "^2.7.1",
         "font-awesome": "^4.7.0",
-        "v-autocomplete": "^1.8.1"
+        "moment": "^2.20.1",
+        "v-autocomplete": "^1.8.1",
+        "vee-validate": "^2.0.4"
     }
 }
