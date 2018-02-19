@@ -7,8 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Purchase extends Model
 {
     protected $fillable = [
-        'user_id', 'supplier_id', 'ref_no', 'purchase_total'
+        'user_id', 'supplier_id', 'ref_no', 'purchase_total', 'transaction_date'
     ];
+
+    public function scopeCurrentUser($query)
+    {
+        return $query->where('user_id', auth()->id());
+    }
 
     public function user()
     {

@@ -17,7 +17,7 @@ class Item extends Model
     ];
 
     protected $hidden = [
-        'deleted_at', 'created_at', 'updated_at'
+        'deleted_at', 'created_at'
     ];
 
     protected $fillable = [
@@ -31,6 +31,11 @@ class Item extends Model
     public function getAppends()
     {
         return $this->appends;
+    }
+
+    public function scopeUpdatesFirst($query)
+    {
+        return $query->orderBy('updated_at', 'desc');
     }
 
     public function getCatAttribute()
