@@ -20,22 +20,7 @@
                                     <label :for="column" class="col-md-4 control-label">{{ customColumns[column] || column }}</label>
 
                                     <div class="col-md-6">
-                                        <div v-if="column == 'gender'">
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="genderRadios" id="optionsRadios1" value="M" v-model="creating.form[column]" checked>
-                                                    Male
-                                                </label>
-                                            </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="genderRadios" id="optionsRadios2" value="F" v-model="creating.form[column]">
-                                                    Female
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <textarea v-else-if="column == 'comments'" v-model="creating.form[column]"  :id="column" class="form-control" rows="5"></textarea>
+                                        <textarea v-if="column == 'comments'" v-model="creating.form[column]"  :id="column" class="form-control" rows="5"></textarea>
 
                                         <input v-else :autofocus="column == 'name'" :id="column" type="text" class="form-control" v-model="creating.form[column]" value="">
 

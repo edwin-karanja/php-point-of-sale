@@ -1,7 +1,8 @@
 <template>
     <div class="panel panel-default">
+
         <div class="panel-heading">
-            <b>Banking - Info</b>
+            <b>Supplier - Bankings</b>
 
             <a href="#" class="pull-right" @click.prevent="openCreateBankings">
                 <i class="fa fa-plus"></i>
@@ -17,10 +18,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(meta, index) in response.bankings" :key="meta.id">
+                    <tr v-for="(bank, index) in response.bankings" :key="bank.id">
                         <td>{{ index + 1 }}</td>
-                        <td>{{ meta.bank_name }}</td>
-                        <td>{{ meta.bank_account_number }}</td>
+                        <td>{{ bank.bank_name }}</td>
+                        <td>{{ bank.bank_account_number }}</td>
                     </tr>
                 </tbody>
             </table>

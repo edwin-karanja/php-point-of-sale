@@ -1,8 +1,8 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-body">
-            <span class="pull-left">Recent Payment: <span class="badge">{{ parseInt(response.recentPayment.amount_paid).toLocaleString('en-US', { style: 'currency', currency: 'ksh'}) }}</span></span>
-            <span class="pull-right">Balance Due: <span class="badge">{{ parseInt(response.balanceDue).toLocaleString('en-US', { style: 'currency', currency: 'Ksh'}) }}</span></span>
+            <span class="pull-left">Recent Payment: <span class="badge">{{ response.recentPayment.amount_paid ? parseInt(response.recentPayment.amount_paid).toLocaleString('en-US', { style: 'currency', currency: 'ksh'}) : '-' }}</span></span>
+            <span class="pull-right">Balance Due: <span class="badge">{{ response.balanceDue ? parseInt(response.balanceDue).toLocaleString('en-US', { style: 'currency', currency: 'Ksh'}) : '-'}}</span></span>
         </div>
     </div>
 </template>

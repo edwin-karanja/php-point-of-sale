@@ -35,7 +35,7 @@
                         <td>{{ index + 1 }}</td>
                         <td v-for="column in response.displayColumns" :key="column">
                             <span v-if="column == 'name'">
-                                <a :href="'customers/' + customer.id + '/account'">{{ customer[column] || '-' }}</a>
+                                <a :href="'customers/' + customer.id + '/account'" class="b">{{ customer[column] || '-' }}</a>
                             </span>
                             <span v-else>{{ customer[column] || '-' }}</span>
                         </td>

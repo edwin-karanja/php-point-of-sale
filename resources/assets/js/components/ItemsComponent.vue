@@ -4,13 +4,13 @@
         <div class="panel-body">
             <div class="col-md-6">
                 <div class="input-group">
-                    <span class="input-group-addon primary">
+                    <span class="input-group-addon">
                         <i class="fa fa-search"></i>
                     </span>
 
                     <input type="text" class="form-control" v-model="searchText">
 
-                    <span class="input-group-addon primary">
+                    <span class="input-group-addon">
                         <i class="fa fa-search"></i>
                     </span>
                 </div>
@@ -67,7 +67,7 @@
                                 {{ item[column] || '-' }}
                             </span>
                         </td>
-                        <td width="12%">
+                        <td width="14%">
                             <div class="to-hide">
                                 <a class="mr-4" href="#" @click.prevent="edit(item)">
                                     <b>Edit</b>
@@ -111,8 +111,8 @@
                 },
                 searchText: '',
                 sort: {
-                    key: 'id',
-                    order: 'asc'
+                    key: 'updated_at',
+                    order: 'desc'
                 }
             };
         },
@@ -173,11 +173,11 @@
         },
 
         mounted() {
-            this.getItems();
+            this.getItems()
 
             eventHub.$on('item-created', (() => {
                 this.getItems()
-            }));
+            }))
         }
     }
 </script>

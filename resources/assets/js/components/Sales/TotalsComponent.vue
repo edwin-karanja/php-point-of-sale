@@ -4,7 +4,7 @@
             <div v-if="sale.customer.id">
                 <p class="b">Name: <span class="pull-right">{{ sale.customer.name }}</span></p>
                 <p class="b">Gender: <span class="pull-right">{{ sale.customer.gender }}</span></p>
-                <p class="b">Due Balance: <span class="pull-right">NULL</span></p>
+                <p class="b">Due Balance: <span class="badge pull-right">{{ parseInt(sale.customer.balance).toLocaleString('en-US', { style: 'currency', currency: 'Ksh'}) }}</span></p>
                 <hr>
                 <a href="#" class="pull-right" @click.prevent="removeCustomer">Remove</a>
             </div>
@@ -130,7 +130,8 @@
                     active: false,
                     items: [],
                     customer: {
-                        id: null
+                        id: null,
+                        balance: 0
                     },
                     payment_mode: 'cash',
                     mpesa_ref: null,

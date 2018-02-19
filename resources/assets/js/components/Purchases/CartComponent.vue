@@ -22,7 +22,7 @@
                         <td>{{ cartItems[index].name }}</td>
                         <td>{{ cartItems[index].qtty}}</td>
                         <td>
-                            <div class="col-xs-10 form-group" :class="{'has-error': errors['items.' + index + '.buying_price']}">
+                            <div class="col-xs-12 form-group" :class="{'has-error': errors['items.' + index + '.buying_price']}">
                                 <input type="text" :id="'item-' + item.id + '-bp'" class="form-control" v-model="cartItems[index].buying_price">
 
                                 <span class="help-block" v-if="errors['items.' + index + '.buying_price']">
@@ -31,7 +31,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="col-xs-10 form-group" :class="{'has-error': errors['items.' + index + '.selling_price']}">
+                            <div class="col-xs-12 form-group" :class="{'has-error': errors['items.' + index + '.selling_price']}">
                                 <input type="text" :id="'item-' + item.id + '-sp'" class="form-control" v-model="cartItems[index].selling_price">
 
                                 <span class="help-block" v-if="errors['items.' + index + '.selling_price']">
@@ -40,7 +40,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="col-xs-10 form-group" :class="{'has-error': errors['items.' + index + '.qtty_purchased']}">
+                            <div class="col-xs-12 form-group" :class="{'has-error': errors['items.' + index + '.qtty_purchased']}">
                                 <input type="text" :id="'item-' + item.id + '-sp'" class="form-control" v-model="cartItems[index].qtty_purchased">
 
                                 <span class="help-block" v-if="errors['items.' + index + '.qtty_purchased']">
@@ -59,6 +59,7 @@
 
 <script>
     import eventHub from '../../events.js'
+    import xeditable from '../../bootstrap-editable.js'
 
     export default {
         data () {
@@ -81,6 +82,17 @@
                 if (index == -1) {
                     this.cartItems.push(data)
                 }
+
+                this.$nextTick( function () {
+                    $('.xedit').editable({
+                        type: 'text',
+                        title: 'Enter Qtty',
+                        mode: 'popup',
+                        success: function (response, newVal) {
+                            console.log(newVal);
+                        }
+                    })
+                })
             },
 
             removeFromCart (item) {
@@ -107,6 +119,11 @@
         },
 
         mounted () {
+            this.$nextTick( function () {
+                // window.$(this.$el).editable();
+                $('.xedit').editable()
+            })
+
             eventHub.$on('purchases.add-to-cart', ((item) => {
                 this.addToCart(item)
             }))
@@ -114,7 +131,7 @@
             eventHub.$on('purchase-completed', (() => {
                 this.errors = []
 
-                for (let i=0; i <= this.cartItems.length; i++) {
+                for (var i=this.cartItems.length -1; i >=0; i--) {
                     this.removeFromCart(this.cartItems[i])
                 }
             }))

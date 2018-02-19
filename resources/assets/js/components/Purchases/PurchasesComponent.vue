@@ -2,43 +2,59 @@
     <div class="panel panel-default">
         <div class="panel-body">
 
-            <div class="input-group">
-                <span class="input-group-addon primary">
-                    <i class="fa fa-search"></i>
-                    <b>Search Product</b>
-                </span>
-                <input type="text" id="search" class="form-control"
-                                 @keyup.up="moveUp"
-                                 @keyup.down="moveDown"
-                                 @keyup.esc="clearSearch"
-                                 @keyup.enter="addToCart(filteredItems[selectedIndex])"
-                                 v-model="searchText"
-                                 autocomplete="off"
-                                 placeholder="Enter item name or scan bar code"
-                >
-                <span class="input-group-addon primary" id="basic-addon2">
-                    <i class="fa fa-credit-card"></i>
-                    <b>Purchases</b>
-                </span>
+            <div class="row">
+                <div class="col-md-8 col-sm-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-shopping-cart"></i>
+                        </span>
+                        <input type="text" id="search" class="form-control"
+                                        @keyup.up="moveUp"
+                                        @keyup.down="moveDown"
+                                        @keyup.esc="clearSearch"
+                                        @keyup.enter="addToCart(filteredItems[selectedIndex])"
+                                        v-model="searchText"
+                                        autocomplete="off"
+                                        placeholder="Enter item name or scan bar code"
+                        >
+                        <span class="input-group-addon" id="basic-addon2">
+                            <i class="fa fa-shopping-cart"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                        <date-range-picker
+                            for="purchases"
+                            :singleDatePicker="true"
+                            :maxDate="new Date()"
+                        >
+                        </date-range-picker>
+                </div>
             </div>
 
-            <table class="table dropdown-content" v-if="filteredItems.length">
-                <tbody>
-                    <tr v-for="(item, index) in filteredItems" :key="item.id">
-                        <td :class="{'active2': selectedItem(item)}">
-                            <span>{{ index + 1 }}: {{ item.name }}</span>
-                            <button class="btn btn-success pull-right btn-sm" @click="addToCart(item)"><i class="fa fa-share"></i></button>
-                            <span class="center-block">
-                                <b>Qtty:</b>
-                                <span class="badge">{{ item.qtty || 0 }}</span>
-                            </span>
-                        </td>
-                    </tr>
-                </tbody>
 
-            </table>
-            <div class="well well-sm dropdown-content" v-if="this.searchText && filteredItems.length == 0">
-                No results
+
+            <div class="row">
+                <div class="col-md-8">
+                    <table class="table dropdown-content" v-if="filteredItems.length">
+                        <tbody>
+                            <tr v-for="(item, index) in filteredItems" :key="item.id">
+                                <td :class="{'active2': selectedItem(item)}">
+                                    <span>{{ index + 1 }}: {{ item.name }}</span>
+                                    <button class="btn btn-success pull-right btn-sm" @click="addToCart(item)"><i class="fa fa-share"></i></button>
+                                    <span class="center-block">
+                                        <b>Qtty:</b>
+                                        <span class="badge">{{ item.qtty || 0 }}</span>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                    <div class="well well-sm dropdown-content" v-if="this.searchText && filteredItems.length == 0">
+                        No results
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -46,6 +62,7 @@
 
 <script>
     import eventHub from '../../events.js'
+    import moment from 'moment'
 
     export default {
         data () {
@@ -126,7 +143,6 @@
                     return data
                 }
                 return []
-
             }
         },
 

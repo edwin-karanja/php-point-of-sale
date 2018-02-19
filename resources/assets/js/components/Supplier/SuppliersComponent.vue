@@ -14,7 +14,6 @@
                             <i class="fa fa-search"></i>
                         </span>
                     </div>
-
                 </div>
 
                 <!-- <excel-upload-component :url="'/ajax/items/import'"></excel-upload-component> -->
@@ -44,7 +43,7 @@
                             <td>{{ index + 1 }}</td>
                             <td v-for="column in response.displayColumns" :key="column">
                                 <span v-if="column == 'name'">
-                                    <a :href="'suppliers/' + supplier.id" >{{ supplier[column] || '-' }}</a>
+                                    <a :href="'suppliers/' + supplier.id + '/profile'" >{{ supplier[column] || '-' }}</a>
                                 </span>
 
                                 <span v-else>

@@ -1,16 +1,15 @@
 <template>
     <div class="panel panel-default">
-
         <div class="panel-body">
-            <table class="table table-striped">
+            <table class="table table-responsive" style="width: 100%">
                 <thead>
                     <tr>
                         <th>##</th>
                         <th>Name</th>
-                        <th>Current stock</th>
+                        <th>Stock</th>
                         <th>B.Price</th>
                         <th>S.Price</th>
-                        <th>Qtty</th>
+                        <th>Quantity</th>
                         <th>Total</th>
                     </tr>
                 </thead>
@@ -19,9 +18,9 @@
                         <td>
                             <svg @click="removeFromCart(item)" class="icon-sm green" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M8 6V4c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2h5a1 1 0 0 1 0 2h-1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8H3a1 1 0 1 1 0-2h5zM6 8v12h12V8H6zm8-2V4h-4v2h4zm-4 4a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z"/></svg>
                         </td>
-                        <td>{{ cartItems[index].name }}</td>
-                        <td>{{ cartItems[index].qtty || '-'}}</td>
-                        <td>{{ cartItems[index].buying_price || '-' }}</td>
+                        <td width="30%">{{ cartItems[index].name }}</td>
+                        <td width="10%">{{ cartItems[index].qtty || '-'}}</td>
+                        <td width="10%">{{ cartItems[index].buying_price || '-' }}</td>
                         <td>
                             <div class="col-xs-10 form-group" :class="{'has-error': errors['items.' + index + '.selling_price']}">
                                 <input type="text" :id="'item-' + item.id + '-sp'" class="form-control" v-model="cartItems[index].selling_price">
@@ -41,7 +40,7 @@
                             </div>
 
                         </td>
-                        <td class="total" v-html="itemTotal(item)"></td>
+                        <td width="10%" class="total" v-html="itemTotal(item)"></td>
                     </tr>
                 </tbody>
 
@@ -95,10 +94,6 @@
 
         },
 
-        computed: {
-            //
-        },
-
         mounted () {
             eventHub.$on('add-to-cart', ((item) => {
                 this.addToCart(item);
@@ -130,5 +125,22 @@
     font-weight: bold;
     font-size: 14px;
 }
+
+tr:hover {
+    background-color: #F5F8FC;
+}
+
+.table > tbody > tr > td {
+    font-size: 14px;
+    /* color: #32373b; */
+    /* background-color: rgb(176, 187, 201); */
+}
+
+/* input {display: block !important; padding: 0 !important; margin: 0 !important; border: 0 !important; width: 100% !important; border-radius: 0 !important; line-height: 1 !important;}
+td {margin: 0 !important; padding: 0 !important;} */
+
+/* tbody > tr > td > div > input {
+    border: 1px solid blue;
+} */
 
 </style>

@@ -65,8 +65,8 @@ import eventHub from '../events.js'
                 },
                 searchText: '',
                 sort: {
-                    key: 'id',
-                    order: 'asc'
+                    key: 'updated_at',
+                    order: 'desc'
                 },
                 selected: {
                     id: null

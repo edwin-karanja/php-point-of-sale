@@ -2,11 +2,14 @@
     <div class="panel panel-default">
         <div class="panel-body">
 
-
             <div class="input-group">
-                <span class="input-group-addon primary">
+                <!-- <span class="input-group-addon primary">
                     <i class="fa fa-search"></i>
                     <b>Search Product</b>
+                </span> -->
+                <span class="input-group-addon success" id="basic-addon2">
+                    <i class="fa fa-shopping-cart"></i>
+                    <b>Sales</b>
                 </span>
                 <input type="text" id="search" class="form-control"
                             @keyup.up="moveUp"
@@ -17,7 +20,7 @@
                             autocomplete="off"
                             placeholder="Enter item name or scan bar code"
                 >
-                <span class="input-group-addon primary" id="basic-addon2">
+                <span class="input-group-addon success" id="basic-addon2">
                     <i class="fa fa-shopping-cart"></i>
                     <b>Sales</b>
                 </span>
@@ -60,8 +63,8 @@ import eventHub from '../../events.js'
                 item: {},
                 selectedIndex: 0,
                 sort: {
-                    key: 'id',
-                    order: 'asc'
+                    key: 'updated_at',
+                    order: 'desc'
                 }
             };
         },

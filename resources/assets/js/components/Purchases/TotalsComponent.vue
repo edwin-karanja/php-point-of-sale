@@ -64,12 +64,15 @@
 
             <table class="table">
                 <a href="#" @click.prevent="cancelTransaction" class="btn btn-default pull-left" v-if="purchase.items.length">
-                    <svg class="icon-sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M4.93 19.07A10 10 0 1 1 19.07 4.93 10 10 0 0 1 4.93 19.07zm1.41-1.41A8 8 0 1 0 17.66 6.34 8 8 0 0 0 6.34 17.66zM13.41 12l1.42 1.41a1 1 0 1 1-1.42 1.42L12 13.4l-1.41 1.42a1 1 0 1 1-1.42-1.42L10.6 12l-1.42-1.41a1 1 0 1 1 1.42-1.42L12 10.6l1.41-1.42a1 1 0 1 1 1.42 1.42L13.4 12z"/></svg>
+                    <i class="fa fa-times"></i>
                     Cancel
                 </a>
 
                 <button @click.prevent="postPurchase" class="btn btn-primary pull-right" v-if="purchase.items.length">
-                    <svg v-if="!purchase.active" class="icon-sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M17 16a3 3 0 1 1-2.83 2H9.83a3 3 0 1 1-5.62-.1A3 3 0 0 1 5 12V4H3a1 1 0 1 1 0-2h3a1 1 0 0 1 1 1v1h14a1 1 0 0 1 .9 1.45l-4 8a1 1 0 0 1-.9.55H5a1 1 0 0 0 0 2h12zM7 12h9.38l3-6H7v6zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+
+                    <span v-if="!purchase.active">
+                        <i class="fa fa-shopping-cart"></i>
+                    </span>
                     <span v-if="purchase.active">
                         <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
                     </span>
@@ -82,6 +85,7 @@
 
 <script>
     import eventHub from '../../events.js'
+    import moment from 'moment'
 
     export default {
         data () {
@@ -89,6 +93,7 @@
                 purchase: {
                     active: false,
                     items: [],
+                    transDate: null,
                     supplier: {
                         id: null
                     },
@@ -234,6 +239,10 @@
             }))
 
             eventHub.$on('supplier-created', this.getSuppliers)
+
+            eventHub.$on('purchases.apply', ((startDate, endDate) => {
+                this.purchase.transDate = moment(startDate).format('LL')
+            }))
         }
     }
 </script>
