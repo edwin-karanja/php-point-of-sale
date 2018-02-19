@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Supplier\Ajax;
 use Illuminate\Http\Request;
 use App\Models\Supplier;
 use App\Http\Controllers\Ajax\AjaxController;
-use App\Models\SupplierMeta;
+use App\Models\SupplierBanking;
 
 class SupplierBankingController extends AjaxController
 {
@@ -17,7 +17,7 @@ class SupplierBankingController extends AjaxController
     public function index(Supplier $supplier)
     {
         $data = [
-            'bankings' => $supplier->meta()->select('id', 'bank_name', 'bank_account_number')->get(),
+            'bankings' => $supplier->bankings,
             'columns' => $this->setBankingsColumns(),
             'customColumns' => $this->setCustomColumns()
         ];
@@ -29,12 +29,12 @@ class SupplierBankingController extends AjaxController
     {
         $request->validate([
             'bank_name' => 'required',
-            'bank_account_number' => 'required|numeric|unique:supplier_metas'
+            'bank_account_number' => 'required|numeric|unique:supplier_bankings'
         ]);
 
-        $meta = new SupplierMeta($request->only(['bank_name', 'bank_account_number']));
+        $banking = new SupplierBanking($request->only(['bank_name', 'bank_account_number']));
 
-        $supplier->meta()->save($meta);
+        $supplier->bankings()->save($banking);
 
         return response()->json([
             'success' => true

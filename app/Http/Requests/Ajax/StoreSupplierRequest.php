@@ -25,7 +25,8 @@ class StoreSupplierRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:suppliers',
-            'description' => 'nullable'
+            'description' => 'nullable',
+            'vat_pin' => 'nullable'
         ];
     }
 }

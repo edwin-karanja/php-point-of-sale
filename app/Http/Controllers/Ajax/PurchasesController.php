@@ -22,26 +22,22 @@ class PurchasesController extends AjaxController
 
     public function store(PurchasesStoreRequest $request)
     {
-        // try {
-            $data = $request->only([$request->ref_no]);
-            $data['user_id'] = auth()->user()->id;
-            $data['supplier_id'] = $request->supplier['id'];
+        $data = $request->only([$request->ref_no]);
+        $data['user_id'] = auth()->user()->id;
+        $data['supplier_id'] = $request->supplier['id'];
+        $data['transaction_date'] = Carbon::parse($request->transDate);
 
-            $purchase = $this->builder->create($data);
-            $purchaseTotal = $this->saveTransactionItemsAndComputeTotal($request, $purchase);
-            $purchase->update(['purchase_total' => $purchaseTotal]);
+        $purchase = $this->builder->create($data);
+        $purchaseTotal = $this->saveTransactionItemsAndComputeTotal($request, $purchase);
+        $purchase->update(['purchase_total' => $purchaseTotal]);
 
-            if (isset($request->supplier['id'])) {
-                $purchase->supplier()->update([
-                    'last_supply_date' => Carbon::now(),
-                    'total_supplied_amount' => $purchase->supplier->last_supplied_amount += $purchaseTotal
-                ]);
-            }
 
-            return response()->json(['success' => true]);
-        // } catch (\Exception $e) {
-        //     return response()->json(['error' => true, 'message' => $e->getMessage()], 302);
-        // }
+        $purchase->supplier()->update([
+            'last_supply_date' => Carbon::now(),
+            'total_supplied_amount' => $purchase->supplier->last_supplied_amount += $purchaseTotal
+        ]);
+
+        return response()->json(['success' => true]);
     }
 
     protected function saveTransactionItemsAndComputeTotal($request, $purchase)

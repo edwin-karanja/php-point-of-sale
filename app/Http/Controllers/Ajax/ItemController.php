@@ -23,7 +23,7 @@ class ItemController extends AjaxController
     public function index()
     {
         $data = [
-            'items' => $this->builder->with(['category', 'quantity'])->get(),
+            'items' => $this->builder->updatesFirst()->with(['category', 'quantity'])->get(),
             'columns' => array_values($this->getDisplayableColumns()),
             'customColumns' => $this->setCustomColumnsNames(),
             'createColumns' => $this->setCreateColumns(),
@@ -101,8 +101,8 @@ class ItemController extends AjaxController
         return [
             'name' => 'Name',
             'description' => 'Description',
-            'selling_price' => 'Selling Price',
-            'buying_price' => 'Buying Price',
+            'selling_price' => 'S.Price',
+            'buying_price' => 'B.Price',
             'reorder_level' => 'Reorder Level',
             'category_id' => 'Category',
             'updated_at_human' => 'Last Updated',

@@ -28,7 +28,8 @@ class PurchasesStoreRequest extends FormRequest
             'items.*.qtty_purchased' => 'required|numeric|min:1',
             'items.*.buying_price' => 'required|numeric|min:1',
             'items.*.selling_price' => 'required|numeric|min:1',
-            'supplier.id' => 'required|numeric'
+            'supplier.id' => 'required|numeric',
+            'transDate' => 'required|date'
         ];
     }
 

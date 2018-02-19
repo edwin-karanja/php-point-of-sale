@@ -29,7 +29,7 @@ class SupplierController extends AjaxController
 
     public function store(StoreSupplierRequest $request)
     {
-        $this->builder->create($request->only(['name', 'description']));
+        $this->builder->create($request->only(['name', 'description', 'vat_pin']));
 
         return response()->json([
             'success' => true
@@ -42,17 +42,18 @@ class SupplierController extends AjaxController
             'name' => 'Name',
             'description' => 'Description',
             'last_supply_date' => 'Last Supply Date',
-            'total_supplied_amount' => 'Total supplied'
+            'total_supplied_amount' => 'Total supplied',
+            'vat_pin' => 'Vat PIN'
         ];
     }
 
     protected function setCreateColumns()
     {
-        return ['name', 'description'];
+        return ['name', 'vat_pin', 'description'];
     }
 
     protected function setVisibleColumns()
     {
-        return ['name', 'description', 'last_supply_date', 'total_supplied_amount'];
+        return ['name', 'description', 'last_supply_date', 'total_supplied_amount', 'vat_pin'];
     }
 }

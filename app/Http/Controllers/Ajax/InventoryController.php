@@ -21,7 +21,7 @@ class InventoryController extends AjaxController
     public function index()
     {
         $data = [
-            'items' => Item::with('category')->get()
+            'items' => Item::updatesFirst()->with('category')->get()
         ];
 
         return response()->json($data);
