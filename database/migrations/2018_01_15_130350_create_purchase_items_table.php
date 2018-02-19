@@ -20,6 +20,7 @@ class CreatePurchaseItemsTable extends Migration
             $table->integer('qtty_purchased')->unsigned();
             $table->decimal('buying_price', 12, 2);
             $table->decimal('selling_price', 12, 2);
+            $table->timestamp('purchase_date')->nullable();
             $table->timestamps();
         });
     }

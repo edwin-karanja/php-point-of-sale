@@ -19,6 +19,7 @@ class CreatePurchasesTable extends Migration
             $table->integer('supplier_id')->unsigned()->nullable()->index();
             $table->integer('user_id')->unsigned()->index();
             $table->decimal('purchase_total', 12, 2)->nullable();
+            $table->timestamp('transaction_date');
             $table->timestamps();
         });
     }

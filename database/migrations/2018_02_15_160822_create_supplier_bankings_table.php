@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSupplierMetasTable extends Migration
+class CreateSupplierBankingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreateSupplierMetasTable extends Migration
      */
     public function up()
     {
-        Schema::create('supplier_metas', function (Blueprint $table) {
+        Schema::create('supplier_bankings', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('supplier_id')->index();
             $table->string('bank_name')->nullable();
             $table->string('bank_account_number')->nullable();
-            $table->string('contact_name')->nullable();
-            $table->string('contact_phone')->nullable();
-            $table->string('contact_email')->nullable();
-            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ class CreateSupplierMetasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supplier_metas');
+        Schema::dropIfExists('supplier_bankings');
     }
 }
