@@ -35,6 +35,13 @@
     <script src="{{ asset('js/app.js') }}"></script>
 
     <!-- <script src="{{ asset('js/semantic.min.js') }}"></script> -->
+    <script>
+        window.setTimeout(function () {
+            $('.alert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            })
+        }, 3000);
+    </script>
 
     @yield('scripts')
 </body>

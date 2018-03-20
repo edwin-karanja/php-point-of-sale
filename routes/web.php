@@ -65,6 +65,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/{customer}/payments/{id}', 'CustomerPaymentsController@store');
             Route::get('/{customer}/overview', 'CustomerOverviewController@index');
             Route::get('/{customer}/monthly-purchases', 'ChartsController@monthly');
+            Route::get('/{customer}/contacts', 'CustomerContactsController@index')->name('contacts.index');
+            Route::post('/{customer}/contacts', 'CustomerContactsController@store')->name('contacts.store');
         });
     });
 
@@ -79,9 +81,11 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/', 'SupplierController@store')->name('store');
             Route::get('/{supplier}/bankings', 'SupplierBankingController@index')->name('banking.index');
             Route::post('/{supplier}/bankings', 'SupplierBankingController@store')->name('banking.store');
+            Route::get('/{supplier}/contacts', 'SupplierContactsController@index')->name('contacts.index');
+            Route::post('/{supplier}/contacts', 'SupplierContactsController@store')->name('contacts.store');
         });
 
-        Route::get('/{supplier}', 'SupplierMetaController@index')->name('meta');
+        Route::get('/{supplier}/profile', 'SupplierProfileController@index')->name('profile');
     });
 
     /**
@@ -90,16 +94,35 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'settings', 'as' => 'settings.', 'namespace' => 'Settings'], function () {
         Route::get('/', 'SettingsController@index');
 
+        // Security
         Route::group(['prefix' => 'change_password', 'as' => 'change_password.'], function () {
             Route::get('/', 'ChangePasswordController@index')->name('index');
             Route::post('/', 'ChangePasswordController@store')->name('store');
         });
 
+        // Profile
         Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
             Route::get('/', 'ProfileController@index')->name('index');
             Route::post('/', 'ProfileController@store')->name('store');
         });
 
+        // Users
+        Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+            Route::get('/', 'UsersController@index')->name('index');
+            Route::get('/add', 'UsersController@create')->name('create');
+            Route::post('/add', 'UsersController@store')->name('store');
+            Route::get('/update/{user}', 'UsersController@edit')->name('edit');
+            Route::post('/update/{user}', 'UsersController@update')->name('update');
+            Route::post('/destroy/{user}', 'UsersController@destroy')->name('destroy');
+        });
+
+        // Store settings
+        Route::group(['prefix' => 'store', 'as' => 'store.'], function () {
+            Route::get('/', 'StoreController@index')->name('index');
+            Route::get('/add', 'StoreController@store')->name('store');
+        });
+
+        // Roles
         Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () {
             Route::get('/', 'RolesController@index')->name('index');
             Route::get('/create', 'RolesController@create')->name('create');
@@ -110,6 +133,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/{role}/update', 'RolesController@update')->name('update');
         });
 
+        // Permissions
         Route::group(['prefix' => 'permissions', 'as' => 'permissions.'], function () {
             Route::get('/', 'PermissionsController@index')->name('index');
             Route::get('/create', 'PermissionsController@create')->name('create');
@@ -131,7 +155,11 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Purchases
      */
-    Route::get('/purchases', 'PurchasesController@index');
+    Route::group(['prefix' => 'purchases', 'as' => 'purchases.'], function () {
+        Route::get('/', 'PurchasesController@index')->name('index');
+        Route::get('recent', 'PurchaseController@recent')->name('recent');
+    });
+
 
     Route::group(['prefix' => 'ajax', 'as' => 'ajax.', 'namespace' => 'Ajax'], function () {
         /**

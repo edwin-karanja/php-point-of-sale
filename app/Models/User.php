@@ -33,4 +33,22 @@ class User extends Authenticatable
     {
         return $this->hasMany(Sale::class);
     }
+
+    /**
+     * Check if the current user is within the administrators array.
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return in_array($this->email, config('pos.admins'));
+    }
+
+    /**
+     * Check that the current user is not ad administrator.
+     * @return bool
+     */
+    public function isNotAdmin()
+    {
+        return ! $this->isAdmin();
+    }
 }

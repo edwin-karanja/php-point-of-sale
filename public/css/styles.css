@@ -24,6 +24,10 @@
   color: #566573
 }
 
+.mr-6 {
+  margin-top: 6px;
+}
+
 .mr-2 {
     margin-right: 2px;
 }
@@ -282,7 +286,6 @@ button {
 
 .side-nav > div > ul > li > a {
   color: #566573;
-  font-weight: bold;
 }
 
 .modal-content {

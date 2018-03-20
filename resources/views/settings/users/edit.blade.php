@@ -1,11 +1,11 @@
 @extends('settings._layout')
 
 @section('page-title')
-    Settings/Profile
+    Settings\Users\Edit
 @endsection
 
 @section('settings-content')
-    <form method="POST" action="{{ route('settings.profile.store') }}">
+    <form method="POST" action="{{ route('settings.users.update', $user) }}">
         {{ csrf_field() }}
 
         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -51,10 +51,33 @@
 
         </div>
 
+        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+            <label for="email" class="control-label">Password</label>
+
+            <input id="email" type="password" class="form-control" name="password" value="" required>
+
+            @if ($errors->has('email'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('password') }}</strong>
+                </span>
+            @endif
+
+        </div>
+
+        <div class="form-group">
+            <label for="password-confirm" class="control-label">Confirm Password</label>
+            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+        </div>
+
         <div class="form-group">
             <button type="submit" class="btn btn-primary">
-                Update Details
+                <i class="fa fa-plus"></i>
+                Update User
             </button>
+
+            <a href="{{ route('settings.users.index') }}" class="btn btn-default pull-right">
+                Cancel
+            </a>
         </div>
     </form>
 @endsection

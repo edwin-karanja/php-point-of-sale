@@ -29,6 +29,9 @@
                 <a href="/purchases">@svg('icon-globe') Purchases</a>
             </li>
             <hr>
+            <li class="{{ return_if(on_page('reports'), 'active') }}">
+                <a href="/reports">@svg('icon-trending-up') Reports</a>
+            </li>
             <li class="{{ return_if(on_page('settings'), 'active') }}">
                 <a href="/settings">@svg('icon-cog') Settings</a>
             </li>
