@@ -13,7 +13,7 @@
                 <li class="{{ return_if(on_page('settings/users'), 'active') }}">
                     <a href="/settings/users">
                         <i class="fa fa-users"></i>
-                        Employees
+                        Users
                     </a>
                 </li>
             @endif
@@ -30,7 +30,7 @@
             <li class="{{ return_if(on_page('settings/change_password'), 'active') }}">
                 <a href="/settings/change_password">
                     <i class="fa fa-bolt"></i>
-                    Security
+                    Password
                 </a>
             </li>
 

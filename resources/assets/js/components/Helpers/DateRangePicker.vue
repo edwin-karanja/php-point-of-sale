@@ -11,10 +11,10 @@
     </div>
 </template>
 
-<script>
-    import eventHub from '../../events.js'
-    import moment from 'moment'
-    import daterangepicker from '../../daterangepicker.js'
+<script type="text/babel">
+    import eventHub from '../../events.js';
+    import moment from 'moment';
+    import daterangepicker from '../../daterangepicker.js';
 
     export default {
         props: {

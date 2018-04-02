@@ -31,10 +31,6 @@ class UpdateCustomerRequest extends FormRequest
                 'required',
                 Rule::unique('customers')->ignore($customer->id)
             ],
-            'gender' => [
-                'required',
-                Rule::in(['M', 'F'])
-            ],
             'telephone' => 'nullable|numeric',
             'email' => 'nullable|email'
         ];

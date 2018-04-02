@@ -1,13 +1,29 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-body">
-            <span class="pull-left">Recent Payment: <span class="badge">{{ response.recentPayment.amount_paid ? parseInt(response.recentPayment.amount_paid).toLocaleString('en-US', { style: 'currency', currency: 'ksh'}) : '-' }}</span></span>
-            <span class="pull-right">Balance Due: <span class="badge">{{ response.balanceDue ? parseInt(response.balanceDue).toLocaleString('en-US', { style: 'currency', currency: 'Ksh'}) : '-'}}</span></span>
+            <span class="pull-left">
+                <span class="ui large teal tag label">
+                    Recent Payment:
+                </span>
+                <span class="ui large black label">
+                    {{ response.recentPayment.amount_paid ? parseInt(response.recentPayment.amount_paid).toLocaleString('en-US', { style: 'currency', currency: 'ksh'}) : '-' }}
+                </span>
+            </span>
+
+            <span class="pull-right">
+                <span class="ui large red tag label">
+                    Balance Due:
+                </span>
+
+                <span class="ui large black label">{{ response.balanceDue ? parseInt(response.balanceDue).toLocaleString('en-US', { style: 'currency', currency: 'Ksh'}) : '0.00'}}
+                </span>
+            </span>
+
         </div>
     </div>
 </template>
 
-<script>
+<script type="text/babel">
     import EventHub from '../../events.js';
 
     export default {

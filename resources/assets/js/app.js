@@ -28,8 +28,7 @@ Vue.component('alert-component', require('./components/AlertComponent.vue'));
 Vue.component('adjust-qtty-component', require('./components/AdjustItemQuantityComponent.vue'));
 Vue.component('inventory-items-component', require('./components/InventoryItemsComponent.vue'));
 Vue.component('inventory-history-component', require('./components/InventoryHistoryComponent.vue'));
-Vue.component('customers-component', require('./components/CustomersComponent.vue'));
-Vue.component('add-customer-component', require('./components/AddCustomerComponent.vue'));
+
 /**
  * Sales Components
  */
@@ -60,17 +59,18 @@ Vue.component('excel-upload-component', require('./components/Helpers/UploadExce
 Vue.component('page-refresh-component', require('./components/Helpers/PageRefreshComponent.vue'));
 Vue.component('ellipsis-nav', require('./components/Helpers/EllipsisNavComponent.vue'));
 Vue.component('date-range-picker', require('./components/Helpers/DateRangePicker.vue'));
+Vue.component('datatables', require('./components/Helpers/DataTableComponent.vue'));
 
 
 /**
  * Customer components
  */
+Vue.component('customers-component', require('./components/Customer/CustomersComponent.vue'));
 Vue.component('customer-account-receipts-component', require('./components/Customer/AccountReceiptsComponent.vue'));
-Vue.component('customer-credit-payments-component', require('./components/Customer/AccountPaymentsComponent.vue'));
 Vue.component('customer-account-overview-component', require('./components/Customer/AccountOverviewComponent.vue'));
-Vue.component('customer-monthly-sales', require('./components/Customer/CustomerMonthlySales.vue'));
+// Vue.component('customer-monthly-sales', require('./components/Customer/CustomerMonthlySales.vue'));
 Vue.component('customer-profile', require('./components/Customer/CustomerProfile.vue'));
-Vue.component('customer-contacts', require('./components/Customer/CustomerContacts.vue'));
+
 
 const app = new Vue({
 

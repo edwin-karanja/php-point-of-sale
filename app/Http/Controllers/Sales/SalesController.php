@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Sales;
 
 use Illuminate\Http\Request;
 use App\Models\Sale;
+use App\Http\Controllers\Controller;
 
 class SalesController extends Controller
 {

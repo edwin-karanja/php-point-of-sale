@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="btn btn-primary pull-right mr-4" @click.prevent="addCustomer" :class="{'disabled': disabled}">
+        <button class="ui button secondary right floated" @click.prevent="addCustomer" :class="{'disabled': disabled}">
             <i class="fa fa-plus"></i>
             Add Customer
         </button>
@@ -33,7 +33,7 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="ui button primary">
                                     <span v-if="!creating.active">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                     </span>
@@ -47,7 +47,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" @click.prevent="closeModal">Close</button>
+                    <button type="button" class="ui button" @click.prevent="closeModal">Close</button>
                 </div>
                 </div>
             </div>
@@ -55,8 +55,8 @@
     </div>
 </template>
 
-<script>
-    import eventHub from '../events.js'
+<script type="text/babel">
+    import eventHub from '../../events.js'
 
     export default {
         props: ['customColumns', 'createColumns', 'disabled'],
@@ -120,7 +120,6 @@
             update () {
                 let id = this.editing.id;
                 axios.patch('/ajax/customers/' + id, this.creating.form).then((response) => {
-
                     if (response.status == 200) {
                         this.creating.active = false
                         this.editing.id = null

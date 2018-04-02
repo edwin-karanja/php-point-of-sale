@@ -53,7 +53,7 @@
 
 </template>
 
-<script>
+<script type="text/babel">
 import eventHub from '../events.js'
 
     export default {

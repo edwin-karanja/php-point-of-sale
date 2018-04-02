@@ -22,6 +22,10 @@ class Category extends Model
         'deleted_at', 'created_at', 'updated_at'
     ];
 
+    protected $appends = [
+        ''
+    ];
+
     public function items()
     {
         return $this->hasMany(Item::class);

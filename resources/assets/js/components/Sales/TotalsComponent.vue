@@ -4,7 +4,7 @@
             <div v-if="sale.customer.id">
                 <p class="b">Name: <span class="pull-right">{{ sale.customer.name }}</span></p>
                 <p class="b">Gender: <span class="pull-right">{{ sale.customer.gender }}</span></p>
-                <p class="b">Due Balance: <span class="badge pull-right">{{ parseInt(sale.customer.balance).toLocaleString('en-US', { style: 'currency', currency: 'Ksh'}) }}</span></p>
+                <p class="b">Due Balance: <span class="ui label grey pull-right">{{ parseInt(sale.customer.balance).toLocaleString('en-US', { style: 'currency', currency: 'Ksh'}) }}</span></p>
                 <hr>
                 <a href="#" class="pull-right" @click.prevent="removeCustomer">Remove</a>
             </div>
@@ -18,12 +18,12 @@
                     <strong>{{ errors['customer.id'][0] }}</strong>
                 </span>
 
-                <add-customer-component
+                <add-customer
                     :disabled="sale.items.length == 0"
                     :customColumns="response.customColumns"
                     :createColumns="response.createColumns"
                 >
-                </add-customer-component>
+                </add-customer>
 
                 <table class="table dropdown-content" v-if="filteredCustomers.length">
                     <tbody>
@@ -120,10 +120,15 @@
     </div>
 </template>
 
-<script>
-    import eventHub from '../../events.js'
+<script type="text/babel">
+    import eventHub from '../../events.js';
+    import AddCustomer from '../Customer/AddCustomerComponent.vue';
 
     export default {
+        components: {
+            AddCustomer
+        },
+
         data () {
             return {
                 sale: {
@@ -156,7 +161,7 @@
         methods: {
             getCustomers () {
                 return axios.get('/ajax/customers').then((response) => {
-                    this.response = response.data
+                    this.response = response.data.data;
                 })
             },
 
@@ -213,20 +218,21 @@
         computed: {
             filteredCustomers () {
                 if (this.searchCustomer) {
-                    let data = this.response.customers
+                    let data = this.response.customers;
+
 
                     data = data.filter((row) => {
                         return Object.keys(row).some((key) => {
                             return String(row.name).toLowerCase().indexOf(this.searchCustomer.toLowerCase()) > -1
                         })
-                    })
+                    });
 
                     if (this.sort.key) {
                         data = _.orderBy(data, (i) => {
-                            let value = i[this.sort.key]
+                            let value = i[this.sort.key];
 
                             if (!isNaN(parseFloat(value))) {
-                                return parseFloat(value)
+                                return parseFloat(value);
                             }
 
                             return String(i[this.sort.key]).toLowerCase()
@@ -278,7 +284,7 @@
         },
 
         mounted() {
-            this.getCustomers()
+            this.getCustomers();
 
             eventHub.$on('compute-item-total', ((item) => {
                 var index = this.sale.items.indexOf(item)

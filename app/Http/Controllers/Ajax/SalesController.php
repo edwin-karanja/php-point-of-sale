@@ -28,7 +28,8 @@ class SalesController extends AjaxController
 
         Payments::create([
             'sale_id' => $sale->id,
-            'amount_paid' => $request->payment_mode == 'cash' ? $sale->fresh()->sale_total : $request->amount_tendered,
+            'amount_paid' => $amount = $request->payment_mode == 'cash' ? $sale->fresh()->sale_total : $request->amount_tendered,
+            'balance_due' => $sale->fresh()->sale_total - $amount
         ]);
 
         return response()->json(['success' => true]);

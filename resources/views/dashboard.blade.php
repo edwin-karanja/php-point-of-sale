@@ -34,6 +34,13 @@
 
     <button class="ui loading button">Loading</button>
 
+    <div class="ui search">
+      <div class="ui icon input">
+        <input class="prompt" type="text" placeholder="Search countries...">
+        <i class="search icon"></i>
+      </div>
+    </div>
+
 <div class="ui labeled button" tabindex="0">
   <div class="ui button">
     <i class="heart icon"></i> Like

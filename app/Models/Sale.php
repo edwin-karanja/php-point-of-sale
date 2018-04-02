@@ -22,6 +22,19 @@ class Sale extends Model
         'user_id', 'customer_id', 'invoice_number', 'delivery_number', 'sale_status', 'payment_mode', 'comments', 'sale_total', 'sale_type', 'mpesa_ref_no', 'payment_status', 'balance_due', 'amount_paid'
     ];
 
+    protected $appends = [
+        'customer_name'
+    ];
+
+    public function getCustomerNameAttribute()
+    {
+        if ($this->customer) {
+            return $this->customer->name;
+        }
+
+        return '';
+    }
+
     public function scopeWithPayment($builder)
     {
         return $builder->where('payment_status', '!=', self::ZERO_PAYMENT);
@@ -72,7 +85,8 @@ class Sale extends Model
 
     public function payments()
     {
-        return $this->hasMany(Payments::class);
+        return $this->hasMany(Payments::class)
+            ->orderBy('updated_at', 'desc');
     }
 
     public function concludeSale($saleTotal)

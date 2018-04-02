@@ -2,9 +2,16 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="row">
-                <div class="col-md-5">
-                    <table class="table">
-                        <tbody>
+                <div class="col-md-4">
+                    <div class="table-responsive">
+                        <table class="table table-responsive table-striped">
+                            <thead>
+                            <tr>
+                                <th>Column</th>
+                                <th>Value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
                             <tr>
                                 <th>Name</th>
                                 <td>{{ customer.name }}</td>
@@ -21,12 +28,18 @@
                                 <th>Comments</th>
                                 <td>{{ customer.comments }}</td>
                             </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="col-md-5">
-                    <customer-contacts :customer="this.customer"></customer-contacts>
+
+                <div class="col-md-6">
+                    <customer-contacts
+                            :customer="this.customer"
+                    >
+                    </customer-contacts>
                 </div>
+
                 <div class="col-md-2">
                     <div class="thumbnail">
                         <img :src="imageLink" class="img-rounded" alt="customer image" width="150" height="150">
@@ -41,9 +54,15 @@
     </div>
 </template>
 
-<script>
+<script type="text/babel">
+    import CustomerContacts from '../Customer/CustomerContacts.vue';
+
     export default {
         props: ['customer'],
+
+        components: {
+            CustomerContacts
+        },
 
         data () {
             return {

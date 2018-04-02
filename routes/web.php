@@ -65,8 +65,10 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/{customer}/payments/{id}', 'CustomerPaymentsController@store');
             Route::get('/{customer}/overview', 'CustomerOverviewController@index');
             Route::get('/{customer}/monthly-purchases', 'ChartsController@monthly');
-            Route::get('/{customer}/contacts', 'CustomerContactsController@index')->name('contacts.index');
-            Route::post('/{customer}/contacts', 'CustomerContactsController@store')->name('contacts.store');
+            Route::get('/{customer}/contacts', 'CustomerContactsController@index');
+            Route::post('/{customer}/contacts', 'CustomerContactsController@store');
+            Route::patch('/{customer}/contacts/{contact}', 'CustomerContactsController@update');
+            Route::delete('/{customer}/contacts/{contact}', 'CustomerContactsController@destroy');
         });
     });
 
@@ -119,7 +121,7 @@ Route::group(['middleware' => ['auth']], function () {
         // Store settings
         Route::group(['prefix' => 'store', 'as' => 'store.'], function () {
             Route::get('/', 'StoreController@index')->name('index');
-            Route::get('/add', 'StoreController@store')->name('store');
+            Route::post('/', 'StoreController@store')->name('store');
         });
 
         // Roles
@@ -147,9 +149,13 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Sales
      */
-    Route::group(['prefix' => 'sales', 'as' => 'sales.'], function () {
+    Route::group(['prefix' => 'sales', 'as' => 'sales.', 'namespace' => 'Sales'], function () {
         Route::get('/', 'SalesController@index')->name('index');
         Route::get('/recent', 'SalesController@recent')->name('recent');
+
+        Route::group(['prefix' => 'ajax', 'as' => 'ajax.', 'namespace' => 'Ajax'], function () {
+
+        });
     });
 
     /**
@@ -157,7 +163,7 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::group(['prefix' => 'purchases', 'as' => 'purchases.'], function () {
         Route::get('/', 'PurchasesController@index')->name('index');
-        Route::get('recent', 'PurchaseController@recent')->name('recent');
+        Route::get('recent', 'PurchasesController@recent')->name('recent');
     });
 
 
@@ -186,7 +192,7 @@ Route::group(['middleware' => ['auth']], function () {
         /**
          * Customer ajax calls
          */
-        Route::group(['prefix' => 'customers', 'as' => 'customer.'], function () {
+        Route::group(['prefix' => 'customers', 'as' => 'customer.', 'namespace' => 'Customer'], function () {
             Route::get('/', 'CustomerController@index')->name('index');
             Route::post('/', 'CustomerController@store')->name('store');
             Route::patch('/{customer}', 'CustomerController@update')->name('update');
@@ -196,10 +202,10 @@ Route::group(['middleware' => ['auth']], function () {
         /**
          * Supplier ajax calls
          */
-        Route::group(['prefix' => 'suppliers', 'as' => 'supplier.', 'middleware' => 'Supplier'], function () {
-            Route::get('/', 'SupplierController@index')->name('index');
-            Route::post('/', 'SupplierController@store')->name('store');
-        });
+//        Route::group(['prefix' => 'suppliers', 'as' => 'supplier.', 'middleware' => 'Supplier'], function () {
+//            Route::get('/', 'SupplierController@index')->name('index');
+//            Route::post('/', 'SupplierController@store')->name('store');
+//        });
 
         /**
          * Sales Ajax calls
@@ -213,6 +219,16 @@ Route::group(['middleware' => ['auth']], function () {
          */
         Route::group(['prefix' => 'purchases', 'as' => 'purchases.'], function () {
             Route::post('/', 'PurchasesController@store')->name('store');
+        });
+
+        /**
+         * Category Ajax Calls
+         */
+        Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
+            Route::get('/', 'CategoriesController@index')->name('index');
+            Route::post('/', 'CategoriesController@store')->name('store');
+            Route::patch('/{category}', 'CategoriesController@update')->name('update');
+            Route::delete('/{category}', 'CategoriesController@destroy')->name('destroy');
         });
     });
 });

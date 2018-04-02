@@ -10,22 +10,33 @@
             </a>
         </div>
         <div class="panel-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>##</th>
-                        <th v-for="column in response.columns" :key="column">{{ response.customColumns[column] }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(contact, index) in response.contacts" :key="contact.id">
-                        <td>{{ index + 1 }}</td>
-                        <td>{{ contact.contact_name }}</td>
-                        <td>{{ contact.contact_email }}</td>
-                        <td>{{ contact.contact_phone }}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>##</th>
+                            <th v-for="column in response.columns" :key="column">{{ response.customColumns[column] }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(contact, index) in response.contacts" :key="contact.id">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ contact.contact_name }}</td>
+                            <td>{{ contact.contact_email }}</td>
+                            <td>{{ contact.contact_phone }}</td>
+                            <td>
+                                <a href="#" @click.prevent="edit(contact)">
+                                    <b>Edit</b>
+                                </a>
+                                |
+                                <a href="#" @click.prevent="destroy(contact.id)">
+                                    <b>Delete</b>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Modal -->
@@ -55,9 +66,9 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="ui button primary">
                                     <span v-if="!creating.active">
-                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                        <i class="fa fa-save" aria-hidden="true"></i>
                                     </span>
                                     <span v-if="creating.active">
                                         <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
@@ -69,7 +80,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" @click.prevent="closeModal">Close</button>
+                    <button type="button" class="ui button" @click.prevent="closeModal">Close</button>
                 </div>
                 </div>
             </div>
@@ -77,7 +88,7 @@
     </div>
 </template>
 
-<script>
+<script type="text/babel">
     export default {
         props: ['customer'],
 
@@ -95,6 +106,9 @@
                     contacts: [],
                     columns: [],
                     customColumns: []
+                },
+                editing: {
+                    id: null
                 }
             };
         },
@@ -107,35 +121,84 @@
             },
 
             resetForm () {
-                this.creating.active = false
-                this.creating.form = {}
-                this.creating.errors = []
+                this.creating.active = false;
+                this.creating.form = {};
+                this.creating.errors = [];
+                this.editing.id = null;
             },
 
             store () {
-                this.creating.active = true
+                this.creating.active = true;
+
+                if (this.editing.id) {
+                    this.update();
+                    return;
+                }
 
                 axios.post('/customers/ajax/' + this.customer.id + '/contacts', this.creating.form).then(() => {
-                    this.getCustomerContacts()
+                    this.getCustomerContacts();
 
-                    this.closeModal()
+                    this.closeModal();
                 }).catch((error) => {
                     if (error.response.status === 422) {
-                        this.creating.active = false
-                        this.creating.errors = error.response.data.errors
+                        this.creating.active = false;
+                        this.creating.errors = error.response.data.errors;
                     }
                 })
 
             },
 
+            update () {
+                axios.patch('/customers/ajax/' + this.customer.id + '/contacts/' + this.editing.id, this.creating.form).then(() => {
+                    this.getCustomerContacts();
+
+                    this.closeModal();
+                }).catch((error) => {
+                    if (error.response.status === 422) {
+                        this.creating.active = false;
+                        this.creating.errors = error.response.data.errors;
+                    }
+                })
+            },
+
+            edit (contact) {
+                this.resetForm();
+
+                this.title = 'Editing:- ' + contact.contact_name;
+                this.buttonText = 'Update';
+                this.editing.id = contact.id;
+                this.creating.form = contact;
+
+                this.openModal();
+            },
+
+            destroy (contactId) {
+                if (!window.confirm('Are you sure you want to delete this contact?')) {
+                    return;
+                }
+
+                axios.delete('/customers/ajax/' + this.customer.id + '/contacts/' + contactId).then(() => {
+                    this.getCustomerContacts();
+                })
+            },
+
             openModal () {
-                this.contactsModal.modal('show')
+                this.contactsModal.modal('show');
             },
 
             closeModal () {
-                this.contactsModal.modal('hide')
+                this.contactsModal.modal('hide');
 
-                this.resetForm()
+                this.resetForm();
+            }
+        },
+
+        filters: {
+            capitalize: function (value) {
+                if (!value) return '';
+
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
             }
         },
 

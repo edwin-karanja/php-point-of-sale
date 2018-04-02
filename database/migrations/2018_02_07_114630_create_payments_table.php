@@ -17,6 +17,7 @@ class CreatePaymentsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('sale_id');
             $table->decimal('amount_paid', 12, 2)->default(0);
+            $table->decimal('balance_due', 12, 2)->default(0);
             $table->timestamps();
         });
     }

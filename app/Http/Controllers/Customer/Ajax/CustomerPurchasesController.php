@@ -12,7 +12,7 @@ class CustomerPurchasesController extends Controller
     public function index(Customer $customer)
     {
         $data = [
-            'purchases' => $customer->sales()->recent()->paginate(15)
+            'purchases' => $customer->sales()->with(['payments', 'items'])->recent()->paginate(15)
         ];
 
         return response()->json($data);
@@ -25,16 +25,22 @@ class CustomerPurchasesController extends Controller
         ]);
 
         $sale = $customer->sales()->find($id);
-        $amount_paid = $sale->amount_paid += $request->pay;
+        $expectedAmount = $sale->balance_due;
+        $amount = $request->pay > $expectedAmount ? $expectedAmount : $request->pay;
+
+        $amount_paid = $sale->amount_paid += $amount;
         $sale->update([
             'amount_paid' => $amount_paid,
             'balance_due' => $sale->sale_total - $amount_paid
         ]);
         $sale->updatePaymentStatus();
 
+        $lastPay = $sale->payments()->latest()->first();
+
         Payments::create([
             'sale_id' => $id,
-            'amount_paid' => $request->pay
+            'amount_paid' => $amount,
+            'balance_due' => $lastPay->balance_due - $amount
         ]);
 
         return response()->json([

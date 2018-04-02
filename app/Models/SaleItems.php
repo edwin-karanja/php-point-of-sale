@@ -11,4 +11,22 @@ class SaleItems extends Model
     ];
 
     public $table = 'sales_items';
+
+    protected $appends = [
+        'item_name'
+    ];
+
+    public function getItemNameAttribute()
+    {
+        if ($this->item) {
+            return $this->item->name;
+        }
+
+        return null;
+    }
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
 }

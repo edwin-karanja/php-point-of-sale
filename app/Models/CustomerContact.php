@@ -13,7 +13,7 @@ class CustomerContact extends Model
         'contact_email',
     ];
 
-    public function supplier()
+    public function customer()
     {
         return $this->belongsTo(Customer::class);
     }

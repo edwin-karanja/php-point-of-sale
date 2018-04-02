@@ -24,7 +24,7 @@
                             <th>Category</th>
                             <td>
                                 <span class="label label-primary">
-                                    {{ item.category.name }}
+                                    {{ item.category ? item.category.name : 'null' }}
                                 </span>
                             </td>
                         </tr>
@@ -88,7 +88,7 @@
     </div>
 </template>
 
-<script>
+<script type="text/babel">
 import eventHub from '../events.js'
 
     export default {

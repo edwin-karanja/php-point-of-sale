@@ -28,7 +28,7 @@
                             <label for="" class="col-md-4 control-label">Category</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" :value="item.category.name" disabled>
+                                <input id="name" type="text" class="form-control" :value="item.category ? item.category.name : ''" disabled>
                             </div>
                         </div>
 
