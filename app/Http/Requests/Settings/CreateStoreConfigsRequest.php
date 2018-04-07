@@ -24,7 +24,7 @@ class CreateStoreConfigsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:settings',
+            'name' => 'required',
             'short_name' => 'required',
             'picture' => 'nullable|image',
             'location' => 'nullable',
