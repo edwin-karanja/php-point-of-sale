@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="btn btn-primary pull-right mr-4" @click.prevent="createSupplier" :class="{'disabled': disabled}">
+        <button class="ui button secondary pull-right mr-4" @click.prevent="createSupplier" :class="{'disabled': disabled}">
             <i class="fa fa-plus"></i>
             Create Supplier
         </button>
@@ -47,7 +47,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" @click.prevent="closeModal">Close</button>
+                    <button type="button" class="ui button" @click.prevent="closeModal">Close</button>
                 </div>
                 </div>
             </div>

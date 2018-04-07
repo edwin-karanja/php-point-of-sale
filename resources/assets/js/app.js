@@ -23,7 +23,6 @@ Vue.use(VeeValidate, {
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('items-component', require('./components/ItemsComponent.vue'));
-Vue.component('add-item-component', require('./components/AddItemComponent.vue'));
 Vue.component('alert-component', require('./components/AlertComponent.vue'));
 Vue.component('adjust-qtty-component', require('./components/AdjustItemQuantityComponent.vue'));
 Vue.component('inventory-items-component', require('./components/InventoryItemsComponent.vue'));
@@ -55,7 +54,7 @@ Vue.component('supplier-contacts', require('./components/Supplier/SupplierContac
  * Helpers
  */
 Vue.component('paginate-component', require('./components/Helpers/PaginateComponent.vue'));
-Vue.component('excel-upload-component', require('./components/Helpers/UploadExcelComponent.vue'));
+// Vue.component('excel-upload-component', require('./components/Helpers/UploadExcelComponent.vue'));
 Vue.component('page-refresh-component', require('./components/Helpers/PageRefreshComponent.vue'));
 Vue.component('ellipsis-nav', require('./components/Helpers/EllipsisNavComponent.vue'));
 Vue.component('date-range-picker', require('./components/Helpers/DateRangePicker.vue'));

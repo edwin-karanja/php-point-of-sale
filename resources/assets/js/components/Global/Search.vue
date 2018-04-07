@@ -1,7 +1,7 @@
 <template>
     <div class="ui search" :class="[floated === 'right' ? 'pull-right' : 'pull-left']">
         <div class="ui tiny icon input">
-            <input class="prompt" type="text" :size="size" :placeholder="'Search ' + title | capitalize" v-model="searchText" @keyup="searchModule">
+            <input class="prompt" type="text" :size="size" @keyup.esc="clearSearch" :placeholder="'Search ' + title | capitalize" v-model="searchText" @keyup="searchModule">
             <i class="search icon"></i>
         </div>
     </div>
@@ -51,6 +51,11 @@
                 } else if (this.search === 'backend') {
                     this.$emit('search:backend', this.searchText);
                 }
+            },
+
+            clearSearch () {
+                this.searchText = '';
+                this.$emit('search:front', this.searchText);
             }
         },
 

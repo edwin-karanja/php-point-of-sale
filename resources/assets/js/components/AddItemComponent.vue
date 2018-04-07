@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="btn btn-primary pull-right mr-4" @click.prevent="addItem">
+        <button class="ui button secondary pull-right mr-4" @click.prevent="addItem">
             <i class="fa fa-plus"></i>
             Add Item
         </button>

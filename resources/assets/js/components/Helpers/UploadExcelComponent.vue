@@ -1,8 +1,8 @@
 <template>
     <div>
-        <button class="btn btn-primary pull-right mr-4" @click.prevent="openModal">
-            <svg class="icon-sm color-w" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M13 5.41V17a1 1 0 0 1-2 0V5.41l-3.3 3.3a1 1 0 0 1-1.4-1.42l5-5a1 1 0 0 1 1.4 0l5 5a1 1 0 1 1-1.4 1.42L13 5.4zM3 17a1 1 0 0 1 2 0v3h14v-3a1 1 0 0 1 2 0v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3z"/></svg>
-            Import
+        <button class="ui button secondary pull-right mr-4" @click.prevent="openModal">
+            <i class="fa fa-upload"></i>
+            Import Items
         </button>
 
         <!-- Modal -->
@@ -89,7 +89,7 @@
             },
 
             downloadSample () {
-                this.closeModal()
+                this.closeModal();
                 window.location.href = '/ajax/items/download_sample'
             },
 
@@ -98,13 +98,13 @@
             },
 
             openModal () {
-                $('#importModal').modal('show')
+                $('#importModal').modal('show');
             },
 
             closeModal () {
-                this.upload.file = null
-                this.upload.errors = []
-                $('#importModal').modal('hide')
+                this.upload.file = null;
+                this.upload.errors = [];
+                $('#importModal').modal('hide');
             },
 
             uploadExcel () {
@@ -112,15 +112,15 @@
                 var input = $('#file-upload');
                 this.upload.file = input.get(0).files[0];
 
-                let formData = new FormData()
-                formData.append('file', this.upload.file)
+                let formData = new FormData();
+                formData.append('file', this.upload.file);
 
                 axios.post(this.url, formData).then((response) => {
                     if (response.status === 200) {
-                        let data = response.data
-                        this.closeModal()
+                        let data = response.data;
+                        this.closeModal();
 
-                        eventHub.$emit('item-created')
+                        eventHub.$emit('item-created');
 
                         eventHub.$emit('success-alert', 'All your records have been successfully uploaded and inserted.');
                     }
@@ -130,12 +130,12 @@
                 }).catch((error) => {
                     this.uploading = false;
                     if (error.response.status === 422) {
-                        this.upload.errors = error.response.data.errors
+                        this.upload.errors = error.response.data.errors;
                         return
                     }
 
                     if (error.response.status === 500) {
-                         eventHub.$emit('error-alert', error.response.data.errorMsg)
+                         eventHub.$emit('error-alert', error.response.data.errorMsg);
                     }
                 })
             }

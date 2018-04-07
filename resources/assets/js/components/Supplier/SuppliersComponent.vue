@@ -4,25 +4,22 @@
             <div class="panel-body">
                 <div class="col-md-6">
                     <div class="input-group">
-                        <span class="input-group-addon primary">
-                            <i class="fa fa-search"></i>
-                        </span>
-
-                        <input type="text" class="form-control" v-model="searchText">
-
-                        <span class="input-group-addon primary">
-                            <i class="fa fa-search"></i>
-                        </span>
+                        <search title="Suppliers"
+                                v-on:search:front="updateResults"
+                                floated="left"
+                                size=50
+                        >
+                        </search>
                     </div>
                 </div>
 
                 <!-- <excel-upload-component :url="'/ajax/items/import'"></excel-upload-component> -->
 
-                <create-supplier-component v-if="response.createColumns"
+                <create-supplier v-if="response.createColumns"
                  :customColumns="response.customColumns"
                  :createColumns="response.createColumns"
                 >
-                </create-supplier-component>
+                </create-supplier>
             </div>
         </div>
 
@@ -64,8 +61,15 @@
 
 <script>
     import EventHub from '../../events.js';
+    import Search from '../Global/Search.vue';
+    import CreateSupplier from './CreateSupplierComponent';
 
     export default {
+        components: {
+            Search,
+            CreateSupplier
+        },
+
         data () {
             return {
                 response: {

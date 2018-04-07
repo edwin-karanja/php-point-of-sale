@@ -3,28 +3,23 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="fa fa-search"></i>
-                    </span>
-
-                    <input type="text" class="form-control" v-model="searchText">
-
-                    <span class="input-group-addon">
-                        <i class="fa fa-search"></i>
-                    </span>
-                </div>
+                <search title="Products"
+                        v-on:search:front="updateResults"
+                        floated="left"
+                        size=50
+                >
+                </search>
 
             </div>
 
-            <excel-upload-component :url="'/ajax/items/import'"></excel-upload-component>
+            <excel-upload :url="'/ajax/items/import'"></excel-upload>
 
-            <add-item-component v-if="response.createColumns"
+            <add-item v-if="response.createColumns"
                  :customColumns="response.customColumns"
                  :createColumns="response.createColumns"
                  :categories="response.categories"
             >
-            </add-item-component>
+            </add-item>
 
         </div>
     </div>
@@ -97,8 +92,17 @@
 
 <script>
     import eventHub from '../events.js';
+    import Search from './Global/Search.vue';
+    import AddItem from './AddItemComponent.vue';
+    import ExcelUpload from './Helpers/UploadExcelComponent';
 
     export default {
+        components: {
+            Search,
+            AddItem,
+            ExcelUpload
+        },
+
         data () {
             return {
                 loading: true,
@@ -139,6 +143,10 @@
 
                     eventHub.$emit('success-alert', 'Item deleted.')
                 })
+            },
+
+            updateResults (text) {
+                this.searchText = text;
             },
 
             trimLength (str, length = 40) {

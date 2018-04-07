@@ -2,15 +2,12 @@
     <div class="panel panel-default">
         <div class="panel-heading clear-fix">
             <div class="input-group">
-                <span class="input-group-addon primary">
-                    <i class="fa fa-search"></i>
-                </span>
-
-                <input type="text" class="form-control" placeholder="Search by name or quantity." @keyup.esc="clearSearch" v-model="searchText">
-
-                <span class="input-group-addon primary">
-                    <i class="fa fa-search"></i>
-                </span>
+                <search title="Products"
+                        v-on:search:front="updateResults"
+                        floated="left"
+                        size=40
+                >
+                </search>
             </div>
 
         </div>
@@ -54,9 +51,14 @@
 </template>
 
 <script type="text/babel">
-import eventHub from '../events.js'
+import eventHub from '../events.js';
+import Search from './Global/Search.vue';
 
     export default {
+        components: {
+            Search
+        },
+
         data () {
             return {
                 loading: true,
@@ -87,6 +89,10 @@ import eventHub from '../events.js'
                 eventHub.$emit('show-item-inventory', item)
 
                 // location.hash = '#item-' + item.id
+            },
+
+            updateResults (text) {
+                this.searchText = text;
             },
 
             clearSearch () {
