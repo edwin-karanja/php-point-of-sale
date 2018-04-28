@@ -28,7 +28,8 @@ class ItemController extends AjaxController
             'customColumns' => $this->setCustomColumnsNames(),
             'createColumns' => $this->setCreateColumns(),
             'displayColumns' => $this->setVisibleColumns(),
-            'categories' => Category::all()
+            'categories' => Category::all(),
+            'admin' => auth()->check() ? auth()->user()->isAdmin() : false
         ];
 
         return response()->json($data);
@@ -36,7 +37,7 @@ class ItemController extends AjaxController
 
     public function store(ItemCreateRequest $request)
     {
-        $data = $request->only(['name', 'decsription', 'selling_price', 'buying_price', 'reorder_level', 'category_id']);
+        $data = $request->only(['name', 'description', 'selling_price', 'buying_price', 'reorder_level', 'category_id']);
 
         $item = $this->builder->create($data);
 
@@ -49,7 +50,7 @@ class ItemController extends AjaxController
 
     public function update(Item $item, ItemUpdateRequest $request)
     {
-        $data = $request->only(['name', 'decsription', 'selling_price', 'buying_price', 'reorder_level', 'category_id']);
+        $data = $request->only(['name', 'description', 'selling_price', 'buying_price', 'reorder_level', 'category_id']);
 
         $item->update($data);
 
@@ -121,7 +122,7 @@ class ItemController extends AjaxController
     public function setVisibleColumns()
     {
         return [
-            'name', 'buying_price', 'selling_price', 'cat', 'qtty', 'updated_at_human'
+            'name', 'buying_price', 'selling_price', 'qtty', 'description'
         ];
     }
 

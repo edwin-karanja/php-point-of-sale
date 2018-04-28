@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
 
@@ -19,7 +19,45 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        &nbsp;<li class="{{ return_if(on_page('dashboard'), 'active') }}">
+                            <a href="/dashboard">@svg('icon-dashboard') Dashboard</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                                @svg('icon-briefcase')
+                                 Stocks <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/items">@svg('icon-briefcase') Stock Items</a>
+                                </li>
+                                <li>
+                                    <a href="/inventory">@svg('icon-trending-up') Manage Inventory</a>
+                                </li>
+                                <li>
+                                    <a href="/categories">@svg('icon-tag') Categories</a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="{{ return_if(on_page('customers'), 'active') }}">
+                            <a href="/customers">@svg('icon-user') Customers</a>
+                        </li>
+                        <li class="{{ return_if(on_page('suppliers'), 'active') }}">
+                            <a href="/suppliers">@svg('icon-user') Suppliers</a>
+                        </li>
+                        <li class="{{ return_if(on_page('sales'), 'active') }}">
+                            <a href="/sales">@svg('icon-cart') Sales</a>
+                        </li>
+                        <li class="{{ return_if(on_page('purchases'), 'active') }}">
+                            <a href="/purchases">@svg('icon-globe') Purchases</a>
+                        </li>
+                        <li class="{{ return_if(on_page('reports'), 'active') }}">
+                            <a href="/reports">@svg('icon-trending-up') Reports</a>
+                        </li>
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -35,6 +73,9 @@
                                 </a>
 
                                 <ul class="dropdown-menu">
+                                    <li class="{{ return_if(on_page('settings'), 'active') }}">
+                                        <a href="/settings">@svg('icon-cog') Settings</a>
+                                    </li>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();

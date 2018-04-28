@@ -49,22 +49,26 @@
                     <tr v-for="(item, index) in filteredItems" :key="item.id">
                         <td>{{ index + 1 }}</td>
                         <td v-for="column in response.displayColumns" :key="column">
-                            <span v-if="column == 'name'">
+                            <span v-if="column === 'name'">
                                 {{ trimLength(item[column]) }}
                             </span>
-                            <span v-else-if="column == 'qtty'" class="badge">
+                            <span v-else-if="column === 'qtty'" class="ui small circular grey label">
                                 {{ item[column] || 0 }}
                             </span>
-                            <span class="b" v-else-if="column == 'buying_price' || column == 'selling_price'">
+                            <span class="b" v-else-if="column === 'buying_price' || column === 'selling_price'">
                                 {{ parseInt(item[column]).toLocaleString('en-US') }}
+                            </span>
+                            <span v-else-if="column === 'description'">
+                                <i v-if="item[column]" class="fa fa-television tippy" style="margin-right: 10px" :title="item[column]"></i>
+                                {{ item[column] | strLenReduce }}
                             </span>
                             <span v-else>
                                 {{ item[column] || '-' }}
                             </span>
                         </td>
                         <td width="14%">
-                            <div class="to-hide">
-                                <a class="mr-4" href="#" @click.prevent="edit(item)">
+                            <div class="to-hide2">
+                                <a class="mr-4" href="#" @click.prevent="edit(item)" v-if="response.admin">
                                     <b>Edit</b>
                                 </a>
                                 |
@@ -72,7 +76,7 @@
                                     <b>Stocks</b>
                                 </a>
                                 |
-                                <a href="#" @click.prevent="destroy(item.id)">
+                                <a href="#" @click.prevent="destroy(item.id)" v-if="response.admin">
                                     <i @click="removeFromCart(item)" class="fa fa-trash-o dark-grey"></i>
                                 </a>
                             </div>
@@ -95,6 +99,7 @@
     import Search from './Global/Search.vue';
     import AddItem from './AddItemComponent.vue';
     import ExcelUpload from './Helpers/UploadExcelComponent';
+    import tippy from 'tippy.js';
 
     export default {
         components: {
@@ -111,7 +116,9 @@
                     columns: [],
                     createColumns: [],
                     customColumns: [],
-                    categories: []
+                    displayColumns: [],
+                    categories: [],
+                    admin: false
                 },
                 searchText: '',
                 sort: {
@@ -123,8 +130,8 @@
 
         methods: {
             getItems () {
-                axios.get('/ajax/items').then((response) => {
-                    this.loading = false
+                return axios.get('/ajax/items').then((response) => {
+                    this.loading = false;
                     this.response = response.data;
                 })
             },
@@ -149,43 +156,74 @@
                 this.searchText = text;
             },
 
+            setPopups () {
+                tippy('[title]', {
+                    arrow: true,
+                    animation: 'scale',
+                    flip: true,
+                    size: 'large',
+                    theme: 'dark'
+                });
+            },
+
             trimLength (str, length = 40) {
-                return  str.length > length ? str.substring(0, length - 3) + "..." : str.substring(0, length)
+                return  str.length > length ? str.substring(0, length - 3) + "..." : str.substring(0, length);
             }
         },
 
         computed: {
             filteredItems () {
-                let data = this.response.items
+                let data = this.response.items;
 
                 data = data.filter((row) => {
                     return Object.keys(row).some((key) => {
                         return String(row[key]).toLowerCase().indexOf(this.searchText.toLowerCase()) > -1
                     })
-                })
+                });
 
                 if (this.sort.key) {
                     data = _.orderBy(data, (i) => {
-                        let value = i[this.sort.key]
+                        let value = i[this.sort.key];
 
                         if (!isNaN(parseFloat(value))) {
-                            return parseFloat(value)
+                            return parseFloat(value);
                         }
 
-                        return String(i[this.sort.key]).toLowerCase()
-                    }, this.sort.order)
+                        return String(i[this.sort.key]).toLowerCase();
+                    }, this.sort.order);
                 }
 
                 return data
             }
         },
 
+        filters: {
+            capitalize: function (value) {
+                if (!value) return '';
+
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            },
+
+            strLenReduce: function (str) {
+                if ( str && str.length > 25) {
+                    return str.substring(0,24) + '...';
+                }
+
+                return str;
+            }
+        },
+
         mounted() {
-            this.getItems()
+            this.getItems().then(() => {
+                this.setPopups();
+            });
 
             eventHub.$on('item-created', (() => {
-                this.getItems()
-            }))
+                this.getItems().then(() => {
+                    this.setPopups();
+                });
+            }));
         }
     }
 </script>
@@ -217,5 +255,9 @@
     .to-hide {
         display: none;
         font-size: 14px;
+    }
+
+    .light {
+        background-color: ghostwhite;
     }
 </style>

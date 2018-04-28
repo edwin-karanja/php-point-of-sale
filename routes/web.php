@@ -158,6 +158,14 @@ Route::group(['middleware' => ['auth']], function () {
         });
     });
 
+
+    /**
+     * Reports routes
+     */
+    Route::group(['prefix' => 'reports', 'as' => 'reports.', 'namespace' => 'Reports'], function () {
+       Route::get('reports', 'ReportsController@index')->name('index');
+    });
+
     /**
      * Purchases
      */

@@ -3,10 +3,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-2">
-            @include('layouts.partials.side_nav')
-        </div>
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading clearfix">
                     <b>@yield('page-title')</b>
