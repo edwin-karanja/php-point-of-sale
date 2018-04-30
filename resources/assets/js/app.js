@@ -1,3 +1,9 @@
+/**
+ * Import our router.
+ */
+import router from './router';
+import store from './vuex';
+
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -9,11 +15,11 @@ require('./bootstrap');
 
 
 window.Vue = require('vue');
-import VeeValidate from 'vee-validate';
+// import VeeValidate from 'vee-validate';
 
-Vue.use(VeeValidate, {
-    errorBagName: 'vErrors'
-});
+// Vue.use(VeeValidate, {
+//     errorBagName: 'vErrors'
+// });
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -67,24 +73,15 @@ Vue.component('datatables', require('./components/Helpers/DataTableComponent.vue
 Vue.component('customers-component', require('./components/Customer/CustomersComponent.vue'));
 Vue.component('customer-account-receipts-component', require('./components/Customer/AccountReceiptsComponent.vue'));
 Vue.component('customer-account-overview-component', require('./components/Customer/AccountOverviewComponent.vue'));
-// Vue.component('customer-monthly-sales', require('./components/Customer/CustomerMonthlySales.vue'));
 Vue.component('customer-profile', require('./components/Customer/CustomerProfile.vue'));
 
 
+Vue.component('app', require('./components/App.vue'));
+Vue.component('navigation', require('./components/Navigation.vue'));
+
+
 const app = new Vue({
-
     el: '#app',
-    data: {},
-    created: function () {
-        var eventHub = require('./events.js')
-
-        window.addEventListener('keyup', function(event) {
-            eventHub.$emit('key-pressed', event)
-
-            // If down arrow was pressed....
-            if (event.keyCode == 40) {
-
-            }
-        });
-    }
+    router: router,
+    store: store
 });
