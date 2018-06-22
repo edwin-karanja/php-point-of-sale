@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <table class="table table-responsive" v-if="response.items.length && !loading">
+            <table class="table table-responsive" v-if="filteredItems && !loading">
                 <thead>
                     <tr>
                         <th>##</th>
@@ -45,12 +45,14 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr v-for="(item, index) in filteredItems" :key="item.id">
+                <tbody v-for="(group, name) in filteredItems" :key="name">
+                    <tr class="group"><td colspan="12">{{ name }}</td></tr>
+                    <tr v-for="(item, index) in group" :key="item.id">
                         <td>{{ index + 1 }}</td>
-                        <td v-for="column in response.displayColumns" :key="column">
+                        <td v-for="column in response.displayColumns" :key="column"
+                            :class="{'col-sm-4': column === 'name', 'col-sm-4' : column === 'description'}">
                             <span v-if="column === 'name'">
-                                {{ trimLength(item[column]) }}
+                                {{ item[column] }}
                             </span>
                             <span v-else-if="column === 'qtty'" class="ui small circular grey label">
                                 {{ item[column] || 0 }}
@@ -60,7 +62,7 @@
                             </span>
                             <span v-else-if="column === 'description'">
                                 <i v-if="item[column]" class="fa fa-television tippy" style="margin-right: 10px" :title="item[column]"></i>
-                                {{ item[column] | strLenReduce }}
+                                {{ item[column]  }}
                             </span>
                             <span v-else>
                                 {{ item[column] || '-' }}
@@ -164,36 +166,31 @@
                     size: 'large',
                     theme: 'dark'
                 });
-            },
-
-            trimLength (str, length = 40) {
-                return  str.length > length ? str.substring(0, length - 3) + "..." : str.substring(0, length);
             }
         },
 
         computed: {
             filteredItems () {
                 let data = this.response.items;
+                let search = this.searchText.toLowerCase();
 
-                data = data.filter((row) => {
-                    return Object.keys(row).some((key) => {
-                        return String(row[key]).toLowerCase().indexOf(this.searchText.toLowerCase()) > -1
-                    })
-                });
+                let dt = {};
+                for (let group in data) {
+                   _.forEach(data[group], function (){
 
-                if (this.sort.key) {
-                    data = _.orderBy(data, (i) => {
-                        let value = i[this.sort.key];
+                     dt[group] = data[group].filter((row) => {
+                       return Object.keys(row).some((key) => {
+                         return String(row[key]).toLowerCase().indexOf(search) > -1
+                       })
+                     });
+                   });
 
-                        if (!isNaN(parseFloat(value))) {
-                            return parseFloat(value);
-                        }
-
-                        return String(i[this.sort.key]).toLowerCase();
-                    }, this.sort.order);
+                  if (_.isEmpty(dt[group])) {
+                    delete dt[group];
+                  }
                 }
 
-                return data
+                return dt
             }
         },
 
@@ -233,10 +230,6 @@
         background-color: #F5F8FC;
     }
 
-    tr:hover > td > div.to-hide {
-        display: inline;
-    }
-
     .table > thead > tr > th {
         font-size: 14px;
         font-weight: semibold;
@@ -245,19 +238,12 @@
         background-color: #F5F8FC;
     }
 
-    .table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
-        padding: 15px;
-        line-height: 1.6;
-        vertical-align: top;
-        border-top: 1px solid #ddd;
-    }
-
-    .to-hide {
-        display: none;
-        font-size: 14px;
-    }
-
     .light {
         background-color: ghostwhite;
+    }
+
+    tr.group,
+    tr.group:hover {
+        background-color: #ddd !important;
     }
 </style>

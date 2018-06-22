@@ -14,13 +14,50 @@
                     <h4 class="modal-title" id="myModalLabel" v-html="title"></h4>
                 </div>
                 <div class="modal-body">
-                    <form id="add-item" class="form-horizontal" @submit.prevent="store">
+                    <form id="add-item"  @submit.prevent="store">
                         <div class="row">
-                                <div class="form-group" v-for="column in createColumns" :class="{'has-error' : creating.errors[column]}" :key="column">
-                                    <label :for="column" id="lbl" class="col-md-3 control-label">{{ customColumns[column] || column }}</label>
+                            <div class="col-md-6">
+                                <div class="form-group" v-for="column in columnOneFields" :class="{'has-error' : creating.errors[column]}" :key="column">
+                                    <span v-if="column === 'name'">
+                                        <label :for="column" id="lbl" class="control-label">{{ customColumns[column] || column }}</label>
 
-                                    <div class="col-md-8">
-                                        <div v-if="column === 'category_id'" class="input-group">
+                                        <input :id="column" type="text" class="form-control" v-model="creating.form[column]" autofocus>
+                                    </span>
+
+                                    <span v-if="column === 'description'">
+                                        <label :for="column" id="lbl" class="control-label">{{ customColumns[column] || column }}</label>
+
+                                        <textarea class="form-control" :id="column" cols="10" rows="7" v-model="creating.form[column]"></textarea>
+                                    </span>
+
+                                    <span class="help-block" v-if="creating.errors[column]">
+                                        <strong>{{ creating.errors[column][0] }}</strong>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" v-for="column in columnTwoFields" :class="{'has-error' : creating.errors[column]}" :key="column">
+                                    <span v-if="column === 'buying_price'">
+                                        <label :for="column" id="lbl" class="control-label">{{ customColumns[column] || column }}</label>
+
+                                        <input :id="column" type="text" class="form-control" v-model="creating.form[column]" autofocus>
+                                    </span>
+
+                                    <span v-if="column === 'selling_price'">
+                                        <label :for="column" id="lbl" class="control-label">{{ customColumns[column] || column }}</label>
+
+                                        <input :id="column" type="text" class="form-control" v-model="creating.form[column]" autofocus>
+                                    </span>
+
+                                    <span v-if="column === 'qtty'">
+                                        <label :for="column" id="lbl" class="control-label">{{ customColumns[column] || column }}</label>
+
+                                        <input :id="column" type="text" class="form-control" v-model="creating.form[column]" autofocus>
+                                    </span>
+
+                                    <span v-if="column === 'category_id'">
+                                        <label :for="column" id="lbl" class="control-label">{{ customColumns[column] || column }}</label>
+                                        <div class="input-group">
                                             <select :id="column" class="form-control" v-model="creating.form[column]">
                                                 <option v-for="(category, index) in categories" :value="category.id" :key="category.id">{{ index+1 }}. {{ category.name }}</option>
                                             </select>
@@ -28,20 +65,17 @@
                                                 <i class="fa fa-plus hand"></i>
                                             </span>
                                         </div>
+                                    </span>
 
-                                        <textarea v-else-if="column === 'description'" class="form-control" :id="column" cols="10" rows="5" v-model="creating.form[column]"></textarea>
-
-                                        <input v-else :id="column" type="text" class="form-control" v-model="creating.form[column]" autofocus>
-
-                                        <span class="help-block" v-if="creating.errors[column]">
-                                            <strong>{{ creating.errors[column][0] }}</strong>
-                                        </span>
-                                    </div>
+                                    <span class="help-block" v-if="creating.errors[column]">
+                                        <strong>{{ creating.errors[column][0] }}</strong>
+                                    </span>
                                 </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-3">
+                            <div class="">
                                 <button type="submit" class="ui button primary">
                                     <span v-if="!creating.active">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -155,6 +189,16 @@
             }
         },
 
+        computed: {
+            columnOneFields () {
+              return _.slice(this.createColumns, 0, 2);
+            },
+
+            columnTwoFields () {
+                return _.slice(this.createColumns, 2);
+            }
+        },
+
         mounted() {
             eventHub.$on('editing-item', this.editItem);
         }
@@ -165,10 +209,5 @@
 <style scoped>
     .hand {
         cursor: pointer
-    }
-
-    #lbl {
-        text-align: left;
-        padding-left: 40px;
     }
 </style>

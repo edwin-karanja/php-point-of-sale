@@ -23,7 +23,7 @@ class ItemController extends AjaxController
     public function index()
     {
         $data = [
-            'items' => $this->builder->updatesFirst()->with(['category', 'quantity'])->get(),
+            'items' => Item::getGroupedItems(),
             'columns' => array_values($this->getDisplayableColumns()),
             'customColumns' => $this->setCustomColumnsNames(),
             'createColumns' => $this->setCreateColumns(),
@@ -115,7 +115,7 @@ class ItemController extends AjaxController
     public function setCreateColumns()
     {
         return [
-            'name', 'description', 'buying_price', 'selling_price', 'reorder_level', 'category_id', 'qtty'
+            'name', 'description', 'buying_price', 'selling_price', 'category_id', 'qtty'
         ];
     }
 

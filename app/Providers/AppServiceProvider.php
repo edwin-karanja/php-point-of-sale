@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Item;
+use App\Models\Quantity;
 use App\Models\Setting;
+use App\Observers\ItemObserver;
+use App\Observers\QuantityObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Pagination\Paginator;
@@ -22,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
         View::composer('layouts.app', function ($view) {
             $view->with('company', Setting::first());
         });
+
+        Item::observe(ItemObserver::class);
+        Quantity::observe(QuantityObserver::class);
     }
 
     /**

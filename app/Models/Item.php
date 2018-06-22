@@ -97,4 +97,14 @@ class Item extends Model
             return $this->with('category', 'quantity')->get();
         });
     }
+
+    public static function getGroupedItems()
+    {
+        return static::updatesFirst()
+            ->with(['category', 'quantity'])
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->category->name ?? 'Ungrouped';
+            });
+    }
 }
