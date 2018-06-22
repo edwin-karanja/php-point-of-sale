@@ -46,7 +46,7 @@
 
             </table>
             <div class="well well-sm dropdown-content" v-if="this.searchText && filteredItems.length == 0">
-                No results
+                No products found
             </div>
         </div>
     </div>

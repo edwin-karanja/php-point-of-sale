@@ -17,8 +17,9 @@
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
+                    @if (auth()->check())
+                        <!-- Left Side Of Navbar -->
+                        <ul class="nav navbar-nav">
                         &nbsp;<li class="{{ return_if(on_page('dashboard'), 'active') }}">
                             <a href="/dashboard">@svg('icon-dashboard') Dashboard</a>
                         </li>
@@ -42,23 +43,38 @@
                         </li>
 
 
-                        <li class="{{ return_if(on_page('customers'), 'active') }}">
-                            <a href="/customers">@svg('icon-user') Customers</a>
-                        </li>
-                        <li class="{{ return_if(on_page('suppliers'), 'active') }}">
-                            <a href="/suppliers">@svg('icon-user') Suppliers</a>
-                        </li>
-                        <li class="{{ return_if(on_page('sales'), 'active') }}">
-                            <a href="/sales">@svg('icon-cart') Sales</a>
-                        </li>
-                        <li class="{{ return_if(on_page('purchases'), 'active') }}">
-                            <a href="/purchases">@svg('icon-globe') Purchases</a>
-                        </li>
-                        <li class="{{ return_if(on_page('reports'), 'active') }}">
-                            <a href="/reports">@svg('icon-trending-up') Reports</a>
-                        </li>
+                        @if (config('pos.modules.customers'))
+                            <li class="{{ return_if(on_page('customers'), 'active') }}">
+                                <a href="/customers">@svg('icon-user') Customers</a>
+                            </li>
+                        @endif
+
+                        @if (config('pos.modules.suppliers'))
+                            <li class="{{ return_if(on_page('suppliers'), 'active') }}">
+                                <a href="/suppliers">@svg('icon-user') Suppliers</a>
+                            </li>
+                        @endif
+
+                        @if (config('pos.modules.sales'))
+                            <li class="{{ return_if(on_page('sales'), 'active') }}">
+                                <a href="/sales">@svg('icon-cart') Sales</a>
+                            </li>
+                        @endif
+
+                        @if (config('pos.modules.purchases'))
+                            <li class="{{ return_if(on_page('purchases'), 'active') }}">
+                                <a href="/purchases">@svg('icon-globe') Purchases</a>
+                            </li>
+                        @endif
+
+                        @if (config('pos.modules.reports'))
+                            <li class="{{ return_if(on_page('reports'), 'active') }}">
+                                <a href="/reports">@svg('icon-trending-up') Reports</a>
+                            </li>
+                        @endif
 
                     </ul>
+                    @endif
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
@@ -74,7 +90,7 @@
 
                                 <ul class="dropdown-menu">
                                     <li class="{{ return_if(on_page('settings'), 'active') }}">
-                                        <a href="/settings">@svg('icon-cog') Settings</a>
+                                        <a href="/settings/store">@svg('icon-cog') Settings</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('logout') }}"

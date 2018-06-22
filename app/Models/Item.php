@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Inventory;
+use Illuminate\Support\Facades\Cache;
 
 class Item extends Model
 {
@@ -78,5 +79,22 @@ class Item extends Model
     public function inventory()
     {
         return $this->hasMany(Inventory::class)->orderBy('trans_date', 'desc');
+    }
+
+    public function cacheKey()
+    {
+        return sprintf(
+            "%s/%s-%s",
+            $this->getTable(),
+            $this->getKey(),
+            $this->updated_at->timestamp
+        );
+    }
+
+    public function getCachedItems()
+    {
+        return Cache::remember($this->cacheKey() . ':items', 15, function () {
+            return $this->with('category', 'quantity')->get();
+        });
     }
 }

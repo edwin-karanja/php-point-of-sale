@@ -3,7 +3,7 @@
 @section('page-title')
     Purchases/Receivings
 
-    <a href="{{ route('sales.recent') }}" class="pull-right">
+    <a href="#" class="pull-right">
         <i class="fa fa-bars"></i>
         <b>Recent Purchases</b>
     </a>

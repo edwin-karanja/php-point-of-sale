@@ -34,21 +34,24 @@
                 </a>
             </li>
 
-            {{-- Roles Settings --}}
-            <li class="{{ return_if(on_page('settings/roles'), 'active') }}">
-                <a href="/settings/roles">
-                    <i class="fa fa-cogs"></i>
-                    Roles
-                </a>
-            </li>
 
-            {{-- Permissions Settings --}}
-            <li class="{{ return_if(on_page('settings/permissions'), 'active') }}">
-                <a href="/settings/permissions">
-                    <i class="fa fa-cogs"></i>
-                    Permissions
-                </a>
-            </li>
+            @if (config('pos.modules.settings.roles_permissions'))
+                {{-- Roles Settings --}}
+                <li class="{{ return_if(on_page('settings/roles'), 'active') }}">
+                    <a href="/settings/roles">
+                        <i class="fa fa-cogs"></i>
+                        Roles
+                    </a>
+                </li>
+
+                {{-- Permissions Settings --}}
+                <li class="{{ return_if(on_page('settings/permissions'), 'active') }}">
+                    <a href="/settings/permissions">
+                        <i class="fa fa-cogs"></i>
+                        Permissions
+                    </a>
+                </li>
+            @endif
 
         </ul>
     </div>
