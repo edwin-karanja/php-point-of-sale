@@ -2,6 +2,12 @@
 
 /** Products */
 Route::get('/items', 'ItemController@index');
+Route::get('/items/{item}/edit', 'ItemController@getItem');
+Route::post('/items/{item}/edit', 'ItemController@update')->name('item.update');
+Route::get('/items/{item}/audit', 'ItemController@auditItem');
+Route::get('/items/{item}/suppliers', 'ItemController@getSuppliers');
+Route::get('/items/{item}/suppliers/show', 'ItemSuppliersController@index');
+Route::post('/items/{item}/suppliers/attach', 'ItemSuppliersController@store');
 
 /** Inventory */
 Route::get('/inventory', 'InventoryController@index');

@@ -79,8 +79,8 @@
     .alert-flash {
         position: absolute;
         left: 25px;
-        bottom: 25px;
-        width: 400px;
+        bottom: 10px;
+        width: 50%;
         z-index: 99;
     }
 </style>

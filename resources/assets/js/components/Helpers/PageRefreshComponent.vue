@@ -16,6 +16,8 @@
             keepTokenAlive () {
                 axios.post('/keep-token-alive').then((response) => {
                     console.log('kept alive..') //@TODO remove this on going to production
+                }).catch((error) => {
+                    location.replace('/login');
                 })
             }
         },

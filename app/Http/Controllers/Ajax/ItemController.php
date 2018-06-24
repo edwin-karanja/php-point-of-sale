@@ -44,7 +44,8 @@ class ItemController extends AjaxController
         event(new QuantityModified($item, $request->user(), $request->qtty));
 
         return response()->json([
-            'success' => true
+            'success' => true,
+            'data' => $item->load(['category', 'quantity'])
         ]);
     }
 
@@ -59,7 +60,8 @@ class ItemController extends AjaxController
         event(new QuantityModified($item->fresh(), $request->user(), $request->qtty, $oldQtty));
 
         return response()->json([
-            'success' => true
+            'success' => true,
+            'data' => $item->load(['category', 'quantity'])
         ]);
     }
 

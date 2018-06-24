@@ -41,19 +41,18 @@ class SupplierController extends AjaxController
         return [
             'name' => 'Name',
             'description' => 'Description',
-            'last_supply_date' => 'Last Supply Date',
-            'total_supplied_amount' => 'Total supplied',
+            'contact_info' => 'Contact Info',
             'vat_pin' => 'Vat PIN'
         ];
     }
 
     protected function setCreateColumns()
     {
-        return ['name', 'vat_pin', 'description'];
+        return ['name', 'contact_info', 'vat_pin', 'description'];
     }
 
     protected function setVisibleColumns()
     {
-        return ['name', 'description', 'last_supply_date', 'total_supplied_amount', 'vat_pin'];
+        return ['name', 'description', 'contact_info', 'vat_pin'];
     }
 }

@@ -22,6 +22,7 @@ class CreateItemsTable extends Migration
             $table->decimal('selling_price', 12, 2)->nullable()->default('0');
             $table->integer('reorder_level')->unsigned()->nullable();
             $table->string('picture')->nullable();
+            $table->tinyInteger('show_on_listing')->default(1);
 
             $table->softDeletes();
             $table->timestamps();

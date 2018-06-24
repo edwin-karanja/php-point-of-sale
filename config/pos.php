@@ -14,6 +14,7 @@ return [
         'products' => true,
         'inventory' => true,
         'customers' => false,
+        'suppliers' => true,
         'purchases' => true,
         'sales' => false,
         'reports' => false,

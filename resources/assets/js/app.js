@@ -47,8 +47,8 @@ Vue.component('purchases-totals-component', require('./components/Purchases/Tota
  */
 Vue.component('suppliers-component', require('./components/Supplier/SuppliersComponent.vue'));
 Vue.component('create-supplier-component', require('./components/Supplier/CreateSupplierComponent.vue'));
-Vue.component('supplier-bankings', require('./components/Supplier/SupplierBankings.vue'));
 Vue.component('supplier-contacts', require('./components/Supplier/SupplierContacts.vue'));
+Vue.component('item-suppliers', require('./components/Supplier/AddSupplierToItem.vue'));
 
 /**
  * Helpers

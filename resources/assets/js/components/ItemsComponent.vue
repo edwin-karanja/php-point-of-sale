@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <table class="table table-responsive" v-if="filteredItems && !loading">
+            <table class="table table-responsive" v-if="dataExists && !loading">
                 <thead>
                     <tr>
                         <th>##</th>
@@ -52,7 +52,9 @@
                         <td v-for="column in response.displayColumns" :key="column"
                             :class="{'col-sm-4': column === 'name', 'col-sm-4' : column === 'description'}">
                             <span v-if="column === 'name'">
-                                {{ item[column] }}
+                                <a :href="'/items/' + item.id + '/edit'">
+                                    {{ item[column] }}
+                                </a>
                             </span>
                             <span v-else-if="column === 'qtty'" class="ui small circular grey label">
                                 {{ item[column] || 0 }}
@@ -113,6 +115,7 @@
         data () {
             return {
                 loading: true,
+                dataExists: false,
                 response: {
                     items: [],
                     columns: [],
@@ -135,6 +138,7 @@
                 return axios.get('/ajax/items').then((response) => {
                     this.loading = false;
                     this.response = response.data;
+                    this.dataExists = true;
                 })
             },
 

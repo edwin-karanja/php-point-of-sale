@@ -23,6 +23,20 @@ window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+/**
+ * Add a response interceptor to logout from the system should the session expire
+ */
+window.axios.interceptors.response.use(function (response) {
+  // Do something with response data
+  return response;
+}, function (error) {
+  // Do something with response error
+  if (error.response.status === 419) {
+    location.reload();
+  }
+  return Promise.reject(error);
+});
+
 import Chart from 'chart.js';
 
 

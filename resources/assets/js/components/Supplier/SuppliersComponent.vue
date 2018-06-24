@@ -5,15 +5,13 @@
                 <div class="col-md-6">
                     <div class="input-group">
                         <search title="Suppliers"
-                                v-on:search:front="updateResults"
+                                v-on:search:front=""
                                 floated="left"
                                 size=50
                         >
                         </search>
                     </div>
                 </div>
-
-                <!-- <excel-upload-component :url="'/ajax/items/import'"></excel-upload-component> -->
 
                 <create-supplier v-if="response.createColumns"
                  :customColumns="response.customColumns"
@@ -46,6 +44,15 @@
                                 <span v-else>
                                     {{ supplier[column] || '-' }}
                                 </span>
+                            </td>
+                            <td>
+                                <a class="mr-4" href="#" @click.prevent="edit(supplier)">
+                                    <b>Edit</b>
+                                </a>
+                                |
+                                <a href="#" @click.prevent="destroy(supplier.id)">
+                                    Delete <i class="fa fa-trash-o red"></i>
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -92,6 +99,14 @@
 
             createSupplier () {
                 EventHub.$emit('create-supplier')
+            },
+
+            edit (supplier) {
+
+            },
+
+            destroy (id) {
+
             }
         },
 
@@ -102,3 +117,9 @@
         }
     }
 </script>
+
+<style scoped>
+    .red {
+        color: #cc1136;
+    }
+</style>

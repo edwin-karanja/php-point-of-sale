@@ -142,30 +142,30 @@
                     return;
                 }
 
-                axios.post('/ajax/items', this.creating.form).then(() => {
+                axios.post('/ajax/items', this.creating.form).then((response) => {
                     this.closeModal()
 
-                    eventHub.$emit('item-created')
+                    eventHub.$emit('item-created');
 
-                    eventHub.$emit('success-alert', "New item added.")
+                    eventHub.$emit('success-alert', "New item added.");
                     this.creating.active = false
 
                 }).catch((error) => {
                     if (error.response.status === 422) {
-                        this.creating.active = false
-                        this.creating.errors = error.response.data.errors
+                        this.creating.active = false;
+                        this.creating.errors = error.response.data.errors;
                     }
                 })
             },
 
             update () {
                 let id = this.editing.id;
-                axios.post('/ajax/items/' + id, this.creating.form).then(() => {
-                    this.creating.active = false
-                    this.editing.id = null
-                    this.closeModal()
+                axios.post('/ajax/items/' + id, this.creating.form).then((response) => {
+                    this.creating.active = false;
+                    this.editing.id = null;
+                    this.closeModal();
 
-                    eventHub.$emit('item-created')
+                    eventHub.$emit('item-created');
 
                     eventHub.$emit('success-alert', "Item updated.")
 
