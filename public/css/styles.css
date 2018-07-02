@@ -291,3 +291,7 @@ button {
 .modal-content {
   border-top: 8px solid #06B05B;
 }
+
+.fs-24 {
+  font-size: 24px;
+}

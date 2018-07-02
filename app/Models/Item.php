@@ -26,7 +26,7 @@ class Item extends Model implements AuditableContract
     ];
 
     protected $fillable = [
-        'name', 'description', 'selling_price', 'buying_price', 'reorder_level', 'category_id'
+        'name', 'description', 'selling_price', 'buying_price', 'reorder_level', 'category_id', 'show_on_listing'
     ];
 
     protected $appends = [

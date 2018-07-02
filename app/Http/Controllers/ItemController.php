@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateItem;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Item;
+use App\Models\Supplier;
 
 class ItemController extends Controller
 {
@@ -29,7 +30,7 @@ class ItemController extends Controller
             'selling_price' => $r->selling_price,
             'reorder_level' => $r->reorder_level,
             'category_id' => $r->category_id,
-            'show_on_listing' => $r->show_on_listing == 'on' ? 1 : 0
+            'show_on_listing' => $r->show_on_listing === 'on' ? 1 : 0
         ]);
 
         return redirect()->back()->withSuccess('Item details updated');
@@ -43,6 +44,8 @@ class ItemController extends Controller
 
     public function getSuppliers(Item $item)
     {
-        return view('items.suppliers', compact('item'));
+        $suppliers = Supplier::all();
+
+        return view('items.suppliers', compact('item', 'suppliers'));
     }
 }

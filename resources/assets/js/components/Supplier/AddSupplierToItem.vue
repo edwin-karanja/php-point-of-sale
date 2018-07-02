@@ -34,7 +34,7 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="ui button" @click.prevent="closeModal">Close</button>
+                        <button type="button" class="btn btn-default" @click.prevent="closeModal">Close</button>
                     </div>
                 </div>
             </div>
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+    import EventHub from '../../events';
+
     export default {
       props: {
         item: {
@@ -69,6 +71,9 @@
             this.suppliers = _.remove(this.suppliers, function(s) {
               return s.id !== supplier.id;
             })
+
+            // Add to view page
+            EventHub.$emit('supplier:attached', supplier);
           })
         },
 

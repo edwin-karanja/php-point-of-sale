@@ -27,6 +27,8 @@ Vue.component('alert-component', require('./components/AlertComponent.vue'));
 Vue.component('adjust-qtty-component', require('./components/AdjustItemQuantityComponent.vue'));
 Vue.component('inventory-items-component', require('./components/InventoryItemsComponent.vue'));
 Vue.component('inventory-history-component', require('./components/InventoryHistoryComponent.vue'));
+Vue.component('item-suppliers-list', require('./components/Items/SuppliersList.vue'));
+Vue.component('typeahead-suppliers', require('./components/Items/SuppliersTypeahead.vue'));
 
 /**
  * Sales Components

@@ -75,7 +75,7 @@
                 <div class="form-group">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="show_on_listing" {{ old('show_on_listing') ? 'checked' : '' }}> Show on Listing
+                            <input type="checkbox" name="show_on_listing" {{ old('show_on_listing', $item->show_on_listing) ? 'checked' : '' }}> Show on Listing
                         </label>
                     </div>
                 </div>
@@ -86,7 +86,6 @@
 
         <div class="form-group">
             <button type="submit" class="btn btn-primary">
-                <i class="fa fa-save"></i>
                 Update Item
             </button>
         </div>

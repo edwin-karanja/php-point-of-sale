@@ -13,10 +13,10 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     {{-- <link href="{{ asset('css/daterangepicker.css') }}" rel="stylesheet"> --}}
-     <link href="{{ asset('css/semantic.min.css') }}" rel="stylesheet">
+     <!-- <link href="{{ asset('css/semantic.min.css') }}" rel="stylesheet"> -->
 
     {{-- Semantic UI Buttons --}}
-    {{--<link href="{{ asset('css/semantic/button.css') }}" rel="stylesheet"> --}}
+    <!-- {{--<link href="{{ asset('css/semantic/button.css') }}" rel="stylesheet"> --}} -->
 
 
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">

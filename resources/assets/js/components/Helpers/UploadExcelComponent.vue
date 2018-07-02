@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="ui button secondary pull-right mr-4" @click.prevent="openModal">
+        <button class="btn btn-success pull-right mr-4" @click.prevent="openModal">
             <i class="fa fa-upload"></i>
             Import Items
         </button>
