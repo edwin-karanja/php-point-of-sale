@@ -52,7 +52,7 @@
                         <td v-for="column in response.displayColumns" :key="column"
                             :class="{'col-sm-4': column === 'name', 'col-sm-4' : column === 'description'}">
                             <span v-if="column === 'name'">
-                                <a :href="'/items/' + item.id + '/edit'">
+                                <a :href="'/items/' + item.id ">
                                     {{ item[column] }}
                                 </a>
                             </span>

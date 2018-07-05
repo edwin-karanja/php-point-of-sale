@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 263);
+/******/ 	return __webpack_require__(__webpack_require__.s = 264);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1911,7 +1911,7 @@ function loadLocale(name) {
         try {
             oldLocale = globalLocale._abbr;
             var aliasedRequire = require;
-            __webpack_require__(412)("./" + name);
+            __webpack_require__(416)("./" + name);
             getSetGlobalLocale(oldLocale);
         } catch (e) {}
     }
@@ -4603,7 +4603,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)(module)))
 
 /***/ }),
 /* 1 */
@@ -6438,7 +6438,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(317)("./" + name);
+            __webpack_require__(318)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -9073,7 +9073,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)(module)))
 
 /***/ }),
 /* 2 */
@@ -9191,10 +9191,10 @@ module.exports = function normalizeComponent (
 "use strict";
 
 
-module.exports = __webpack_require__(14);
-module.exports.easing = __webpack_require__(289);
-module.exports.canvas = __webpack_require__(290);
-module.exports.options = __webpack_require__(291);
+module.exports = __webpack_require__(15);
+module.exports.easing = __webpack_require__(290);
+module.exports.canvas = __webpack_require__(291);
+module.exports.options = __webpack_require__(292);
 
 
 /***/ }),
@@ -9533,7 +9533,7 @@ function applyToTag (styleElement, obj) {
 
 
 var bind = __webpack_require__(18);
-var isBuffer = __webpack_require__(270);
+var isBuffer = __webpack_require__(271);
 
 /*global toString:true*/
 
@@ -9965,10 +9965,10 @@ module.exports = Element;
 
 
 module.exports = {};
-module.exports.Arc = __webpack_require__(297);
-module.exports.Line = __webpack_require__(298);
-module.exports.Point = __webpack_require__(299);
-module.exports.Rectangle = __webpack_require__(300);
+module.exports.Arc = __webpack_require__(298);
+module.exports.Line = __webpack_require__(299);
+module.exports.Point = __webpack_require__(300);
+module.exports.Rectangle = __webpack_require__(301);
 
 
 /***/ }),
@@ -10258,480 +10258,6 @@ module.exports = g;
 
 /***/ }),
 /* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * @namespace Chart.helpers
- */
-var helpers = {
-	/**
-	 * An empty function that can be used, for example, for optional callback.
-	 */
-	noop: function() {},
-
-	/**
-	 * Returns a unique id, sequentially generated from a global variable.
-	 * @returns {Number}
-	 * @function
-	 */
-	uid: (function() {
-		var id = 0;
-		return function() {
-			return id++;
-		};
-	}()),
-
-	/**
-	 * Returns true if `value` is neither null nor undefined, else returns false.
-	 * @param {*} value - The value to test.
-	 * @returns {Boolean}
-	 * @since 2.7.0
-	 */
-	isNullOrUndef: function(value) {
-		return value === null || typeof value === 'undefined';
-	},
-
-	/**
-	 * Returns true if `value` is an array, else returns false.
-	 * @param {*} value - The value to test.
-	 * @returns {Boolean}
-	 * @function
-	 */
-	isArray: Array.isArray ? Array.isArray : function(value) {
-		return Object.prototype.toString.call(value) === '[object Array]';
-	},
-
-	/**
-	 * Returns true if `value` is an object (excluding null), else returns false.
-	 * @param {*} value - The value to test.
-	 * @returns {Boolean}
-	 * @since 2.7.0
-	 */
-	isObject: function(value) {
-		return value !== null && Object.prototype.toString.call(value) === '[object Object]';
-	},
-
-	/**
-	 * Returns `value` if defined, else returns `defaultValue`.
-	 * @param {*} value - The value to return if defined.
-	 * @param {*} defaultValue - The value to return if `value` is undefined.
-	 * @returns {*}
-	 */
-	valueOrDefault: function(value, defaultValue) {
-		return typeof value === 'undefined' ? defaultValue : value;
-	},
-
-	/**
-	 * Returns value at the given `index` in array if defined, else returns `defaultValue`.
-	 * @param {Array} value - The array to lookup for value at `index`.
-	 * @param {Number} index - The index in `value` to lookup for value.
-	 * @param {*} defaultValue - The value to return if `value[index]` is undefined.
-	 * @returns {*}
-	 */
-	valueAtIndexOrDefault: function(value, index, defaultValue) {
-		return helpers.valueOrDefault(helpers.isArray(value) ? value[index] : value, defaultValue);
-	},
-
-	/**
-	 * Calls `fn` with the given `args` in the scope defined by `thisArg` and returns the
-	 * value returned by `fn`. If `fn` is not a function, this method returns undefined.
-	 * @param {Function} fn - The function to call.
-	 * @param {Array|undefined|null} args - The arguments with which `fn` should be called.
-	 * @param {Object} [thisArg] - The value of `this` provided for the call to `fn`.
-	 * @returns {*}
-	 */
-	callback: function(fn, args, thisArg) {
-		if (fn && typeof fn.call === 'function') {
-			return fn.apply(thisArg, args);
-		}
-	},
-
-	/**
-	 * Note(SB) for performance sake, this method should only be used when loopable type
-	 * is unknown or in none intensive code (not called often and small loopable). Else
-	 * it's preferable to use a regular for() loop and save extra function calls.
-	 * @param {Object|Array} loopable - The object or array to be iterated.
-	 * @param {Function} fn - The function to call for each item.
-	 * @param {Object} [thisArg] - The value of `this` provided for the call to `fn`.
-	 * @param {Boolean} [reverse] - If true, iterates backward on the loopable.
-	 */
-	each: function(loopable, fn, thisArg, reverse) {
-		var i, len, keys;
-		if (helpers.isArray(loopable)) {
-			len = loopable.length;
-			if (reverse) {
-				for (i = len - 1; i >= 0; i--) {
-					fn.call(thisArg, loopable[i], i);
-				}
-			} else {
-				for (i = 0; i < len; i++) {
-					fn.call(thisArg, loopable[i], i);
-				}
-			}
-		} else if (helpers.isObject(loopable)) {
-			keys = Object.keys(loopable);
-			len = keys.length;
-			for (i = 0; i < len; i++) {
-				fn.call(thisArg, loopable[keys[i]], keys[i]);
-			}
-		}
-	},
-
-	/**
-	 * Returns true if the `a0` and `a1` arrays have the same content, else returns false.
-	 * @see http://stackoverflow.com/a/14853974
-	 * @param {Array} a0 - The array to compare
-	 * @param {Array} a1 - The array to compare
-	 * @returns {Boolean}
-	 */
-	arrayEquals: function(a0, a1) {
-		var i, ilen, v0, v1;
-
-		if (!a0 || !a1 || a0.length !== a1.length) {
-			return false;
-		}
-
-		for (i = 0, ilen = a0.length; i < ilen; ++i) {
-			v0 = a0[i];
-			v1 = a1[i];
-
-			if (v0 instanceof Array && v1 instanceof Array) {
-				if (!helpers.arrayEquals(v0, v1)) {
-					return false;
-				}
-			} else if (v0 !== v1) {
-				// NOTE: two different object instances will never be equal: {x:20} != {x:20}
-				return false;
-			}
-		}
-
-		return true;
-	},
-
-	/**
-	 * Returns a deep copy of `source` without keeping references on objects and arrays.
-	 * @param {*} source - The value to clone.
-	 * @returns {*}
-	 */
-	clone: function(source) {
-		if (helpers.isArray(source)) {
-			return source.map(helpers.clone);
-		}
-
-		if (helpers.isObject(source)) {
-			var target = {};
-			var keys = Object.keys(source);
-			var klen = keys.length;
-			var k = 0;
-
-			for (; k < klen; ++k) {
-				target[keys[k]] = helpers.clone(source[keys[k]]);
-			}
-
-			return target;
-		}
-
-		return source;
-	},
-
-	/**
-	 * The default merger when Chart.helpers.merge is called without merger option.
-	 * Note(SB): this method is also used by configMerge and scaleMerge as fallback.
-	 * @private
-	 */
-	_merger: function(key, target, source, options) {
-		var tval = target[key];
-		var sval = source[key];
-
-		if (helpers.isObject(tval) && helpers.isObject(sval)) {
-			helpers.merge(tval, sval, options);
-		} else {
-			target[key] = helpers.clone(sval);
-		}
-	},
-
-	/**
-	 * Merges source[key] in target[key] only if target[key] is undefined.
-	 * @private
-	 */
-	_mergerIf: function(key, target, source) {
-		var tval = target[key];
-		var sval = source[key];
-
-		if (helpers.isObject(tval) && helpers.isObject(sval)) {
-			helpers.mergeIf(tval, sval);
-		} else if (!target.hasOwnProperty(key)) {
-			target[key] = helpers.clone(sval);
-		}
-	},
-
-	/**
-	 * Recursively deep copies `source` properties into `target` with the given `options`.
-	 * IMPORTANT: `target` is not cloned and will be updated with `source` properties.
-	 * @param {Object} target - The target object in which all sources are merged into.
-	 * @param {Object|Array(Object)} source - Object(s) to merge into `target`.
-	 * @param {Object} [options] - Merging options:
-	 * @param {Function} [options.merger] - The merge method (key, target, source, options)
-	 * @returns {Object} The `target` object.
-	 */
-	merge: function(target, source, options) {
-		var sources = helpers.isArray(source) ? source : [source];
-		var ilen = sources.length;
-		var merge, i, keys, klen, k;
-
-		if (!helpers.isObject(target)) {
-			return target;
-		}
-
-		options = options || {};
-		merge = options.merger || helpers._merger;
-
-		for (i = 0; i < ilen; ++i) {
-			source = sources[i];
-			if (!helpers.isObject(source)) {
-				continue;
-			}
-
-			keys = Object.keys(source);
-			for (k = 0, klen = keys.length; k < klen; ++k) {
-				merge(keys[k], target, source, options);
-			}
-		}
-
-		return target;
-	},
-
-	/**
-	 * Recursively deep copies `source` properties into `target` *only* if not defined in target.
-	 * IMPORTANT: `target` is not cloned and will be updated with `source` properties.
-	 * @param {Object} target - The target object in which all sources are merged into.
-	 * @param {Object|Array(Object)} source - Object(s) to merge into `target`.
-	 * @returns {Object} The `target` object.
-	 */
-	mergeIf: function(target, source) {
-		return helpers.merge(target, source, {merger: helpers._mergerIf});
-	},
-
-	/**
-	 * Applies the contents of two or more objects together into the first object.
-	 * @param {Object} target - The target object in which all objects are merged into.
-	 * @param {Object} arg1 - Object containing additional properties to merge in target.
-	 * @param {Object} argN - Additional objects containing properties to merge in target.
-	 * @returns {Object} The `target` object.
-	 */
-	extend: function(target) {
-		var setFn = function(value, key) {
-			target[key] = value;
-		};
-		for (var i = 1, ilen = arguments.length; i < ilen; ++i) {
-			helpers.each(arguments[i], setFn);
-		}
-		return target;
-	},
-
-	/**
-	 * Basic javascript inheritance based on the model created in Backbone.js
-	 */
-	inherits: function(extensions) {
-		var me = this;
-		var ChartElement = (extensions && extensions.hasOwnProperty('constructor')) ? extensions.constructor : function() {
-			return me.apply(this, arguments);
-		};
-
-		var Surrogate = function() {
-			this.constructor = ChartElement;
-		};
-
-		Surrogate.prototype = me.prototype;
-		ChartElement.prototype = new Surrogate();
-		ChartElement.extend = helpers.inherits;
-
-		if (extensions) {
-			helpers.extend(ChartElement.prototype, extensions);
-		}
-
-		ChartElement.__super__ = me.prototype;
-		return ChartElement;
-	}
-};
-
-module.exports = helpers;
-
-// DEPRECATIONS
-
-/**
- * Provided for backward compatibility, use Chart.helpers.callback instead.
- * @function Chart.helpers.callCallback
- * @deprecated since version 2.6.0
- * @todo remove at version 3
- * @private
- */
-helpers.callCallback = helpers.callback;
-
-/**
- * Provided for backward compatibility, use Array.prototype.indexOf instead.
- * Array.prototype.indexOf compatibility: Chrome, Opera, Safari, FF1.5+, IE9+
- * @function Chart.helpers.indexOf
- * @deprecated since version 2.7.0
- * @todo remove at version 3
- * @private
- */
-helpers.indexOf = function(array, item, fromIndex) {
-	return Array.prototype.indexOf.call(array, item, fromIndex);
-};
-
-/**
- * Provided for backward compatibility, use Chart.helpers.valueOrDefault instead.
- * @function Chart.helpers.getValueOrDefault
- * @deprecated since version 2.7.0
- * @todo remove at version 3
- * @private
- */
-helpers.getValueOrDefault = helpers.valueOrDefault;
-
-/**
- * Provided for backward compatibility, use Chart.helpers.valueAtIndexOrDefault instead.
- * @function Chart.helpers.getValueAtIndexOrDefault
- * @deprecated since version 2.7.0
- * @todo remove at version 3
- * @private
- */
-helpers.getValueAtIndexOrDefault = helpers.valueAtIndexOrDefault;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-var utils = __webpack_require__(8);
-var normalizeHeaderName = __webpack_require__(272);
-
-var DEFAULT_CONTENT_TYPE = {
-  'Content-Type': 'application/x-www-form-urlencoded'
-};
-
-function setContentTypeIfUnset(headers, value) {
-  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
-    headers['Content-Type'] = value;
-  }
-}
-
-function getDefaultAdapter() {
-  var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = __webpack_require__(20);
-  } else if (typeof process !== 'undefined') {
-    // For node use HTTP adapter
-    adapter = __webpack_require__(20);
-  }
-  return adapter;
-}
-
-var defaults = {
-  adapter: getDefaultAdapter(),
-
-  transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Content-Type');
-    if (utils.isFormData(data) ||
-      utils.isArrayBuffer(data) ||
-      utils.isBuffer(data) ||
-      utils.isStream(data) ||
-      utils.isFile(data) ||
-      utils.isBlob(data)
-    ) {
-      return data;
-    }
-    if (utils.isArrayBufferView(data)) {
-      return data.buffer;
-    }
-    if (utils.isURLSearchParams(data)) {
-      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
-      return data.toString();
-    }
-    if (utils.isObject(data)) {
-      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
-      return JSON.stringify(data);
-    }
-    return data;
-  }],
-
-  transformResponse: [function transformResponse(data) {
-    /*eslint no-param-reassign:0*/
-    if (typeof data === 'string') {
-      try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
-    }
-    return data;
-  }],
-
-  timeout: 0,
-
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
-
-  maxContentLength: -1,
-
-  validateStatus: function validateStatus(status) {
-    return status >= 200 && status < 300;
-  }
-};
-
-defaults.headers = {
-  common: {
-    'Accept': 'application/json, text/plain, */*'
-  }
-};
-
-utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
-  defaults.headers[method] = {};
-});
-
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
-});
-
-module.exports = defaults;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)))
-
-/***/ }),
-/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -20991,6 +20517,480 @@ return jQuery;
 
 
 /***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * @namespace Chart.helpers
+ */
+var helpers = {
+	/**
+	 * An empty function that can be used, for example, for optional callback.
+	 */
+	noop: function() {},
+
+	/**
+	 * Returns a unique id, sequentially generated from a global variable.
+	 * @returns {Number}
+	 * @function
+	 */
+	uid: (function() {
+		var id = 0;
+		return function() {
+			return id++;
+		};
+	}()),
+
+	/**
+	 * Returns true if `value` is neither null nor undefined, else returns false.
+	 * @param {*} value - The value to test.
+	 * @returns {Boolean}
+	 * @since 2.7.0
+	 */
+	isNullOrUndef: function(value) {
+		return value === null || typeof value === 'undefined';
+	},
+
+	/**
+	 * Returns true if `value` is an array, else returns false.
+	 * @param {*} value - The value to test.
+	 * @returns {Boolean}
+	 * @function
+	 */
+	isArray: Array.isArray ? Array.isArray : function(value) {
+		return Object.prototype.toString.call(value) === '[object Array]';
+	},
+
+	/**
+	 * Returns true if `value` is an object (excluding null), else returns false.
+	 * @param {*} value - The value to test.
+	 * @returns {Boolean}
+	 * @since 2.7.0
+	 */
+	isObject: function(value) {
+		return value !== null && Object.prototype.toString.call(value) === '[object Object]';
+	},
+
+	/**
+	 * Returns `value` if defined, else returns `defaultValue`.
+	 * @param {*} value - The value to return if defined.
+	 * @param {*} defaultValue - The value to return if `value` is undefined.
+	 * @returns {*}
+	 */
+	valueOrDefault: function(value, defaultValue) {
+		return typeof value === 'undefined' ? defaultValue : value;
+	},
+
+	/**
+	 * Returns value at the given `index` in array if defined, else returns `defaultValue`.
+	 * @param {Array} value - The array to lookup for value at `index`.
+	 * @param {Number} index - The index in `value` to lookup for value.
+	 * @param {*} defaultValue - The value to return if `value[index]` is undefined.
+	 * @returns {*}
+	 */
+	valueAtIndexOrDefault: function(value, index, defaultValue) {
+		return helpers.valueOrDefault(helpers.isArray(value) ? value[index] : value, defaultValue);
+	},
+
+	/**
+	 * Calls `fn` with the given `args` in the scope defined by `thisArg` and returns the
+	 * value returned by `fn`. If `fn` is not a function, this method returns undefined.
+	 * @param {Function} fn - The function to call.
+	 * @param {Array|undefined|null} args - The arguments with which `fn` should be called.
+	 * @param {Object} [thisArg] - The value of `this` provided for the call to `fn`.
+	 * @returns {*}
+	 */
+	callback: function(fn, args, thisArg) {
+		if (fn && typeof fn.call === 'function') {
+			return fn.apply(thisArg, args);
+		}
+	},
+
+	/**
+	 * Note(SB) for performance sake, this method should only be used when loopable type
+	 * is unknown or in none intensive code (not called often and small loopable). Else
+	 * it's preferable to use a regular for() loop and save extra function calls.
+	 * @param {Object|Array} loopable - The object or array to be iterated.
+	 * @param {Function} fn - The function to call for each item.
+	 * @param {Object} [thisArg] - The value of `this` provided for the call to `fn`.
+	 * @param {Boolean} [reverse] - If true, iterates backward on the loopable.
+	 */
+	each: function(loopable, fn, thisArg, reverse) {
+		var i, len, keys;
+		if (helpers.isArray(loopable)) {
+			len = loopable.length;
+			if (reverse) {
+				for (i = len - 1; i >= 0; i--) {
+					fn.call(thisArg, loopable[i], i);
+				}
+			} else {
+				for (i = 0; i < len; i++) {
+					fn.call(thisArg, loopable[i], i);
+				}
+			}
+		} else if (helpers.isObject(loopable)) {
+			keys = Object.keys(loopable);
+			len = keys.length;
+			for (i = 0; i < len; i++) {
+				fn.call(thisArg, loopable[keys[i]], keys[i]);
+			}
+		}
+	},
+
+	/**
+	 * Returns true if the `a0` and `a1` arrays have the same content, else returns false.
+	 * @see http://stackoverflow.com/a/14853974
+	 * @param {Array} a0 - The array to compare
+	 * @param {Array} a1 - The array to compare
+	 * @returns {Boolean}
+	 */
+	arrayEquals: function(a0, a1) {
+		var i, ilen, v0, v1;
+
+		if (!a0 || !a1 || a0.length !== a1.length) {
+			return false;
+		}
+
+		for (i = 0, ilen = a0.length; i < ilen; ++i) {
+			v0 = a0[i];
+			v1 = a1[i];
+
+			if (v0 instanceof Array && v1 instanceof Array) {
+				if (!helpers.arrayEquals(v0, v1)) {
+					return false;
+				}
+			} else if (v0 !== v1) {
+				// NOTE: two different object instances will never be equal: {x:20} != {x:20}
+				return false;
+			}
+		}
+
+		return true;
+	},
+
+	/**
+	 * Returns a deep copy of `source` without keeping references on objects and arrays.
+	 * @param {*} source - The value to clone.
+	 * @returns {*}
+	 */
+	clone: function(source) {
+		if (helpers.isArray(source)) {
+			return source.map(helpers.clone);
+		}
+
+		if (helpers.isObject(source)) {
+			var target = {};
+			var keys = Object.keys(source);
+			var klen = keys.length;
+			var k = 0;
+
+			for (; k < klen; ++k) {
+				target[keys[k]] = helpers.clone(source[keys[k]]);
+			}
+
+			return target;
+		}
+
+		return source;
+	},
+
+	/**
+	 * The default merger when Chart.helpers.merge is called without merger option.
+	 * Note(SB): this method is also used by configMerge and scaleMerge as fallback.
+	 * @private
+	 */
+	_merger: function(key, target, source, options) {
+		var tval = target[key];
+		var sval = source[key];
+
+		if (helpers.isObject(tval) && helpers.isObject(sval)) {
+			helpers.merge(tval, sval, options);
+		} else {
+			target[key] = helpers.clone(sval);
+		}
+	},
+
+	/**
+	 * Merges source[key] in target[key] only if target[key] is undefined.
+	 * @private
+	 */
+	_mergerIf: function(key, target, source) {
+		var tval = target[key];
+		var sval = source[key];
+
+		if (helpers.isObject(tval) && helpers.isObject(sval)) {
+			helpers.mergeIf(tval, sval);
+		} else if (!target.hasOwnProperty(key)) {
+			target[key] = helpers.clone(sval);
+		}
+	},
+
+	/**
+	 * Recursively deep copies `source` properties into `target` with the given `options`.
+	 * IMPORTANT: `target` is not cloned and will be updated with `source` properties.
+	 * @param {Object} target - The target object in which all sources are merged into.
+	 * @param {Object|Array(Object)} source - Object(s) to merge into `target`.
+	 * @param {Object} [options] - Merging options:
+	 * @param {Function} [options.merger] - The merge method (key, target, source, options)
+	 * @returns {Object} The `target` object.
+	 */
+	merge: function(target, source, options) {
+		var sources = helpers.isArray(source) ? source : [source];
+		var ilen = sources.length;
+		var merge, i, keys, klen, k;
+
+		if (!helpers.isObject(target)) {
+			return target;
+		}
+
+		options = options || {};
+		merge = options.merger || helpers._merger;
+
+		for (i = 0; i < ilen; ++i) {
+			source = sources[i];
+			if (!helpers.isObject(source)) {
+				continue;
+			}
+
+			keys = Object.keys(source);
+			for (k = 0, klen = keys.length; k < klen; ++k) {
+				merge(keys[k], target, source, options);
+			}
+		}
+
+		return target;
+	},
+
+	/**
+	 * Recursively deep copies `source` properties into `target` *only* if not defined in target.
+	 * IMPORTANT: `target` is not cloned and will be updated with `source` properties.
+	 * @param {Object} target - The target object in which all sources are merged into.
+	 * @param {Object|Array(Object)} source - Object(s) to merge into `target`.
+	 * @returns {Object} The `target` object.
+	 */
+	mergeIf: function(target, source) {
+		return helpers.merge(target, source, {merger: helpers._mergerIf});
+	},
+
+	/**
+	 * Applies the contents of two or more objects together into the first object.
+	 * @param {Object} target - The target object in which all objects are merged into.
+	 * @param {Object} arg1 - Object containing additional properties to merge in target.
+	 * @param {Object} argN - Additional objects containing properties to merge in target.
+	 * @returns {Object} The `target` object.
+	 */
+	extend: function(target) {
+		var setFn = function(value, key) {
+			target[key] = value;
+		};
+		for (var i = 1, ilen = arguments.length; i < ilen; ++i) {
+			helpers.each(arguments[i], setFn);
+		}
+		return target;
+	},
+
+	/**
+	 * Basic javascript inheritance based on the model created in Backbone.js
+	 */
+	inherits: function(extensions) {
+		var me = this;
+		var ChartElement = (extensions && extensions.hasOwnProperty('constructor')) ? extensions.constructor : function() {
+			return me.apply(this, arguments);
+		};
+
+		var Surrogate = function() {
+			this.constructor = ChartElement;
+		};
+
+		Surrogate.prototype = me.prototype;
+		ChartElement.prototype = new Surrogate();
+		ChartElement.extend = helpers.inherits;
+
+		if (extensions) {
+			helpers.extend(ChartElement.prototype, extensions);
+		}
+
+		ChartElement.__super__ = me.prototype;
+		return ChartElement;
+	}
+};
+
+module.exports = helpers;
+
+// DEPRECATIONS
+
+/**
+ * Provided for backward compatibility, use Chart.helpers.callback instead.
+ * @function Chart.helpers.callCallback
+ * @deprecated since version 2.6.0
+ * @todo remove at version 3
+ * @private
+ */
+helpers.callCallback = helpers.callback;
+
+/**
+ * Provided for backward compatibility, use Array.prototype.indexOf instead.
+ * Array.prototype.indexOf compatibility: Chrome, Opera, Safari, FF1.5+, IE9+
+ * @function Chart.helpers.indexOf
+ * @deprecated since version 2.7.0
+ * @todo remove at version 3
+ * @private
+ */
+helpers.indexOf = function(array, item, fromIndex) {
+	return Array.prototype.indexOf.call(array, item, fromIndex);
+};
+
+/**
+ * Provided for backward compatibility, use Chart.helpers.valueOrDefault instead.
+ * @function Chart.helpers.getValueOrDefault
+ * @deprecated since version 2.7.0
+ * @todo remove at version 3
+ * @private
+ */
+helpers.getValueOrDefault = helpers.valueOrDefault;
+
+/**
+ * Provided for backward compatibility, use Chart.helpers.valueAtIndexOrDefault instead.
+ * @function Chart.helpers.getValueAtIndexOrDefault
+ * @deprecated since version 2.7.0
+ * @todo remove at version 3
+ * @private
+ */
+helpers.getValueAtIndexOrDefault = helpers.valueAtIndexOrDefault;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(8);
+var normalizeHeaderName = __webpack_require__(273);
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(20);
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(20);
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Content-Type');
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data)) {
+      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+      return JSON.stringify(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    /*eslint no-param-reassign:0*/
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data);
+      } catch (e) { /* Ignore */ }
+    }
+    return data;
+  }],
+
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  }
+};
+
+defaults.headers = {
+  common: {
+    'Accept': 'application/json, text/plain, */*'
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)))
+
+/***/ }),
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21206,12 +21206,12 @@ process.umask = function() { return 0; };
 
 
 var utils = __webpack_require__(8);
-var settle = __webpack_require__(273);
-var buildURL = __webpack_require__(275);
-var parseHeaders = __webpack_require__(276);
-var isURLSameOrigin = __webpack_require__(277);
+var settle = __webpack_require__(274);
+var buildURL = __webpack_require__(276);
+var parseHeaders = __webpack_require__(277);
+var isURLSameOrigin = __webpack_require__(278);
 var createError = __webpack_require__(21);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(278);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(279);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -21308,7 +21308,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(279);
+      var cookies = __webpack_require__(280);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -21392,7 +21392,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(274);
+var enhanceError = __webpack_require__(275);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -21453,8 +21453,8 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 /* MIT license */
-var convert = __webpack_require__(293);
-var string = __webpack_require__(295);
+var convert = __webpack_require__(294);
+var string = __webpack_require__(296);
 
 var Color = function (obj) {
 	if (obj instanceof Color) {
@@ -22284,8 +22284,8 @@ module.exports = {
 
 
 var helpers = __webpack_require__(3);
-var basic = __webpack_require__(301);
-var dom = __webpack_require__(302);
+var basic = __webpack_require__(302);
+var dom = __webpack_require__(303);
 
 // @TODO Make possible to select another platform at build time.
 var implementation = dom._enabled ? dom : basic;
@@ -33441,16 +33441,75 @@ return zhTw;
 /* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(window, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(337);
+exports.setImmediate = setImmediate;
+exports.clearImmediate = clearImmediate;
+
+
+/***/ }),
+/* 143 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(403)
+  __webpack_require__(407)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(405)
+var __vue_script__ = __webpack_require__(409)
 /* template */
-var __vue_template__ = __webpack_require__(406)
+var __vue_template__ = __webpack_require__(410)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -33489,7 +33548,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33568,7 +33627,7 @@ return af;
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33716,7 +33775,7 @@ return ar;
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33781,7 +33840,7 @@ return arDz;
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33846,7 +33905,7 @@ return arKw;
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33978,7 +34037,7 @@ return arLy;
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34044,7 +34103,7 @@ return arMa;
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34155,7 +34214,7 @@ return arSa;
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34220,7 +34279,7 @@ return arTn;
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34331,7 +34390,7 @@ return az;
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34471,7 +34530,7 @@ return be;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34567,7 +34626,7 @@ return bg;
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34632,7 +34691,7 @@ return bm;
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34757,7 +34816,7 @@ return bn;
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34882,7 +34941,7 @@ return bo;
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34996,7 +35055,7 @@ return br;
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35154,7 +35213,7 @@ return bs;
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35248,7 +35307,7 @@ return ca;
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35433,7 +35492,7 @@ return cs;
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35502,7 +35561,7 @@ return cv;
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35589,7 +35648,7 @@ return cy;
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35655,7 +35714,7 @@ return da;
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35739,7 +35798,7 @@ return de;
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35824,7 +35883,7 @@ return deAt;
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35908,7 +35967,7 @@ return deCh;
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36014,7 +36073,7 @@ return dv;
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36120,7 +36179,7 @@ return el;
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36193,7 +36252,7 @@ return enAu;
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36262,7 +36321,7 @@ return enCa;
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36335,7 +36394,7 @@ return enGb;
 
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36408,7 +36467,7 @@ return enIe;
 
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36481,7 +36540,7 @@ return enNz;
 
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36560,7 +36619,7 @@ return eo;
 
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36658,7 +36717,7 @@ return es;
 
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36755,7 +36814,7 @@ return esDo;
 
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36844,7 +36903,7 @@ return esUs;
 
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36931,7 +36990,7 @@ return et;
 
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37003,7 +37062,7 @@ return eu;
 
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37116,7 +37175,7 @@ return fa;
 
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37231,7 +37290,7 @@ return fi;
 
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37297,7 +37356,7 @@ return fo;
 
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37386,7 +37445,7 @@ return fr;
 
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37466,7 +37525,7 @@ return frCa;
 
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37550,7 +37609,7 @@ return frCh;
 
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37631,7 +37690,7 @@ return fy;
 
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37713,7 +37772,7 @@ return gd;
 
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37796,7 +37855,7 @@ return gl;
 
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37925,7 +37984,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38055,7 +38114,7 @@ return gu;
 
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38160,7 +38219,7 @@ return he;
 
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38290,7 +38349,7 @@ return hi;
 
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38450,7 +38509,7 @@ return hr;
 
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38566,7 +38625,7 @@ return hu;
 
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38667,7 +38726,7 @@ return hyAm;
 
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38756,7 +38815,7 @@ return id;
 
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38894,7 +38953,7 @@ return is;
 
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38970,7 +39029,7 @@ return it;
 
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -39056,7 +39115,7 @@ return ja;
 
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -39145,7 +39204,7 @@ return jv;
 
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -39240,7 +39299,7 @@ return ka;
 
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -39333,7 +39392,7 @@ return kk;
 
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -39397,7 +39456,7 @@ return km;
 
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -39529,7 +39588,7 @@ return kn;
 
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -39617,7 +39676,7 @@ return ko;
 
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -39711,7 +39770,7 @@ return ky;
 
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -39854,7 +39913,7 @@ return lb;
 
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -39930,7 +39989,7 @@ return lo;
 
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -40054,7 +40113,7 @@ return lt;
 
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -40158,7 +40217,7 @@ return lv;
 
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -40276,7 +40335,7 @@ return me;
 
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -40346,7 +40405,7 @@ return mi;
 
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -40442,7 +40501,7 @@ return mk;
 
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -40529,7 +40588,7 @@ return ml;
 
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -40696,7 +40755,7 @@ return mr;
 
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -40784,7 +40843,7 @@ return ms;
 
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -40873,7 +40932,7 @@ return msMy;
 
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -40939,7 +40998,7 @@ return mt;
 
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -41041,7 +41100,7 @@ return my;
 
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -41110,7 +41169,7 @@ return nb;
 
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -41239,7 +41298,7 @@ return ne;
 
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -41333,7 +41392,7 @@ return nl;
 
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -41427,7 +41486,7 @@ return nlBe;
 
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -41493,7 +41552,7 @@ return nn;
 
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -41623,7 +41682,7 @@ return paIn;
 
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -41755,7 +41814,7 @@ return pl;
 
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -41826,7 +41885,7 @@ return pt;
 
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -41893,7 +41952,7 @@ return ptBr;
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -41975,7 +42034,7 @@ return ro;
 
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -42165,7 +42224,7 @@ return ru;
 
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -42269,7 +42328,7 @@ return sd;
 
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -42336,7 +42395,7 @@ return se;
 
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -42413,7 +42472,7 @@ return si;
 
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -42576,7 +42635,7 @@ return sk;
 
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -42755,7 +42814,7 @@ return sl;
 
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -42831,7 +42890,7 @@ return sq;
 
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -42948,7 +43007,7 @@ return sr;
 
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -43065,7 +43124,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -43160,7 +43219,7 @@ return ss;
 
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -43235,7 +43294,7 @@ return sv;
 
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -43300,7 +43359,7 @@ return sw;
 
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -43436,7 +43495,7 @@ return ta;
 
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -43531,7 +43590,7 @@ return te;
 
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -43605,7 +43664,7 @@ return tet;
 
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -43678,7 +43737,7 @@ return th;
 
 
 /***/ }),
-/* 246 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -43746,7 +43805,7 @@ return tlPh;
 
 
 /***/ }),
-/* 247 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -43874,7 +43933,7 @@ return tlh;
 
 
 /***/ }),
-/* 248 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -43970,7 +44029,7 @@ return tr;
 
 
 /***/ }),
-/* 249 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -44068,7 +44127,7 @@ return tzl;
 
 
 /***/ }),
-/* 250 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -44132,7 +44191,7 @@ return tzm;
 
 
 /***/ }),
-/* 251 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -44196,7 +44255,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 252 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -44354,7 +44413,7 @@ return uk;
 
 
 /***/ }),
-/* 253 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -44459,7 +44518,7 @@ return ur;
 
 
 /***/ }),
-/* 254 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -44523,7 +44582,7 @@ return uz;
 
 
 /***/ }),
-/* 255 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -44587,7 +44646,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 256 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -44672,7 +44731,7 @@ return vi;
 
 
 /***/ }),
-/* 257 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -44746,7 +44805,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 258 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -44812,7 +44871,7 @@ return yo;
 
 
 /***/ }),
-/* 259 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -44929,7 +44988,7 @@ return zhCn;
 
 
 /***/ }),
-/* 260 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -45040,7 +45099,7 @@ return zhHk;
 
 
 /***/ }),
-/* 261 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -45150,15 +45209,15 @@ return zhTw;
 
 
 /***/ }),
-/* 262 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(429)
+var __vue_script__ = __webpack_require__(433)
 /* template */
-var __vue_template__ = __webpack_require__(430)
+var __vue_template__ = __webpack_require__(434)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -45197,15 +45256,15 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 263 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(264);
-module.exports = __webpack_require__(489);
+__webpack_require__(265);
+module.exports = __webpack_require__(493);
 
 
 /***/ }),
-/* 264 */
+/* 265 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45218,9 +45277,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-__webpack_require__(265);
+__webpack_require__(266);
 
-window.Vue = __webpack_require__(335);
+window.Vue = __webpack_require__(336);
 
 
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vee_validate__["a" /* default */], {
@@ -45245,43 +45304,43 @@ Vue.component('typeahead-suppliers', __webpack_require__(386));
 /**
  * Sales Components
  */
-Vue.component('sales-component', __webpack_require__(389));
-Vue.component('cart-component', __webpack_require__(394));
-Vue.component('totals-component', __webpack_require__(399));
+Vue.component('sales-component', __webpack_require__(393));
+Vue.component('cart-component', __webpack_require__(398));
+Vue.component('totals-component', __webpack_require__(403));
 
 /**
  * Purchases Components
  */
-Vue.component('purchases-component', __webpack_require__(408));
-Vue.component('purchases-cart-component', __webpack_require__(414));
-Vue.component('purchases-totals-component', __webpack_require__(420));
+Vue.component('purchases-component', __webpack_require__(412));
+Vue.component('purchases-cart-component', __webpack_require__(418));
+Vue.component('purchases-totals-component', __webpack_require__(424));
 
 /**
  * Suppliers Components
  */
-Vue.component('suppliers-component', __webpack_require__(425));
-Vue.component('create-supplier-component', __webpack_require__(262));
-Vue.component('supplier-contacts', __webpack_require__(432));
-Vue.component('item-suppliers', __webpack_require__(435));
+Vue.component('suppliers-component', __webpack_require__(429));
+Vue.component('create-supplier-component', __webpack_require__(263));
+Vue.component('supplier-contacts', __webpack_require__(436));
+Vue.component('item-suppliers', __webpack_require__(439));
 
 /**
  * Helpers
  */
-Vue.component('paginate-component', __webpack_require__(438));
+Vue.component('paginate-component', __webpack_require__(442));
 // Vue.component('excel-upload-component', require('./components/Helpers/UploadExcelComponent.vue'));
-Vue.component('page-refresh-component', __webpack_require__(441));
-Vue.component('ellipsis-nav', __webpack_require__(446));
-Vue.component('date-range-picker', __webpack_require__(451));
-Vue.component('datatables', __webpack_require__(457));
+Vue.component('page-refresh-component', __webpack_require__(445));
+Vue.component('ellipsis-nav', __webpack_require__(450));
+Vue.component('date-range-picker', __webpack_require__(455));
+Vue.component('datatables', __webpack_require__(461));
 
 /**
  * Customer components
  */
-Vue.component('customers-component', __webpack_require__(465));
-Vue.component('customer-account-receipts-component', __webpack_require__(470));
-Vue.component('customer-account-overview-component', __webpack_require__(480));
+Vue.component('customers-component', __webpack_require__(469));
+Vue.component('customer-account-receipts-component', __webpack_require__(474));
+Vue.component('customer-account-overview-component', __webpack_require__(484));
 // Vue.component('customer-monthly-sales', require('./components/Customer/CustomerMonthlySales.vue'));
-Vue.component('customer-profile', __webpack_require__(483));
+Vue.component('customer-profile', __webpack_require__(487));
 
 var app = new Vue({
 
@@ -45300,15 +45359,15 @@ var app = new Vue({
 });
 
 /***/ }),
-/* 265 */
+/* 266 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js__ = __webpack_require__(287);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js__ = __webpack_require__(288);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_chart_js__);
 
-window._ = __webpack_require__(266);
+window._ = __webpack_require__(267);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -45317,9 +45376,9 @@ window._ = __webpack_require__(266);
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(17);
+  window.$ = window.jQuery = __webpack_require__(14);
 
-  __webpack_require__(267);
+  __webpack_require__(268);
 } catch (e) {}
 
 /**
@@ -45328,7 +45387,7 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(268);
+window.axios = __webpack_require__(269);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -45380,7 +45439,7 @@ if (token) {
 // });
 
 /***/ }),
-/* 266 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -62469,10 +62528,10 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(15)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(16)(module)))
 
 /***/ }),
-/* 267 */
+/* 268 */
 /***/ (function(module, exports) {
 
 /*!
@@ -64855,13 +64914,13 @@ if (typeof jQuery === 'undefined') {
 
 
 /***/ }),
-/* 268 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(269);
+module.exports = __webpack_require__(270);
 
 /***/ }),
-/* 269 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64869,8 +64928,8 @@ module.exports = __webpack_require__(269);
 
 var utils = __webpack_require__(8);
 var bind = __webpack_require__(18);
-var Axios = __webpack_require__(271);
-var defaults = __webpack_require__(16);
+var Axios = __webpack_require__(272);
+var defaults = __webpack_require__(17);
 
 /**
  * Create an instance of Axios
@@ -64904,14 +64963,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(23);
-axios.CancelToken = __webpack_require__(285);
+axios.CancelToken = __webpack_require__(286);
 axios.isCancel = __webpack_require__(22);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(286);
+axios.spread = __webpack_require__(287);
 
 module.exports = axios;
 
@@ -64920,7 +64979,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 270 */
+/* 271 */
 /***/ (function(module, exports) {
 
 /*!
@@ -64947,16 +65006,16 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 271 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var defaults = __webpack_require__(16);
+var defaults = __webpack_require__(17);
 var utils = __webpack_require__(8);
-var InterceptorManager = __webpack_require__(280);
-var dispatchRequest = __webpack_require__(281);
+var InterceptorManager = __webpack_require__(281);
+var dispatchRequest = __webpack_require__(282);
 
 /**
  * Create a new instance of Axios
@@ -65033,7 +65092,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 272 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65052,7 +65111,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 273 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65085,7 +65144,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 274 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65113,7 +65172,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 275 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65188,7 +65247,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 276 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65248,7 +65307,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 277 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65323,7 +65382,7 @@ module.exports = (
 
 
 /***/ }),
-/* 278 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65366,7 +65425,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 279 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65426,7 +65485,7 @@ module.exports = (
 
 
 /***/ }),
-/* 280 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65485,18 +65544,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 281 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(8);
-var transformData = __webpack_require__(282);
+var transformData = __webpack_require__(283);
 var isCancel = __webpack_require__(22);
-var defaults = __webpack_require__(16);
-var isAbsoluteURL = __webpack_require__(283);
-var combineURLs = __webpack_require__(284);
+var defaults = __webpack_require__(17);
+var isAbsoluteURL = __webpack_require__(284);
+var combineURLs = __webpack_require__(285);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -65578,7 +65637,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 282 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65605,7 +65664,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 283 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65626,7 +65685,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 284 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65647,7 +65706,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 285 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65711,7 +65770,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 286 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65745,18 +65804,18 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 287 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
  * @namespace Chart
  */
-var Chart = __webpack_require__(288)();
+var Chart = __webpack_require__(289)();
 
 Chart.helpers = __webpack_require__(3);
 
 // @todo dispatch these helpers into appropriated helpers/helpers.* file and write unit tests!
-__webpack_require__(292)(Chart);
+__webpack_require__(293)(Chart);
 
 Chart.defaults = __webpack_require__(4);
 Chart.Element = __webpack_require__(9);
@@ -65764,7 +65823,6 @@ Chart.elements = __webpack_require__(10);
 Chart.Interaction = __webpack_require__(25);
 Chart.platform = __webpack_require__(26);
 
-__webpack_require__(303)(Chart);
 __webpack_require__(304)(Chart);
 __webpack_require__(305)(Chart);
 __webpack_require__(306)(Chart);
@@ -65772,39 +65830,40 @@ __webpack_require__(307)(Chart);
 __webpack_require__(308)(Chart);
 __webpack_require__(309)(Chart);
 __webpack_require__(310)(Chart);
-
 __webpack_require__(311)(Chart);
+
 __webpack_require__(312)(Chart);
 __webpack_require__(313)(Chart);
 __webpack_require__(314)(Chart);
 __webpack_require__(315)(Chart);
 __webpack_require__(316)(Chart);
+__webpack_require__(317)(Chart);
 
 // Controllers must be loaded after elements
 // See Chart.core.datasetController.dataElementType
-__webpack_require__(318)(Chart);
 __webpack_require__(319)(Chart);
 __webpack_require__(320)(Chart);
 __webpack_require__(321)(Chart);
 __webpack_require__(322)(Chart);
 __webpack_require__(323)(Chart);
 __webpack_require__(324)(Chart);
-
 __webpack_require__(325)(Chart);
+
 __webpack_require__(326)(Chart);
 __webpack_require__(327)(Chart);
 __webpack_require__(328)(Chart);
 __webpack_require__(329)(Chart);
 __webpack_require__(330)(Chart);
 __webpack_require__(331)(Chart);
+__webpack_require__(332)(Chart);
 
 // Loading built-it plugins
 var plugins = [];
 
 plugins.push(
-	__webpack_require__(332)(Chart),
 	__webpack_require__(333)(Chart),
-	__webpack_require__(334)(Chart)
+	__webpack_require__(334)(Chart),
+	__webpack_require__(335)(Chart)
 );
 
 Chart.plugins.register(plugins);
@@ -65829,7 +65888,7 @@ Chart.canvasHelpers = Chart.helpers.canvas;
 
 
 /***/ }),
-/* 288 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65885,13 +65944,13 @@ module.exports = function() {
 
 
 /***/ }),
-/* 289 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var helpers = __webpack_require__(14);
+var helpers = __webpack_require__(15);
 
 /**
  * Easing functions adapted from Robert Penner's easing equations.
@@ -66142,13 +66201,13 @@ helpers.easingEffects = effects;
 
 
 /***/ }),
-/* 290 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var helpers = __webpack_require__(14);
+var helpers = __webpack_require__(15);
 
 /**
  * @namespace Chart.helpers.canvas
@@ -66363,13 +66422,13 @@ helpers.drawRoundedRectangle = function(ctx) {
 
 
 /***/ }),
-/* 291 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var helpers = __webpack_require__(14);
+var helpers = __webpack_require__(15);
 
 /**
  * @alias Chart.helpers.options
@@ -66466,7 +66525,7 @@ module.exports = {
 
 
 /***/ }),
-/* 292 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67076,10 +67135,10 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 293 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var conversions = __webpack_require__(294);
+var conversions = __webpack_require__(295);
 
 var convert = function() {
    return new Converter();
@@ -67173,7 +67232,7 @@ Converter.prototype.getValues = function(space) {
 module.exports = convert;
 
 /***/ }),
-/* 294 */
+/* 295 */
 /***/ (function(module, exports) {
 
 /* MIT license */
@@ -67877,11 +67936,11 @@ for (var key in cssKeywords) {
 
 
 /***/ }),
-/* 295 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* MIT license */
-var colorNames = __webpack_require__(296);
+var colorNames = __webpack_require__(297);
 
 module.exports = {
    getRgba: getRgba,
@@ -68104,7 +68163,7 @@ for (var name in colorNames) {
 
 
 /***/ }),
-/* 296 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68263,7 +68322,7 @@ module.exports = {
 
 
 /***/ }),
-/* 297 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68377,7 +68436,7 @@ module.exports = Element.extend({
 
 
 /***/ }),
-/* 298 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68475,7 +68534,7 @@ module.exports = Element.extend({
 
 
 /***/ }),
-/* 299 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68588,7 +68647,7 @@ module.exports = Element.extend({
 
 
 /***/ }),
-/* 300 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68812,7 +68871,7 @@ module.exports = Element.extend({
 
 
 /***/ }),
-/* 301 */
+/* 302 */
 /***/ (function(module, exports) {
 
 /**
@@ -68833,7 +68892,7 @@ module.exports = {
 
 
 /***/ }),
-/* 302 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69297,7 +69356,7 @@ helpers.removeEvent = removeEventListener;
 
 
 /***/ }),
-/* 303 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69699,7 +69758,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 304 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69878,7 +69937,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 305 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70789,7 +70848,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 306 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71126,7 +71185,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 307 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71555,7 +71614,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 308 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71607,7 +71666,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 309 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72545,7 +72604,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 310 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73500,7 +73559,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 311 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73639,7 +73698,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 312 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73779,7 +73838,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 313 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73978,7 +74037,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 314 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74229,7 +74288,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 315 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74766,7 +74825,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 316 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75529,7 +75588,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 317 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -75778,10 +75837,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 317;
+webpackContext.id = 318;
 
 /***/ }),
-/* 318 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76209,7 +76268,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 319 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76396,7 +76455,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 320 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76702,7 +76761,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 321 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77042,7 +77101,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 322 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77271,7 +77330,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 323 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77446,7 +77505,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 324 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77495,7 +77554,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 325 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77513,7 +77572,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 326 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77530,7 +77589,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 327 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77548,7 +77607,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 328 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77566,7 +77625,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 329 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77584,7 +77643,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 330 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77602,7 +77661,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 331 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77617,7 +77676,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 332 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77945,7 +78004,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 333 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78519,7 +78578,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 334 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78769,7 +78828,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 335 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89583,66 +89642,7 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(336).setImmediate))
-
-/***/ }),
-/* 336 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(window, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(337);
-exports.setImmediate = setImmediate;
-exports.clearImmediate = clearImmediate;
-
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(142).setImmediate))
 
 /***/ }),
 /* 337 */
@@ -103176,10 +103176,7 @@ var render = function() {
                                         _c(
                                           "a",
                                           {
-                                            attrs: {
-                                              href:
-                                                "/items/" + item.id + "/edit"
-                                            }
+                                            attrs: { href: "/items/" + item.id }
                                           },
                                           [
                                             _vm._v(
@@ -105167,13 +105164,13 @@ if (false) {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(507)
+  __webpack_require__(387)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(387)
+var __vue_script__ = __webpack_require__(389)
 /* template */
-var __vue_template__ = __webpack_require__(388)
+var __vue_template__ = __webpack_require__(392)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -105213,13 +105210,53 @@ module.exports = Component.exports
 
 /***/ }),
 /* 387 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(388);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(7)("3d6e53b0", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9921de34\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SuppliersTypeahead.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9921de34\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SuppliersTypeahead.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 388 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(6)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\nspan.twitter-typeahead .tt-menu, span.twitter-typeahead .tt-dropdown-menu {\n  cursor: pointer;\n  position: absolute;\n  top: 100%;\n  left: 0;\n  z-index: 1000;\n  display: none;\n  float: left;\n  min-width: 160px;\n  padding: 5px 0;\n  margin: 2px 0 0;\n  list-style: none;\n  font-size: 14px;\n  text-align: left;\n  background-color: #ffffff;\n  border: 1px solid #cccccc;\n  border: 1px solid rgba(0, 0, 0, 0.15);\n  border-radius: 4px;\n  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);\n  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);\n  background-clip: padding-box;\n}\nspan.twitter-typeahead .tt-suggestion {\n  display: block;\n  padding: 3px 20px;\n  clear: both;\n  font-weight: normal;\n  line-height: 1.42857143;\n  color: #333333;\n  white-space: nowrap;\n}\nspan.twitter-typeahead .tt-suggestion.tt-cursor,\nspan.twitter-typeahead .tt-suggestion:hover,\nspan.twitter-typeahead .tt-suggestion:focus {\n  color: #ffffff;\n  text-decoration: none;\n  outline: 0;\n  background-color: #337ab7;\n}\n.input-group.input-group-lg span.twitter-typeahead .form-control {\n  height: 46px;\n  padding: 10px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n  border-radius: 6px;\n}\n.input-group.input-group-sm span.twitter-typeahead .form-control {\n  height: 30px;\n  padding: 5px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\nspan.twitter-typeahead {\n  width: 100%;\n}\n.input-group span.twitter-typeahead {\n  display: block !important;\n  height: 34px;\n}\n.input-group span.twitter-typeahead .tt-menu,\n.input-group span.twitter-typeahead .tt-dropdown-menu {\n  top: 32px !important;\n}\n.input-group span.twitter-typeahead:not(:first-child):not(:last-child) .form-control {\n  border-radius: 0;\n}\n.input-group span.twitter-typeahead:first-child .form-control {\n  border-top-left-radius: 4px;\n  border-bottom-left-radius: 4px;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.input-group span.twitter-typeahead:last-child .form-control {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n  border-top-right-radius: 4px;\n  border-bottom-right-radius: 4px;\n}\n.input-group.input-group-sm span.twitter-typeahead {\n  height: 30px;\n}\n.input-group.input-group-sm span.twitter-typeahead .tt-menu,\n.input-group.input-group-sm span.twitter-typeahead .tt-dropdown-menu {\n  top: 30px !important;\n}\n.input-group.input-group-lg span.twitter-typeahead {\n  height: 46px;\n}\n.input-group.input-group-lg span.twitter-typeahead .tt-menu,\n.input-group.input-group-lg span.twitter-typeahead .tt-dropdown-menu {\n  top: 46px !important;\n}\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 389 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__typeahead_js__ = __webpack_require__(505);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__typeahead_js__ = __webpack_require__(390);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__typeahead_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__typeahead_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bloodhound_js__ = __webpack_require__(506);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bloodhound_js__ = __webpack_require__(391);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bloodhound_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__bloodhound_js__);
 //
 //
@@ -105268,7 +105305,2551 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 388 */
+/* 390 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(setImmediate) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/*!
+ * typeahead.js 0.11.1
+ * https://github.com/twitter/typeahead.js
+ * Copyright 2013-2015 Twitter, Inc. and other contributors; Licensed MIT
+ */
+
+(function (root, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(14)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (a0) {
+            return factory(a0);
+        }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === "object") {
+        module.exports = factory(require("jquery"));
+    } else {
+        factory(jQuery);
+    }
+})(this, function ($) {
+    var _ = function () {
+        "use strict";
+
+        return {
+            isMsie: function isMsie() {
+                return (/(msie|trident)/i.test(navigator.userAgent) ? navigator.userAgent.match(/(msie |rv:)(\d+(.\d+)?)/i)[2] : false
+                );
+            },
+            isBlankString: function isBlankString(str) {
+                return !str || /^\s*$/.test(str);
+            },
+            escapeRegExChars: function escapeRegExChars(str) {
+                return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+            },
+            isString: function isString(obj) {
+                return typeof obj === "string";
+            },
+            isNumber: function isNumber(obj) {
+                return typeof obj === "number";
+            },
+            isArray: $.isArray,
+            isFunction: $.isFunction,
+            isObject: $.isPlainObject,
+            isUndefined: function isUndefined(obj) {
+                return typeof obj === "undefined";
+            },
+            isElement: function isElement(obj) {
+                return !!(obj && obj.nodeType === 1);
+            },
+            isJQuery: function isJQuery(obj) {
+                return obj instanceof $;
+            },
+            toStr: function toStr(s) {
+                return _.isUndefined(s) || s === null ? "" : s + "";
+            },
+            bind: $.proxy,
+            each: function each(collection, cb) {
+                $.each(collection, reverseArgs);
+                function reverseArgs(index, value) {
+                    return cb(value, index);
+                }
+            },
+            map: $.map,
+            filter: $.grep,
+            every: function every(obj, test) {
+                var result = true;
+                if (!obj) {
+                    return result;
+                }
+                $.each(obj, function (key, val) {
+                    if (!(result = test.call(null, val, key, obj))) {
+                        return false;
+                    }
+                });
+                return !!result;
+            },
+            some: function some(obj, test) {
+                var result = false;
+                if (!obj) {
+                    return result;
+                }
+                $.each(obj, function (key, val) {
+                    if (result = test.call(null, val, key, obj)) {
+                        return false;
+                    }
+                });
+                return !!result;
+            },
+            mixin: $.extend,
+            identity: function identity(x) {
+                return x;
+            },
+            clone: function clone(obj) {
+                return $.extend(true, {}, obj);
+            },
+            getIdGenerator: function getIdGenerator() {
+                var counter = 0;
+                return function () {
+                    return counter++;
+                };
+            },
+            templatify: function templatify(obj) {
+                return $.isFunction(obj) ? obj : template;
+                function template() {
+                    return String(obj);
+                }
+            },
+            defer: function defer(fn) {
+                setTimeout(fn, 0);
+            },
+            debounce: function debounce(func, wait, immediate) {
+                var timeout, result;
+                return function () {
+                    var context = this,
+                        args = arguments,
+                        later,
+                        callNow;
+                    later = function later() {
+                        timeout = null;
+                        if (!immediate) {
+                            result = func.apply(context, args);
+                        }
+                    };
+                    callNow = immediate && !timeout;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                    if (callNow) {
+                        result = func.apply(context, args);
+                    }
+                    return result;
+                };
+            },
+            throttle: function throttle(func, wait) {
+                var context, args, timeout, result, previous, later;
+                previous = 0;
+                later = function later() {
+                    previous = new Date();
+                    timeout = null;
+                    result = func.apply(context, args);
+                };
+                return function () {
+                    var now = new Date(),
+                        remaining = wait - (now - previous);
+                    context = this;
+                    args = arguments;
+                    if (remaining <= 0) {
+                        clearTimeout(timeout);
+                        timeout = null;
+                        previous = now;
+                        result = func.apply(context, args);
+                    } else if (!timeout) {
+                        timeout = setTimeout(later, remaining);
+                    }
+                    return result;
+                };
+            },
+            stringify: function stringify(val) {
+                return _.isString(val) ? val : JSON.stringify(val);
+            },
+            noop: function noop() {}
+        };
+    }();
+    var WWW = function () {
+        "use strict";
+
+        var defaultClassNames = {
+            wrapper: "twitter-typeahead",
+            input: "tt-input",
+            hint: "tt-hint",
+            menu: "tt-menu",
+            dataset: "tt-dataset",
+            suggestion: "tt-suggestion",
+            selectable: "tt-selectable",
+            empty: "tt-empty",
+            open: "tt-open",
+            cursor: "tt-cursor",
+            highlight: "tt-highlight"
+        };
+        return build;
+        function build(o) {
+            var www, classes;
+            classes = _.mixin({}, defaultClassNames, o);
+            www = {
+                css: buildCss(),
+                classes: classes,
+                html: buildHtml(classes),
+                selectors: buildSelectors(classes)
+            };
+            return {
+                css: www.css,
+                html: www.html,
+                classes: www.classes,
+                selectors: www.selectors,
+                mixin: function mixin(o) {
+                    _.mixin(o, www);
+                }
+            };
+        }
+        function buildHtml(c) {
+            return {
+                wrapper: '<span class="' + c.wrapper + '"></span>',
+                menu: '<div class="' + c.menu + '"></div>'
+            };
+        }
+        function buildSelectors(classes) {
+            var selectors = {};
+            _.each(classes, function (v, k) {
+                selectors[k] = "." + v;
+            });
+            return selectors;
+        }
+        function buildCss() {
+            var css = {
+                wrapper: {
+                    position: "relative",
+                    display: "inline-block"
+                },
+                hint: {
+                    position: "absolute",
+                    top: "0",
+                    left: "0",
+                    borderColor: "transparent",
+                    boxShadow: "none",
+                    opacity: "1"
+                },
+                input: {
+                    position: "relative",
+                    verticalAlign: "top",
+                    backgroundColor: "transparent"
+                },
+                inputWithNoHint: {
+                    position: "relative",
+                    verticalAlign: "top"
+                },
+                menu: {
+                    position: "absolute",
+                    top: "100%",
+                    left: "0",
+                    zIndex: "100",
+                    display: "none"
+                },
+                ltr: {
+                    left: "0",
+                    right: "auto"
+                },
+                rtl: {
+                    left: "auto",
+                    right: " 0"
+                }
+            };
+            if (_.isMsie()) {
+                _.mixin(css.input, {
+                    backgroundImage: "url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7)"
+                });
+            }
+            return css;
+        }
+    }();
+    var EventBus = function () {
+        "use strict";
+
+        var namespace, deprecationMap;
+        namespace = "typeahead:";
+        deprecationMap = {
+            render: "rendered",
+            cursorchange: "cursorchanged",
+            select: "selected",
+            autocomplete: "autocompleted"
+        };
+        function EventBus(o) {
+            if (!o || !o.el) {
+                $.error("EventBus initialized without el");
+            }
+            this.$el = $(o.el);
+        }
+        _.mixin(EventBus.prototype, {
+            _trigger: function _trigger(type, args) {
+                var $e;
+                $e = $.Event(namespace + type);
+                (args = args || []).unshift($e);
+                this.$el.trigger.apply(this.$el, args);
+                return $e;
+            },
+            before: function before(type) {
+                var args, $e;
+                args = [].slice.call(arguments, 1);
+                $e = this._trigger("before" + type, args);
+                return $e.isDefaultPrevented();
+            },
+            trigger: function trigger(type) {
+                var deprecatedType;
+                this._trigger(type, [].slice.call(arguments, 1));
+                if (deprecatedType = deprecationMap[type]) {
+                    this._trigger(deprecatedType, [].slice.call(arguments, 1));
+                }
+            }
+        });
+        return EventBus;
+    }();
+    var EventEmitter = function () {
+        "use strict";
+
+        var splitter = /\s+/,
+            nextTick = getNextTick();
+        return {
+            onSync: onSync,
+            onAsync: onAsync,
+            off: off,
+            trigger: trigger
+        };
+        function on(method, types, cb, context) {
+            var type;
+            if (!cb) {
+                return this;
+            }
+            types = types.split(splitter);
+            cb = context ? bindContext(cb, context) : cb;
+            this._callbacks = this._callbacks || {};
+            while (type = types.shift()) {
+                this._callbacks[type] = this._callbacks[type] || {
+                    sync: [],
+                    async: []
+                };
+                this._callbacks[type][method].push(cb);
+            }
+            return this;
+        }
+        function onAsync(types, cb, context) {
+            return on.call(this, "async", types, cb, context);
+        }
+        function onSync(types, cb, context) {
+            return on.call(this, "sync", types, cb, context);
+        }
+        function off(types) {
+            var type;
+            if (!this._callbacks) {
+                return this;
+            }
+            types = types.split(splitter);
+            while (type = types.shift()) {
+                delete this._callbacks[type];
+            }
+            return this;
+        }
+        function trigger(types) {
+            var type, callbacks, args, syncFlush, asyncFlush;
+            if (!this._callbacks) {
+                return this;
+            }
+            types = types.split(splitter);
+            args = [].slice.call(arguments, 1);
+            while ((type = types.shift()) && (callbacks = this._callbacks[type])) {
+                syncFlush = getFlush(callbacks.sync, this, [type].concat(args));
+                asyncFlush = getFlush(callbacks.async, this, [type].concat(args));
+                syncFlush() && nextTick(asyncFlush);
+            }
+            return this;
+        }
+        function getFlush(callbacks, context, args) {
+            return flush;
+            function flush() {
+                var cancelled;
+                for (var i = 0, len = callbacks.length; !cancelled && i < len; i += 1) {
+                    cancelled = callbacks[i].apply(context, args) === false;
+                }
+                return !cancelled;
+            }
+        }
+        function getNextTick() {
+            var nextTickFn;
+            if (window.setImmediate) {
+                nextTickFn = function nextTickSetImmediate(fn) {
+                    setImmediate(function () {
+                        fn();
+                    });
+                };
+            } else {
+                nextTickFn = function nextTickSetTimeout(fn) {
+                    setTimeout(function () {
+                        fn();
+                    }, 0);
+                };
+            }
+            return nextTickFn;
+        }
+        function bindContext(fn, context) {
+            return fn.bind ? fn.bind(context) : function () {
+                fn.apply(context, [].slice.call(arguments, 0));
+            };
+        }
+    }();
+    var highlight = function (doc) {
+        "use strict";
+
+        var defaults = {
+            node: null,
+            pattern: null,
+            tagName: "strong",
+            className: null,
+            wordsOnly: false,
+            caseSensitive: false
+        };
+        return function hightlight(o) {
+            var regex;
+            o = _.mixin({}, defaults, o);
+            if (!o.node || !o.pattern) {
+                return;
+            }
+            o.pattern = _.isArray(o.pattern) ? o.pattern : [o.pattern];
+            regex = getRegex(o.pattern, o.caseSensitive, o.wordsOnly);
+            traverse(o.node, hightlightTextNode);
+            function hightlightTextNode(textNode) {
+                var match, patternNode, wrapperNode;
+                if (match = regex.exec(textNode.data)) {
+                    wrapperNode = doc.createElement(o.tagName);
+                    o.className && (wrapperNode.className = o.className);
+                    patternNode = textNode.splitText(match.index);
+                    patternNode.splitText(match[0].length);
+                    wrapperNode.appendChild(patternNode.cloneNode(true));
+                    textNode.parentNode.replaceChild(wrapperNode, patternNode);
+                }
+                return !!match;
+            }
+            function traverse(el, hightlightTextNode) {
+                var childNode,
+                    TEXT_NODE_TYPE = 3;
+                for (var i = 0; i < el.childNodes.length; i++) {
+                    childNode = el.childNodes[i];
+                    if (childNode.nodeType === TEXT_NODE_TYPE) {
+                        i += hightlightTextNode(childNode) ? 1 : 0;
+                    } else {
+                        traverse(childNode, hightlightTextNode);
+                    }
+                }
+            }
+        };
+        function getRegex(patterns, caseSensitive, wordsOnly) {
+            var escapedPatterns = [],
+                regexStr;
+            for (var i = 0, len = patterns.length; i < len; i++) {
+                escapedPatterns.push(_.escapeRegExChars(patterns[i]));
+            }
+            regexStr = wordsOnly ? "\\b(" + escapedPatterns.join("|") + ")\\b" : "(" + escapedPatterns.join("|") + ")";
+            return caseSensitive ? new RegExp(regexStr) : new RegExp(regexStr, "i");
+        }
+    }(window.document);
+    var Input = function () {
+        "use strict";
+
+        var specialKeyCodeMap;
+        specialKeyCodeMap = {
+            9: "tab",
+            27: "esc",
+            37: "left",
+            39: "right",
+            13: "enter",
+            38: "up",
+            40: "down"
+        };
+        function Input(o, www) {
+            o = o || {};
+            if (!o.input) {
+                $.error("input is missing");
+            }
+            www.mixin(this);
+            this.$hint = $(o.hint);
+            this.$input = $(o.input);
+            this.query = this.$input.val();
+            this.queryWhenFocused = this.hasFocus() ? this.query : null;
+            this.$overflowHelper = buildOverflowHelper(this.$input);
+            this._checkLanguageDirection();
+            if (this.$hint.length === 0) {
+                this.setHint = this.getHint = this.clearHint = this.clearHintIfInvalid = _.noop;
+            }
+        }
+        Input.normalizeQuery = function (str) {
+            return _.toStr(str).replace(/^\s*/g, "").replace(/\s{2,}/g, " ");
+        };
+        _.mixin(Input.prototype, EventEmitter, {
+            _onBlur: function onBlur() {
+                this.resetInputValue();
+                this.trigger("blurred");
+            },
+            _onFocus: function onFocus() {
+                this.queryWhenFocused = this.query;
+                this.trigger("focused");
+            },
+            _onKeydown: function onKeydown($e) {
+                var keyName = specialKeyCodeMap[$e.which || $e.keyCode];
+                this._managePreventDefault(keyName, $e);
+                if (keyName && this._shouldTrigger(keyName, $e)) {
+                    this.trigger(keyName + "Keyed", $e);
+                }
+            },
+            _onInput: function onInput() {
+                this._setQuery(this.getInputValue());
+                this.clearHintIfInvalid();
+                this._checkLanguageDirection();
+            },
+            _managePreventDefault: function managePreventDefault(keyName, $e) {
+                var preventDefault;
+                switch (keyName) {
+                    case "up":
+                    case "down":
+                        preventDefault = !withModifier($e);
+                        break;
+
+                    default:
+                        preventDefault = false;
+                }
+                preventDefault && $e.preventDefault();
+            },
+            _shouldTrigger: function shouldTrigger(keyName, $e) {
+                var trigger;
+                switch (keyName) {
+                    case "tab":
+                        trigger = !withModifier($e);
+                        break;
+
+                    default:
+                        trigger = true;
+                }
+                return trigger;
+            },
+            _checkLanguageDirection: function checkLanguageDirection() {
+                var dir = (this.$input.css("direction") || "ltr").toLowerCase();
+                if (this.dir !== dir) {
+                    this.dir = dir;
+                    this.$hint.attr("dir", dir);
+                    this.trigger("langDirChanged", dir);
+                }
+            },
+            _setQuery: function setQuery(val, silent) {
+                var areEquivalent, hasDifferentWhitespace;
+                areEquivalent = areQueriesEquivalent(val, this.query);
+                hasDifferentWhitespace = areEquivalent ? this.query.length !== val.length : false;
+                this.query = val;
+                if (!silent && !areEquivalent) {
+                    this.trigger("queryChanged", this.query);
+                } else if (!silent && hasDifferentWhitespace) {
+                    this.trigger("whitespaceChanged", this.query);
+                }
+            },
+            bind: function bind() {
+                var that = this,
+                    onBlur,
+                    onFocus,
+                    onKeydown,
+                    onInput;
+                onBlur = _.bind(this._onBlur, this);
+                onFocus = _.bind(this._onFocus, this);
+                onKeydown = _.bind(this._onKeydown, this);
+                onInput = _.bind(this._onInput, this);
+                this.$input.on("blur.tt", onBlur).on("focus.tt", onFocus).on("keydown.tt", onKeydown);
+                if (!_.isMsie() || _.isMsie() > 9) {
+                    this.$input.on("input.tt", onInput);
+                } else {
+                    this.$input.on("keydown.tt keypress.tt cut.tt paste.tt", function ($e) {
+                        if (specialKeyCodeMap[$e.which || $e.keyCode]) {
+                            return;
+                        }
+                        _.defer(_.bind(that._onInput, that, $e));
+                    });
+                }
+                return this;
+            },
+            focus: function focus() {
+                this.$input.focus();
+            },
+            blur: function blur() {
+                this.$input.blur();
+            },
+            getLangDir: function getLangDir() {
+                return this.dir;
+            },
+            getQuery: function getQuery() {
+                return this.query || "";
+            },
+            setQuery: function setQuery(val, silent) {
+                this.setInputValue(val);
+                this._setQuery(val, silent);
+            },
+            hasQueryChangedSinceLastFocus: function hasQueryChangedSinceLastFocus() {
+                return this.query !== this.queryWhenFocused;
+            },
+            getInputValue: function getInputValue() {
+                return this.$input.val();
+            },
+            setInputValue: function setInputValue(value) {
+                this.$input.val(value);
+                this.clearHintIfInvalid();
+                this._checkLanguageDirection();
+            },
+            resetInputValue: function resetInputValue() {
+                this.setInputValue(this.query);
+            },
+            getHint: function getHint() {
+                return this.$hint.val();
+            },
+            setHint: function setHint(value) {
+                this.$hint.val(value);
+            },
+            clearHint: function clearHint() {
+                this.setHint("");
+            },
+            clearHintIfInvalid: function clearHintIfInvalid() {
+                var val, hint, valIsPrefixOfHint, isValid;
+                val = this.getInputValue();
+                hint = this.getHint();
+                valIsPrefixOfHint = val !== hint && hint.indexOf(val) === 0;
+                isValid = val !== "" && valIsPrefixOfHint && !this.hasOverflow();
+                !isValid && this.clearHint();
+            },
+            hasFocus: function hasFocus() {
+                return this.$input.is(":focus");
+            },
+            hasOverflow: function hasOverflow() {
+                var constraint = this.$input.width() - 2;
+                this.$overflowHelper.text(this.getInputValue());
+                return this.$overflowHelper.width() >= constraint;
+            },
+            isCursorAtEnd: function isCursorAtEnd() {
+                var valueLength, selectionStart, range;
+                valueLength = this.$input.val().length;
+                selectionStart = this.$input[0].selectionStart;
+                if (_.isNumber(selectionStart)) {
+                    return selectionStart === valueLength;
+                } else if (document.selection) {
+                    range = document.selection.createRange();
+                    range.moveStart("character", -valueLength);
+                    return valueLength === range.text.length;
+                }
+                return true;
+            },
+            destroy: function destroy() {
+                this.$hint.off(".tt");
+                this.$input.off(".tt");
+                this.$overflowHelper.remove();
+                this.$hint = this.$input = this.$overflowHelper = $("<div>");
+            }
+        });
+        return Input;
+        function buildOverflowHelper($input) {
+            return $('<pre aria-hidden="true"></pre>').css({
+                position: "absolute",
+                visibility: "hidden",
+                whiteSpace: "pre",
+                fontFamily: $input.css("font-family"),
+                fontSize: $input.css("font-size"),
+                fontStyle: $input.css("font-style"),
+                fontVariant: $input.css("font-variant"),
+                fontWeight: $input.css("font-weight"),
+                wordSpacing: $input.css("word-spacing"),
+                letterSpacing: $input.css("letter-spacing"),
+                textIndent: $input.css("text-indent"),
+                textRendering: $input.css("text-rendering"),
+                textTransform: $input.css("text-transform")
+            }).insertAfter($input);
+        }
+        function areQueriesEquivalent(a, b) {
+            return Input.normalizeQuery(a) === Input.normalizeQuery(b);
+        }
+        function withModifier($e) {
+            return $e.altKey || $e.ctrlKey || $e.metaKey || $e.shiftKey;
+        }
+    }();
+    var Dataset = function () {
+        "use strict";
+
+        var keys, nameGenerator;
+        keys = {
+            val: "tt-selectable-display",
+            obj: "tt-selectable-object"
+        };
+        nameGenerator = _.getIdGenerator();
+        function Dataset(o, www) {
+            o = o || {};
+            o.templates = o.templates || {};
+            o.templates.notFound = o.templates.notFound || o.templates.empty;
+            if (!o.source) {
+                $.error("missing source");
+            }
+            if (!o.node) {
+                $.error("missing node");
+            }
+            if (o.name && !isValidName(o.name)) {
+                $.error("invalid dataset name: " + o.name);
+            }
+            www.mixin(this);
+            this.highlight = !!o.highlight;
+            this.name = o.name || nameGenerator();
+            this.limit = o.limit || 5;
+            this.displayFn = getDisplayFn(o.display || o.displayKey);
+            this.templates = getTemplates(o.templates, this.displayFn);
+            this.source = o.source.__ttAdapter ? o.source.__ttAdapter() : o.source;
+            this.async = _.isUndefined(o.async) ? this.source.length > 2 : !!o.async;
+            this._resetLastSuggestion();
+            this.$el = $(o.node).addClass(this.classes.dataset).addClass(this.classes.dataset + "-" + this.name);
+        }
+        Dataset.extractData = function extractData(el) {
+            var $el = $(el);
+            if ($el.data(keys.obj)) {
+                return {
+                    val: $el.data(keys.val) || "",
+                    obj: $el.data(keys.obj) || null
+                };
+            }
+            return null;
+        };
+        _.mixin(Dataset.prototype, EventEmitter, {
+            _overwrite: function overwrite(query, suggestions) {
+                suggestions = suggestions || [];
+                if (suggestions.length) {
+                    this._renderSuggestions(query, suggestions);
+                } else if (this.async && this.templates.pending) {
+                    this._renderPending(query);
+                } else if (!this.async && this.templates.notFound) {
+                    this._renderNotFound(query);
+                } else {
+                    this._empty();
+                }
+                this.trigger("rendered", this.name, suggestions, false);
+            },
+            _append: function append(query, suggestions) {
+                suggestions = suggestions || [];
+                if (suggestions.length && this.$lastSuggestion.length) {
+                    this._appendSuggestions(query, suggestions);
+                } else if (suggestions.length) {
+                    this._renderSuggestions(query, suggestions);
+                } else if (!this.$lastSuggestion.length && this.templates.notFound) {
+                    this._renderNotFound(query);
+                }
+                this.trigger("rendered", this.name, suggestions, true);
+            },
+            _renderSuggestions: function renderSuggestions(query, suggestions) {
+                var $fragment;
+                $fragment = this._getSuggestionsFragment(query, suggestions);
+                this.$lastSuggestion = $fragment.children().last();
+                this.$el.html($fragment).prepend(this._getHeader(query, suggestions)).append(this._getFooter(query, suggestions));
+            },
+            _appendSuggestions: function appendSuggestions(query, suggestions) {
+                var $fragment, $lastSuggestion;
+                $fragment = this._getSuggestionsFragment(query, suggestions);
+                $lastSuggestion = $fragment.children().last();
+                this.$lastSuggestion.after($fragment);
+                this.$lastSuggestion = $lastSuggestion;
+            },
+            _renderPending: function renderPending(query) {
+                var template = this.templates.pending;
+                this._resetLastSuggestion();
+                template && this.$el.html(template({
+                    query: query,
+                    dataset: this.name
+                }));
+            },
+            _renderNotFound: function renderNotFound(query) {
+                var template = this.templates.notFound;
+                this._resetLastSuggestion();
+                template && this.$el.html(template({
+                    query: query,
+                    dataset: this.name
+                }));
+            },
+            _empty: function empty() {
+                this.$el.empty();
+                this._resetLastSuggestion();
+            },
+            _getSuggestionsFragment: function getSuggestionsFragment(query, suggestions) {
+                var that = this,
+                    fragment;
+                fragment = document.createDocumentFragment();
+                _.each(suggestions, function getSuggestionNode(suggestion) {
+                    var $el, context;
+                    context = that._injectQuery(query, suggestion);
+                    $el = $(that.templates.suggestion(context)).data(keys.obj, suggestion).data(keys.val, that.displayFn(suggestion)).addClass(that.classes.suggestion + " " + that.classes.selectable);
+                    fragment.appendChild($el[0]);
+                });
+                this.highlight && highlight({
+                    className: this.classes.highlight,
+                    node: fragment,
+                    pattern: query
+                });
+                return $(fragment);
+            },
+            _getFooter: function getFooter(query, suggestions) {
+                return this.templates.footer ? this.templates.footer({
+                    query: query,
+                    suggestions: suggestions,
+                    dataset: this.name
+                }) : null;
+            },
+            _getHeader: function getHeader(query, suggestions) {
+                return this.templates.header ? this.templates.header({
+                    query: query,
+                    suggestions: suggestions,
+                    dataset: this.name
+                }) : null;
+            },
+            _resetLastSuggestion: function resetLastSuggestion() {
+                this.$lastSuggestion = $();
+            },
+            _injectQuery: function injectQuery(query, obj) {
+                return _.isObject(obj) ? _.mixin({
+                    _query: query
+                }, obj) : obj;
+            },
+            update: function update(query) {
+                var that = this,
+                    canceled = false,
+                    syncCalled = false,
+                    rendered = 0;
+                this.cancel();
+                this.cancel = function cancel() {
+                    canceled = true;
+                    that.cancel = $.noop;
+                    that.async && that.trigger("asyncCanceled", query);
+                };
+                this.source(query, sync, async);
+                !syncCalled && sync([]);
+                function sync(suggestions) {
+                    if (syncCalled) {
+                        return;
+                    }
+                    syncCalled = true;
+                    suggestions = (suggestions || []).slice(0, that.limit);
+                    rendered = suggestions.length;
+                    that._overwrite(query, suggestions);
+                    if (rendered < that.limit && that.async) {
+                        that.trigger("asyncRequested", query);
+                    }
+                }
+                function async(suggestions) {
+                    suggestions = suggestions || [];
+                    if (!canceled && rendered < that.limit) {
+                        that.cancel = $.noop;
+                        rendered += suggestions.length;
+                        that._append(query, suggestions.slice(0, that.limit - rendered));
+                        that.async && that.trigger("asyncReceived", query);
+                    }
+                }
+            },
+            cancel: $.noop,
+            clear: function clear() {
+                this._empty();
+                this.cancel();
+                this.trigger("cleared");
+            },
+            isEmpty: function isEmpty() {
+                return this.$el.is(":empty");
+            },
+            destroy: function destroy() {
+                this.$el = $("<div>");
+            }
+        });
+        return Dataset;
+        function getDisplayFn(display) {
+            display = display || _.stringify;
+            return _.isFunction(display) ? display : displayFn;
+            function displayFn(obj) {
+                return obj[display];
+            }
+        }
+        function getTemplates(templates, displayFn) {
+            return {
+                notFound: templates.notFound && _.templatify(templates.notFound),
+                pending: templates.pending && _.templatify(templates.pending),
+                header: templates.header && _.templatify(templates.header),
+                footer: templates.footer && _.templatify(templates.footer),
+                suggestion: templates.suggestion || suggestionTemplate
+            };
+            function suggestionTemplate(context) {
+                return $("<div>").text(displayFn(context));
+            }
+        }
+        function isValidName(str) {
+            return (/^[_a-zA-Z0-9-]+$/.test(str)
+            );
+        }
+    }();
+    var Menu = function () {
+        "use strict";
+
+        function Menu(o, www) {
+            var that = this;
+            o = o || {};
+            if (!o.node) {
+                $.error("node is required");
+            }
+            www.mixin(this);
+            this.$node = $(o.node);
+            this.query = null;
+            this.datasets = _.map(o.datasets, initializeDataset);
+            function initializeDataset(oDataset) {
+                var node = that.$node.find(oDataset.node).first();
+                oDataset.node = node.length ? node : $("<div>").appendTo(that.$node);
+                return new Dataset(oDataset, www);
+            }
+        }
+        _.mixin(Menu.prototype, EventEmitter, {
+            _onSelectableClick: function onSelectableClick($e) {
+                this.trigger("selectableClicked", $($e.currentTarget));
+            },
+            _onRendered: function onRendered(type, dataset, suggestions, async) {
+                this.$node.toggleClass(this.classes.empty, this._allDatasetsEmpty());
+                this.trigger("datasetRendered", dataset, suggestions, async);
+            },
+            _onCleared: function onCleared() {
+                this.$node.toggleClass(this.classes.empty, this._allDatasetsEmpty());
+                this.trigger("datasetCleared");
+            },
+            _propagate: function propagate() {
+                this.trigger.apply(this, arguments);
+            },
+            _allDatasetsEmpty: function allDatasetsEmpty() {
+                return _.every(this.datasets, isDatasetEmpty);
+                function isDatasetEmpty(dataset) {
+                    return dataset.isEmpty();
+                }
+            },
+            _getSelectables: function getSelectables() {
+                return this.$node.find(this.selectors.selectable);
+            },
+            _removeCursor: function _removeCursor() {
+                var $selectable = this.getActiveSelectable();
+                $selectable && $selectable.removeClass(this.classes.cursor);
+            },
+            _ensureVisible: function ensureVisible($el) {
+                var elTop, elBottom, nodeScrollTop, nodeHeight;
+                elTop = $el.position().top;
+                elBottom = elTop + $el.outerHeight(true);
+                nodeScrollTop = this.$node.scrollTop();
+                nodeHeight = this.$node.height() + parseInt(this.$node.css("paddingTop"), 10) + parseInt(this.$node.css("paddingBottom"), 10);
+                if (elTop < 0) {
+                    this.$node.scrollTop(nodeScrollTop + elTop);
+                } else if (nodeHeight < elBottom) {
+                    this.$node.scrollTop(nodeScrollTop + (elBottom - nodeHeight));
+                }
+            },
+            bind: function bind() {
+                var that = this,
+                    onSelectableClick;
+                onSelectableClick = _.bind(this._onSelectableClick, this);
+                this.$node.on("click.tt", this.selectors.selectable, onSelectableClick);
+                _.each(this.datasets, function (dataset) {
+                    dataset.onSync("asyncRequested", that._propagate, that).onSync("asyncCanceled", that._propagate, that).onSync("asyncReceived", that._propagate, that).onSync("rendered", that._onRendered, that).onSync("cleared", that._onCleared, that);
+                });
+                return this;
+            },
+            isOpen: function isOpen() {
+                return this.$node.hasClass(this.classes.open);
+            },
+            open: function open() {
+                this.$node.addClass(this.classes.open);
+            },
+            close: function close() {
+                this.$node.removeClass(this.classes.open);
+                this._removeCursor();
+            },
+            setLanguageDirection: function setLanguageDirection(dir) {
+                this.$node.attr("dir", dir);
+            },
+            selectableRelativeToCursor: function selectableRelativeToCursor(delta) {
+                var $selectables, $oldCursor, oldIndex, newIndex;
+                $oldCursor = this.getActiveSelectable();
+                $selectables = this._getSelectables();
+                oldIndex = $oldCursor ? $selectables.index($oldCursor) : -1;
+                newIndex = oldIndex + delta;
+                newIndex = (newIndex + 1) % ($selectables.length + 1) - 1;
+                newIndex = newIndex < -1 ? $selectables.length - 1 : newIndex;
+                return newIndex === -1 ? null : $selectables.eq(newIndex);
+            },
+            setCursor: function setCursor($selectable) {
+                this._removeCursor();
+                if ($selectable = $selectable && $selectable.first()) {
+                    $selectable.addClass(this.classes.cursor);
+                    this._ensureVisible($selectable);
+                }
+            },
+            getSelectableData: function getSelectableData($el) {
+                return $el && $el.length ? Dataset.extractData($el) : null;
+            },
+            getActiveSelectable: function getActiveSelectable() {
+                var $selectable = this._getSelectables().filter(this.selectors.cursor).first();
+                return $selectable.length ? $selectable : null;
+            },
+            getTopSelectable: function getTopSelectable() {
+                var $selectable = this._getSelectables().first();
+                return $selectable.length ? $selectable : null;
+            },
+            update: function update(query) {
+                var isValidUpdate = query !== this.query;
+                if (isValidUpdate) {
+                    this.query = query;
+                    _.each(this.datasets, updateDataset);
+                }
+                return isValidUpdate;
+                function updateDataset(dataset) {
+                    dataset.update(query);
+                }
+            },
+            empty: function empty() {
+                _.each(this.datasets, clearDataset);
+                this.query = null;
+                this.$node.addClass(this.classes.empty);
+                function clearDataset(dataset) {
+                    dataset.clear();
+                }
+            },
+            destroy: function destroy() {
+                this.$node.off(".tt");
+                this.$node = $("<div>");
+                _.each(this.datasets, destroyDataset);
+                function destroyDataset(dataset) {
+                    dataset.destroy();
+                }
+            }
+        });
+        return Menu;
+    }();
+    var DefaultMenu = function () {
+        "use strict";
+
+        var s = Menu.prototype;
+        function DefaultMenu() {
+            Menu.apply(this, [].slice.call(arguments, 0));
+        }
+        _.mixin(DefaultMenu.prototype, Menu.prototype, {
+            open: function open() {
+                !this._allDatasetsEmpty() && this._show();
+                return s.open.apply(this, [].slice.call(arguments, 0));
+            },
+            close: function close() {
+                this._hide();
+                return s.close.apply(this, [].slice.call(arguments, 0));
+            },
+            _onRendered: function onRendered() {
+                if (this._allDatasetsEmpty()) {
+                    this._hide();
+                } else {
+                    this.isOpen() && this._show();
+                }
+                return s._onRendered.apply(this, [].slice.call(arguments, 0));
+            },
+            _onCleared: function onCleared() {
+                if (this._allDatasetsEmpty()) {
+                    this._hide();
+                } else {
+                    this.isOpen() && this._show();
+                }
+                return s._onCleared.apply(this, [].slice.call(arguments, 0));
+            },
+            setLanguageDirection: function setLanguageDirection(dir) {
+                this.$node.css(dir === "ltr" ? this.css.ltr : this.css.rtl);
+                return s.setLanguageDirection.apply(this, [].slice.call(arguments, 0));
+            },
+            _hide: function hide() {
+                this.$node.hide();
+            },
+            _show: function show() {
+                this.$node.css("display", "block");
+            }
+        });
+        return DefaultMenu;
+    }();
+    var Typeahead = function () {
+        "use strict";
+
+        function Typeahead(o, www) {
+            var onFocused, onBlurred, onEnterKeyed, onTabKeyed, onEscKeyed, onUpKeyed, onDownKeyed, onLeftKeyed, onRightKeyed, onQueryChanged, onWhitespaceChanged;
+            o = o || {};
+            if (!o.input) {
+                $.error("missing input");
+            }
+            if (!o.menu) {
+                $.error("missing menu");
+            }
+            if (!o.eventBus) {
+                $.error("missing event bus");
+            }
+            www.mixin(this);
+            this.eventBus = o.eventBus;
+            this.minLength = _.isNumber(o.minLength) ? o.minLength : 1;
+            this.input = o.input;
+            this.menu = o.menu;
+            this.enabled = true;
+            this.active = false;
+            this.input.hasFocus() && this.activate();
+            this.dir = this.input.getLangDir();
+            this._hacks();
+            this.menu.bind().onSync("selectableClicked", this._onSelectableClicked, this).onSync("asyncRequested", this._onAsyncRequested, this).onSync("asyncCanceled", this._onAsyncCanceled, this).onSync("asyncReceived", this._onAsyncReceived, this).onSync("datasetRendered", this._onDatasetRendered, this).onSync("datasetCleared", this._onDatasetCleared, this);
+            onFocused = c(this, "activate", "open", "_onFocused");
+            onBlurred = c(this, "deactivate", "_onBlurred");
+            onEnterKeyed = c(this, "isActive", "isOpen", "_onEnterKeyed");
+            onTabKeyed = c(this, "isActive", "isOpen", "_onTabKeyed");
+            onEscKeyed = c(this, "isActive", "_onEscKeyed");
+            onUpKeyed = c(this, "isActive", "open", "_onUpKeyed");
+            onDownKeyed = c(this, "isActive", "open", "_onDownKeyed");
+            onLeftKeyed = c(this, "isActive", "isOpen", "_onLeftKeyed");
+            onRightKeyed = c(this, "isActive", "isOpen", "_onRightKeyed");
+            onQueryChanged = c(this, "_openIfActive", "_onQueryChanged");
+            onWhitespaceChanged = c(this, "_openIfActive", "_onWhitespaceChanged");
+            this.input.bind().onSync("focused", onFocused, this).onSync("blurred", onBlurred, this).onSync("enterKeyed", onEnterKeyed, this).onSync("tabKeyed", onTabKeyed, this).onSync("escKeyed", onEscKeyed, this).onSync("upKeyed", onUpKeyed, this).onSync("downKeyed", onDownKeyed, this).onSync("leftKeyed", onLeftKeyed, this).onSync("rightKeyed", onRightKeyed, this).onSync("queryChanged", onQueryChanged, this).onSync("whitespaceChanged", onWhitespaceChanged, this).onSync("langDirChanged", this._onLangDirChanged, this);
+        }
+        _.mixin(Typeahead.prototype, {
+            _hacks: function hacks() {
+                var $input, $menu;
+                $input = this.input.$input || $("<div>");
+                $menu = this.menu.$node || $("<div>");
+                $input.on("blur.tt", function ($e) {
+                    var active, isActive, hasActive;
+                    active = document.activeElement;
+                    isActive = $menu.is(active);
+                    hasActive = $menu.has(active).length > 0;
+                    if (_.isMsie() && (isActive || hasActive)) {
+                        $e.preventDefault();
+                        $e.stopImmediatePropagation();
+                        _.defer(function () {
+                            $input.focus();
+                        });
+                    }
+                });
+                $menu.on("mousedown.tt", function ($e) {
+                    $e.preventDefault();
+                });
+            },
+            _onSelectableClicked: function onSelectableClicked(type, $el) {
+                this.select($el);
+            },
+            _onDatasetCleared: function onDatasetCleared() {
+                this._updateHint();
+            },
+            _onDatasetRendered: function onDatasetRendered(type, dataset, suggestions, async) {
+                this._updateHint();
+                this.eventBus.trigger("render", suggestions, async, dataset);
+            },
+            _onAsyncRequested: function onAsyncRequested(type, dataset, query) {
+                this.eventBus.trigger("asyncrequest", query, dataset);
+            },
+            _onAsyncCanceled: function onAsyncCanceled(type, dataset, query) {
+                this.eventBus.trigger("asynccancel", query, dataset);
+            },
+            _onAsyncReceived: function onAsyncReceived(type, dataset, query) {
+                this.eventBus.trigger("asyncreceive", query, dataset);
+            },
+            _onFocused: function onFocused() {
+                this._minLengthMet() && this.menu.update(this.input.getQuery());
+            },
+            _onBlurred: function onBlurred() {
+                if (this.input.hasQueryChangedSinceLastFocus()) {
+                    this.eventBus.trigger("change", this.input.getQuery());
+                }
+            },
+            _onEnterKeyed: function onEnterKeyed(type, $e) {
+                var $selectable;
+                if ($selectable = this.menu.getActiveSelectable()) {
+                    this.select($selectable) && $e.preventDefault();
+                }
+            },
+            _onTabKeyed: function onTabKeyed(type, $e) {
+                var $selectable;
+                if ($selectable = this.menu.getActiveSelectable()) {
+                    this.select($selectable) && $e.preventDefault();
+                } else if ($selectable = this.menu.getTopSelectable()) {
+                    this.autocomplete($selectable) && $e.preventDefault();
+                }
+            },
+            _onEscKeyed: function onEscKeyed() {
+                this.close();
+            },
+            _onUpKeyed: function onUpKeyed() {
+                this.moveCursor(-1);
+            },
+            _onDownKeyed: function onDownKeyed() {
+                this.moveCursor(+1);
+            },
+            _onLeftKeyed: function onLeftKeyed() {
+                if (this.dir === "rtl" && this.input.isCursorAtEnd()) {
+                    this.autocomplete(this.menu.getTopSelectable());
+                }
+            },
+            _onRightKeyed: function onRightKeyed() {
+                if (this.dir === "ltr" && this.input.isCursorAtEnd()) {
+                    this.autocomplete(this.menu.getTopSelectable());
+                }
+            },
+            _onQueryChanged: function onQueryChanged(e, query) {
+                this._minLengthMet(query) ? this.menu.update(query) : this.menu.empty();
+            },
+            _onWhitespaceChanged: function onWhitespaceChanged() {
+                this._updateHint();
+            },
+            _onLangDirChanged: function onLangDirChanged(e, dir) {
+                if (this.dir !== dir) {
+                    this.dir = dir;
+                    this.menu.setLanguageDirection(dir);
+                }
+            },
+            _openIfActive: function openIfActive() {
+                this.isActive() && this.open();
+            },
+            _minLengthMet: function minLengthMet(query) {
+                query = _.isString(query) ? query : this.input.getQuery() || "";
+                return query.length >= this.minLength;
+            },
+            _updateHint: function updateHint() {
+                var $selectable, data, val, query, escapedQuery, frontMatchRegEx, match;
+                $selectable = this.menu.getTopSelectable();
+                data = this.menu.getSelectableData($selectable);
+                val = this.input.getInputValue();
+                if (data && !_.isBlankString(val) && !this.input.hasOverflow()) {
+                    query = Input.normalizeQuery(val);
+                    escapedQuery = _.escapeRegExChars(query);
+                    frontMatchRegEx = new RegExp("^(?:" + escapedQuery + ")(.+$)", "i");
+                    match = frontMatchRegEx.exec(data.val);
+                    match && this.input.setHint(val + match[1]);
+                } else {
+                    this.input.clearHint();
+                }
+            },
+            isEnabled: function isEnabled() {
+                return this.enabled;
+            },
+            enable: function enable() {
+                this.enabled = true;
+            },
+            disable: function disable() {
+                this.enabled = false;
+            },
+            isActive: function isActive() {
+                return this.active;
+            },
+            activate: function activate() {
+                if (this.isActive()) {
+                    return true;
+                } else if (!this.isEnabled() || this.eventBus.before("active")) {
+                    return false;
+                } else {
+                    this.active = true;
+                    this.eventBus.trigger("active");
+                    return true;
+                }
+            },
+            deactivate: function deactivate() {
+                if (!this.isActive()) {
+                    return true;
+                } else if (this.eventBus.before("idle")) {
+                    return false;
+                } else {
+                    this.active = false;
+                    this.close();
+                    this.eventBus.trigger("idle");
+                    return true;
+                }
+            },
+            isOpen: function isOpen() {
+                return this.menu.isOpen();
+            },
+            open: function open() {
+                if (!this.isOpen() && !this.eventBus.before("open")) {
+                    this.menu.open();
+                    this._updateHint();
+                    this.eventBus.trigger("open");
+                }
+                return this.isOpen();
+            },
+            close: function close() {
+                if (this.isOpen() && !this.eventBus.before("close")) {
+                    this.menu.close();
+                    this.input.clearHint();
+                    this.input.resetInputValue();
+                    this.eventBus.trigger("close");
+                }
+                return !this.isOpen();
+            },
+            setVal: function setVal(val) {
+                this.input.setQuery(_.toStr(val));
+            },
+            getVal: function getVal() {
+                return this.input.getQuery();
+            },
+            select: function select($selectable) {
+                var data = this.menu.getSelectableData($selectable);
+                if (data && !this.eventBus.before("select", data.obj)) {
+                    this.input.setQuery(data.val, true);
+                    this.eventBus.trigger("select", data.obj);
+                    this.close();
+                    return true;
+                }
+                return false;
+            },
+            autocomplete: function autocomplete($selectable) {
+                var query, data, isValid;
+                query = this.input.getQuery();
+                data = this.menu.getSelectableData($selectable);
+                isValid = data && query !== data.val;
+                if (isValid && !this.eventBus.before("autocomplete", data.obj)) {
+                    this.input.setQuery(data.val);
+                    this.eventBus.trigger("autocomplete", data.obj);
+                    return true;
+                }
+                return false;
+            },
+            moveCursor: function moveCursor(delta) {
+                var query, $candidate, data, payload, cancelMove;
+                query = this.input.getQuery();
+                $candidate = this.menu.selectableRelativeToCursor(delta);
+                data = this.menu.getSelectableData($candidate);
+                payload = data ? data.obj : null;
+                cancelMove = this._minLengthMet() && this.menu.update(query);
+                if (!cancelMove && !this.eventBus.before("cursorchange", payload)) {
+                    this.menu.setCursor($candidate);
+                    if (data) {
+                        this.input.setInputValue(data.val);
+                    } else {
+                        this.input.resetInputValue();
+                        this._updateHint();
+                    }
+                    this.eventBus.trigger("cursorchange", payload);
+                    return true;
+                }
+                return false;
+            },
+            destroy: function destroy() {
+                this.input.destroy();
+                this.menu.destroy();
+            }
+        });
+        return Typeahead;
+        function c(ctx) {
+            var methods = [].slice.call(arguments, 1);
+            return function () {
+                var args = [].slice.call(arguments);
+                _.each(methods, function (method) {
+                    return ctx[method].apply(ctx, args);
+                });
+            };
+        }
+    }();
+    (function () {
+        "use strict";
+
+        var old, keys, methods;
+        old = $.fn.typeahead;
+        keys = {
+            www: "tt-www",
+            attrs: "tt-attrs",
+            typeahead: "tt-typeahead"
+        };
+        methods = {
+            initialize: function initialize(o, datasets) {
+                var www;
+                datasets = _.isArray(datasets) ? datasets : [].slice.call(arguments, 1);
+                o = o || {};
+                www = WWW(o.classNames);
+                return this.each(attach);
+                function attach() {
+                    var $input, $wrapper, $hint, $menu, defaultHint, defaultMenu, eventBus, input, menu, typeahead, MenuConstructor;
+                    _.each(datasets, function (d) {
+                        d.highlight = !!o.highlight;
+                    });
+                    $input = $(this);
+                    $wrapper = $(www.html.wrapper);
+                    $hint = $elOrNull(o.hint);
+                    $menu = $elOrNull(o.menu);
+                    defaultHint = o.hint !== false && !$hint;
+                    defaultMenu = o.menu !== false && !$menu;
+                    defaultHint && ($hint = buildHintFromInput($input, www));
+                    defaultMenu && ($menu = $(www.html.menu).css(www.css.menu));
+                    $hint && $hint.val("");
+                    $input = prepInput($input, www);
+                    if (defaultHint || defaultMenu) {
+                        $wrapper.css(www.css.wrapper);
+                        $input.css(defaultHint ? www.css.input : www.css.inputWithNoHint);
+                        $input.wrap($wrapper).parent().prepend(defaultHint ? $hint : null).append(defaultMenu ? $menu : null);
+                    }
+                    MenuConstructor = defaultMenu ? DefaultMenu : Menu;
+                    eventBus = new EventBus({
+                        el: $input
+                    });
+                    input = new Input({
+                        hint: $hint,
+                        input: $input
+                    }, www);
+                    menu = new MenuConstructor({
+                        node: $menu,
+                        datasets: datasets
+                    }, www);
+                    typeahead = new Typeahead({
+                        input: input,
+                        menu: menu,
+                        eventBus: eventBus,
+                        minLength: o.minLength
+                    }, www);
+                    $input.data(keys.www, www);
+                    $input.data(keys.typeahead, typeahead);
+                }
+            },
+            isEnabled: function isEnabled() {
+                var enabled;
+                ttEach(this.first(), function (t) {
+                    enabled = t.isEnabled();
+                });
+                return enabled;
+            },
+            enable: function enable() {
+                ttEach(this, function (t) {
+                    t.enable();
+                });
+                return this;
+            },
+            disable: function disable() {
+                ttEach(this, function (t) {
+                    t.disable();
+                });
+                return this;
+            },
+            isActive: function isActive() {
+                var active;
+                ttEach(this.first(), function (t) {
+                    active = t.isActive();
+                });
+                return active;
+            },
+            activate: function activate() {
+                ttEach(this, function (t) {
+                    t.activate();
+                });
+                return this;
+            },
+            deactivate: function deactivate() {
+                ttEach(this, function (t) {
+                    t.deactivate();
+                });
+                return this;
+            },
+            isOpen: function isOpen() {
+                var open;
+                ttEach(this.first(), function (t) {
+                    open = t.isOpen();
+                });
+                return open;
+            },
+            open: function open() {
+                ttEach(this, function (t) {
+                    t.open();
+                });
+                return this;
+            },
+            close: function close() {
+                ttEach(this, function (t) {
+                    t.close();
+                });
+                return this;
+            },
+            select: function select(el) {
+                var success = false,
+                    $el = $(el);
+                ttEach(this.first(), function (t) {
+                    success = t.select($el);
+                });
+                return success;
+            },
+            autocomplete: function autocomplete(el) {
+                var success = false,
+                    $el = $(el);
+                ttEach(this.first(), function (t) {
+                    success = t.autocomplete($el);
+                });
+                return success;
+            },
+            moveCursor: function moveCursoe(delta) {
+                var success = false;
+                ttEach(this.first(), function (t) {
+                    success = t.moveCursor(delta);
+                });
+                return success;
+            },
+            val: function val(newVal) {
+                var query;
+                if (!arguments.length) {
+                    ttEach(this.first(), function (t) {
+                        query = t.getVal();
+                    });
+                    return query;
+                } else {
+                    ttEach(this, function (t) {
+                        t.setVal(newVal);
+                    });
+                    return this;
+                }
+            },
+            destroy: function destroy() {
+                ttEach(this, function (typeahead, $input) {
+                    revert($input);
+                    typeahead.destroy();
+                });
+                return this;
+            }
+        };
+        $.fn.typeahead = function (method) {
+            if (methods[method]) {
+                return methods[method].apply(this, [].slice.call(arguments, 1));
+            } else {
+                return methods.initialize.apply(this, arguments);
+            }
+        };
+        $.fn.typeahead.noConflict = function noConflict() {
+            $.fn.typeahead = old;
+            return this;
+        };
+        function ttEach($els, fn) {
+            $els.each(function () {
+                var $input = $(this),
+                    typeahead;
+                (typeahead = $input.data(keys.typeahead)) && fn(typeahead, $input);
+            });
+        }
+        function buildHintFromInput($input, www) {
+            return $input.clone().addClass(www.classes.hint).removeData().css(www.css.hint).css(getBackgroundStyles($input)).prop("readonly", true).removeAttr("id name placeholder required").attr({
+                autocomplete: "off",
+                spellcheck: "false",
+                tabindex: -1
+            });
+        }
+        function prepInput($input, www) {
+            $input.data(keys.attrs, {
+                dir: $input.attr("dir"),
+                autocomplete: $input.attr("autocomplete"),
+                spellcheck: $input.attr("spellcheck"),
+                style: $input.attr("style")
+            });
+            $input.addClass(www.classes.input).attr({
+                autocomplete: "off",
+                spellcheck: false
+            });
+            try {
+                !$input.attr("dir") && $input.attr("dir", "auto");
+            } catch (e) {}
+            return $input;
+        }
+        function getBackgroundStyles($el) {
+            return {
+                backgroundAttachment: $el.css("background-attachment"),
+                backgroundClip: $el.css("background-clip"),
+                backgroundColor: $el.css("background-color"),
+                backgroundImage: $el.css("background-image"),
+                backgroundOrigin: $el.css("background-origin"),
+                backgroundPosition: $el.css("background-position"),
+                backgroundRepeat: $el.css("background-repeat"),
+                backgroundSize: $el.css("background-size")
+            };
+        }
+        function revert($input) {
+            var www, $wrapper;
+            www = $input.data(keys.www);
+            $wrapper = $input.parent().filter(www.selectors.wrapper);
+            _.each($input.data(keys.attrs), function (val, key) {
+                _.isUndefined(val) ? $input.removeAttr(key) : $input.attr(key, val);
+            });
+            $input.removeData(keys.typeahead).removeData(keys.www).removeData(keys.attr).removeClass(www.classes.input);
+            if ($wrapper.length) {
+                $input.detach().insertAfter($wrapper);
+                $wrapper.remove();
+            }
+        }
+        function $elOrNull(obj) {
+            var isValid, $el;
+            isValid = _.isJQuery(obj) || _.isElement(obj);
+            $el = isValid ? $(obj).first() : [];
+            return $el.length ? $el : null;
+        }
+    })();
+});
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(142).setImmediate))
+
+/***/ }),
+/* 391 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/*!
+ * typeahead.js 0.11.1
+ * https://github.com/twitter/typeahead.js
+ * Copyright 2013-2015 Twitter, Inc. and other contributors; Licensed MIT
+ */
+
+(function (root, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(14)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (a0) {
+            return root["Bloodhound"] = factory(a0);
+        }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === "object") {
+        module.exports = factory(require("jquery"));
+    } else {
+        root["Bloodhound"] = factory(jQuery);
+    }
+})(this, function ($) {
+    var _ = function () {
+        "use strict";
+
+        return {
+            isMsie: function isMsie() {
+                return (/(msie|trident)/i.test(navigator.userAgent) ? navigator.userAgent.match(/(msie |rv:)(\d+(.\d+)?)/i)[2] : false
+                );
+            },
+            isBlankString: function isBlankString(str) {
+                return !str || /^\s*$/.test(str);
+            },
+            escapeRegExChars: function escapeRegExChars(str) {
+                return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+            },
+            isString: function isString(obj) {
+                return typeof obj === "string";
+            },
+            isNumber: function isNumber(obj) {
+                return typeof obj === "number";
+            },
+            isArray: $.isArray,
+            isFunction: $.isFunction,
+            isObject: $.isPlainObject,
+            isUndefined: function isUndefined(obj) {
+                return typeof obj === "undefined";
+            },
+            isElement: function isElement(obj) {
+                return !!(obj && obj.nodeType === 1);
+            },
+            isJQuery: function isJQuery(obj) {
+                return obj instanceof $;
+            },
+            toStr: function toStr(s) {
+                return _.isUndefined(s) || s === null ? "" : s + "";
+            },
+            bind: $.proxy,
+            each: function each(collection, cb) {
+                $.each(collection, reverseArgs);
+                function reverseArgs(index, value) {
+                    return cb(value, index);
+                }
+            },
+            map: $.map,
+            filter: $.grep,
+            every: function every(obj, test) {
+                var result = true;
+                if (!obj) {
+                    return result;
+                }
+                $.each(obj, function (key, val) {
+                    if (!(result = test.call(null, val, key, obj))) {
+                        return false;
+                    }
+                });
+                return !!result;
+            },
+            some: function some(obj, test) {
+                var result = false;
+                if (!obj) {
+                    return result;
+                }
+                $.each(obj, function (key, val) {
+                    if (result = test.call(null, val, key, obj)) {
+                        return false;
+                    }
+                });
+                return !!result;
+            },
+            mixin: $.extend,
+            identity: function identity(x) {
+                return x;
+            },
+            clone: function clone(obj) {
+                return $.extend(true, {}, obj);
+            },
+            getIdGenerator: function getIdGenerator() {
+                var counter = 0;
+                return function () {
+                    return counter++;
+                };
+            },
+            templatify: function templatify(obj) {
+                return $.isFunction(obj) ? obj : template;
+                function template() {
+                    return String(obj);
+                }
+            },
+            defer: function defer(fn) {
+                setTimeout(fn, 0);
+            },
+            debounce: function debounce(func, wait, immediate) {
+                var timeout, result;
+                return function () {
+                    var context = this,
+                        args = arguments,
+                        later,
+                        callNow;
+                    later = function later() {
+                        timeout = null;
+                        if (!immediate) {
+                            result = func.apply(context, args);
+                        }
+                    };
+                    callNow = immediate && !timeout;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                    if (callNow) {
+                        result = func.apply(context, args);
+                    }
+                    return result;
+                };
+            },
+            throttle: function throttle(func, wait) {
+                var context, args, timeout, result, previous, later;
+                previous = 0;
+                later = function later() {
+                    previous = new Date();
+                    timeout = null;
+                    result = func.apply(context, args);
+                };
+                return function () {
+                    var now = new Date(),
+                        remaining = wait - (now - previous);
+                    context = this;
+                    args = arguments;
+                    if (remaining <= 0) {
+                        clearTimeout(timeout);
+                        timeout = null;
+                        previous = now;
+                        result = func.apply(context, args);
+                    } else if (!timeout) {
+                        timeout = setTimeout(later, remaining);
+                    }
+                    return result;
+                };
+            },
+            stringify: function stringify(val) {
+                return _.isString(val) ? val : JSON.stringify(val);
+            },
+            noop: function noop() {}
+        };
+    }();
+    var VERSION = "0.11.1";
+    var tokenizers = function () {
+        "use strict";
+
+        return {
+            nonword: nonword,
+            whitespace: whitespace,
+            obj: {
+                nonword: getObjTokenizer(nonword),
+                whitespace: getObjTokenizer(whitespace)
+            }
+        };
+        function whitespace(str) {
+            str = _.toStr(str);
+            return str ? str.split(/\s+/) : [];
+        }
+        function nonword(str) {
+            str = _.toStr(str);
+            return str ? str.split(/\W+/) : [];
+        }
+        function getObjTokenizer(tokenizer) {
+            return function setKey(keys) {
+                keys = _.isArray(keys) ? keys : [].slice.call(arguments, 0);
+                return function tokenize(o) {
+                    var tokens = [];
+                    _.each(keys, function (k) {
+                        tokens = tokens.concat(tokenizer(_.toStr(o[k])));
+                    });
+                    return tokens;
+                };
+            };
+        }
+    }();
+    var LruCache = function () {
+        "use strict";
+
+        function LruCache(maxSize) {
+            this.maxSize = _.isNumber(maxSize) ? maxSize : 100;
+            this.reset();
+            if (this.maxSize <= 0) {
+                this.set = this.get = $.noop;
+            }
+        }
+        _.mixin(LruCache.prototype, {
+            set: function set(key, val) {
+                var tailItem = this.list.tail,
+                    node;
+                if (this.size >= this.maxSize) {
+                    this.list.remove(tailItem);
+                    delete this.hash[tailItem.key];
+                    this.size--;
+                }
+                if (node = this.hash[key]) {
+                    node.val = val;
+                    this.list.moveToFront(node);
+                } else {
+                    node = new Node(key, val);
+                    this.list.add(node);
+                    this.hash[key] = node;
+                    this.size++;
+                }
+            },
+            get: function get(key) {
+                var node = this.hash[key];
+                if (node) {
+                    this.list.moveToFront(node);
+                    return node.val;
+                }
+            },
+            reset: function reset() {
+                this.size = 0;
+                this.hash = {};
+                this.list = new List();
+            }
+        });
+        function List() {
+            this.head = this.tail = null;
+        }
+        _.mixin(List.prototype, {
+            add: function add(node) {
+                if (this.head) {
+                    node.next = this.head;
+                    this.head.prev = node;
+                }
+                this.head = node;
+                this.tail = this.tail || node;
+            },
+            remove: function remove(node) {
+                node.prev ? node.prev.next = node.next : this.head = node.next;
+                node.next ? node.next.prev = node.prev : this.tail = node.prev;
+            },
+            moveToFront: function moveToFront(node) {
+                this.remove(node);
+                this.add(node);
+            }
+        });
+        function Node(key, val) {
+            this.key = key;
+            this.val = val;
+            this.prev = this.next = null;
+        }
+        return LruCache;
+    }();
+    var PersistentStorage = function () {
+        "use strict";
+
+        var LOCAL_STORAGE;
+        try {
+            LOCAL_STORAGE = window.localStorage;
+            LOCAL_STORAGE.setItem("~~~", "!");
+            LOCAL_STORAGE.removeItem("~~~");
+        } catch (err) {
+            LOCAL_STORAGE = null;
+        }
+        function PersistentStorage(namespace, override) {
+            this.prefix = ["__", namespace, "__"].join("");
+            this.ttlKey = "__ttl__";
+            this.keyMatcher = new RegExp("^" + _.escapeRegExChars(this.prefix));
+            this.ls = override || LOCAL_STORAGE;
+            !this.ls && this._noop();
+        }
+        _.mixin(PersistentStorage.prototype, {
+            _prefix: function _prefix(key) {
+                return this.prefix + key;
+            },
+            _ttlKey: function _ttlKey(key) {
+                return this._prefix(key) + this.ttlKey;
+            },
+            _noop: function _noop() {
+                this.get = this.set = this.remove = this.clear = this.isExpired = _.noop;
+            },
+            _safeSet: function _safeSet(key, val) {
+                try {
+                    this.ls.setItem(key, val);
+                } catch (err) {
+                    if (err.name === "QuotaExceededError") {
+                        this.clear();
+                        this._noop();
+                    }
+                }
+            },
+            get: function get(key) {
+                if (this.isExpired(key)) {
+                    this.remove(key);
+                }
+                return decode(this.ls.getItem(this._prefix(key)));
+            },
+            set: function set(key, val, ttl) {
+                if (_.isNumber(ttl)) {
+                    this._safeSet(this._ttlKey(key), encode(now() + ttl));
+                } else {
+                    this.ls.removeItem(this._ttlKey(key));
+                }
+                return this._safeSet(this._prefix(key), encode(val));
+            },
+            remove: function remove(key) {
+                this.ls.removeItem(this._ttlKey(key));
+                this.ls.removeItem(this._prefix(key));
+                return this;
+            },
+            clear: function clear() {
+                var i,
+                    keys = gatherMatchingKeys(this.keyMatcher);
+                for (i = keys.length; i--;) {
+                    this.remove(keys[i]);
+                }
+                return this;
+            },
+            isExpired: function isExpired(key) {
+                var ttl = decode(this.ls.getItem(this._ttlKey(key)));
+                return _.isNumber(ttl) && now() > ttl ? true : false;
+            }
+        });
+        return PersistentStorage;
+        function now() {
+            return new Date().getTime();
+        }
+        function encode(val) {
+            return JSON.stringify(_.isUndefined(val) ? null : val);
+        }
+        function decode(val) {
+            return $.parseJSON(val);
+        }
+        function gatherMatchingKeys(keyMatcher) {
+            var i,
+                key,
+                keys = [],
+                len = LOCAL_STORAGE.length;
+            for (i = 0; i < len; i++) {
+                if ((key = LOCAL_STORAGE.key(i)).match(keyMatcher)) {
+                    keys.push(key.replace(keyMatcher, ""));
+                }
+            }
+            return keys;
+        }
+    }();
+    var Transport = function () {
+        "use strict";
+
+        var pendingRequestsCount = 0,
+            pendingRequests = {},
+            maxPendingRequests = 6,
+            sharedCache = new LruCache(10);
+        function Transport(o) {
+            o = o || {};
+            this.cancelled = false;
+            this.lastReq = null;
+            this._send = o.transport;
+            this._get = o.limiter ? o.limiter(this._get) : this._get;
+            this._cache = o.cache === false ? new LruCache(0) : sharedCache;
+        }
+        Transport.setMaxPendingRequests = function setMaxPendingRequests(num) {
+            maxPendingRequests = num;
+        };
+        Transport.resetCache = function resetCache() {
+            sharedCache.reset();
+        };
+        _.mixin(Transport.prototype, {
+            _fingerprint: function fingerprint(o) {
+                o = o || {};
+                return o.url + o.type + $.param(o.data || {});
+            },
+            _get: function _get(o, cb) {
+                var that = this,
+                    fingerprint,
+                    jqXhr;
+                fingerprint = this._fingerprint(o);
+                if (this.cancelled || fingerprint !== this.lastReq) {
+                    return;
+                }
+                if (jqXhr = pendingRequests[fingerprint]) {
+                    jqXhr.done(done).fail(fail);
+                } else if (pendingRequestsCount < maxPendingRequests) {
+                    pendingRequestsCount++;
+                    pendingRequests[fingerprint] = this._send(o).done(done).fail(fail).always(always);
+                } else {
+                    this.onDeckRequestArgs = [].slice.call(arguments, 0);
+                }
+                function done(resp) {
+                    cb(null, resp);
+                    that._cache.set(fingerprint, resp);
+                }
+                function fail() {
+                    cb(true);
+                }
+                function always() {
+                    pendingRequestsCount--;
+                    delete pendingRequests[fingerprint];
+                    if (that.onDeckRequestArgs) {
+                        that._get.apply(that, that.onDeckRequestArgs);
+                        that.onDeckRequestArgs = null;
+                    }
+                }
+            },
+            get: function get(o, cb) {
+                var resp, fingerprint;
+                cb = cb || $.noop;
+                o = _.isString(o) ? {
+                    url: o
+                } : o || {};
+                fingerprint = this._fingerprint(o);
+                this.cancelled = false;
+                this.lastReq = fingerprint;
+                if (resp = this._cache.get(fingerprint)) {
+                    cb(null, resp);
+                } else {
+                    this._get(o, cb);
+                }
+            },
+            cancel: function cancel() {
+                this.cancelled = true;
+            }
+        });
+        return Transport;
+    }();
+    var SearchIndex = window.SearchIndex = function () {
+        "use strict";
+
+        var CHILDREN = "c",
+            IDS = "i";
+        function SearchIndex(o) {
+            o = o || {};
+            if (!o.datumTokenizer || !o.queryTokenizer) {
+                $.error("datumTokenizer and queryTokenizer are both required");
+            }
+            this.identify = o.identify || _.stringify;
+            this.datumTokenizer = o.datumTokenizer;
+            this.queryTokenizer = o.queryTokenizer;
+            this.reset();
+        }
+        _.mixin(SearchIndex.prototype, {
+            bootstrap: function bootstrap(o) {
+                this.datums = o.datums;
+                this.trie = o.trie;
+            },
+            add: function add(data) {
+                var that = this;
+                data = _.isArray(data) ? data : [data];
+                _.each(data, function (datum) {
+                    var id, tokens;
+                    that.datums[id = that.identify(datum)] = datum;
+                    tokens = normalizeTokens(that.datumTokenizer(datum));
+                    _.each(tokens, function (token) {
+                        var node, chars, ch;
+                        node = that.trie;
+                        chars = token.split("");
+                        while (ch = chars.shift()) {
+                            node = node[CHILDREN][ch] || (node[CHILDREN][ch] = newNode());
+                            node[IDS].push(id);
+                        }
+                    });
+                });
+            },
+            get: function get(ids) {
+                var that = this;
+                return _.map(ids, function (id) {
+                    return that.datums[id];
+                });
+            },
+            search: function search(query) {
+                var that = this,
+                    tokens,
+                    matches;
+                tokens = normalizeTokens(this.queryTokenizer(query));
+                _.each(tokens, function (token) {
+                    var node, chars, ch, ids;
+                    if (matches && matches.length === 0) {
+                        return false;
+                    }
+                    node = that.trie;
+                    chars = token.split("");
+                    while (node && (ch = chars.shift())) {
+                        node = node[CHILDREN][ch];
+                    }
+                    if (node && chars.length === 0) {
+                        ids = node[IDS].slice(0);
+                        matches = matches ? getIntersection(matches, ids) : ids;
+                    } else {
+                        matches = [];
+                        return false;
+                    }
+                });
+                return matches ? _.map(unique(matches), function (id) {
+                    return that.datums[id];
+                }) : [];
+            },
+            all: function all() {
+                var values = [];
+                for (var key in this.datums) {
+                    values.push(this.datums[key]);
+                }
+                return values;
+            },
+            reset: function reset() {
+                this.datums = {};
+                this.trie = newNode();
+            },
+            serialize: function serialize() {
+                return {
+                    datums: this.datums,
+                    trie: this.trie
+                };
+            }
+        });
+        return SearchIndex;
+        function normalizeTokens(tokens) {
+            tokens = _.filter(tokens, function (token) {
+                return !!token;
+            });
+            tokens = _.map(tokens, function (token) {
+                return token.toLowerCase();
+            });
+            return tokens;
+        }
+        function newNode() {
+            var node = {};
+            node[IDS] = [];
+            node[CHILDREN] = {};
+            return node;
+        }
+        function unique(array) {
+            var seen = {},
+                uniques = [];
+            for (var i = 0, len = array.length; i < len; i++) {
+                if (!seen[array[i]]) {
+                    seen[array[i]] = true;
+                    uniques.push(array[i]);
+                }
+            }
+            return uniques;
+        }
+        function getIntersection(arrayA, arrayB) {
+            var ai = 0,
+                bi = 0,
+                intersection = [];
+            arrayA = arrayA.sort();
+            arrayB = arrayB.sort();
+            var lenArrayA = arrayA.length,
+                lenArrayB = arrayB.length;
+            while (ai < lenArrayA && bi < lenArrayB) {
+                if (arrayA[ai] < arrayB[bi]) {
+                    ai++;
+                } else if (arrayA[ai] > arrayB[bi]) {
+                    bi++;
+                } else {
+                    intersection.push(arrayA[ai]);
+                    ai++;
+                    bi++;
+                }
+            }
+            return intersection;
+        }
+    }();
+    var Prefetch = function () {
+        "use strict";
+
+        var keys;
+        keys = {
+            data: "data",
+            protocol: "protocol",
+            thumbprint: "thumbprint"
+        };
+        function Prefetch(o) {
+            this.url = o.url;
+            this.ttl = o.ttl;
+            this.cache = o.cache;
+            this.prepare = o.prepare;
+            this.transform = o.transform;
+            this.transport = o.transport;
+            this.thumbprint = o.thumbprint;
+            this.storage = new PersistentStorage(o.cacheKey);
+        }
+        _.mixin(Prefetch.prototype, {
+            _settings: function settings() {
+                return {
+                    url: this.url,
+                    type: "GET",
+                    dataType: "json"
+                };
+            },
+            store: function store(data) {
+                if (!this.cache) {
+                    return;
+                }
+                this.storage.set(keys.data, data, this.ttl);
+                this.storage.set(keys.protocol, location.protocol, this.ttl);
+                this.storage.set(keys.thumbprint, this.thumbprint, this.ttl);
+            },
+            fromCache: function fromCache() {
+                var stored = {},
+                    isExpired;
+                if (!this.cache) {
+                    return null;
+                }
+                stored.data = this.storage.get(keys.data);
+                stored.protocol = this.storage.get(keys.protocol);
+                stored.thumbprint = this.storage.get(keys.thumbprint);
+                isExpired = stored.thumbprint !== this.thumbprint || stored.protocol !== location.protocol;
+                return stored.data && !isExpired ? stored.data : null;
+            },
+            fromNetwork: function fromNetwork(cb) {
+                var that = this,
+                    settings;
+                if (!cb) {
+                    return;
+                }
+                settings = this.prepare(this._settings());
+                this.transport(settings).fail(onError).done(onResponse);
+                function onError() {
+                    cb(true);
+                }
+                function onResponse(resp) {
+                    cb(null, that.transform(resp));
+                }
+            },
+            clear: function clear() {
+                this.storage.clear();
+                return this;
+            }
+        });
+        return Prefetch;
+    }();
+    var Remote = function () {
+        "use strict";
+
+        function Remote(o) {
+            this.url = o.url;
+            this.prepare = o.prepare;
+            this.transform = o.transform;
+            this.transport = new Transport({
+                cache: o.cache,
+                limiter: o.limiter,
+                transport: o.transport
+            });
+        }
+        _.mixin(Remote.prototype, {
+            _settings: function settings() {
+                return {
+                    url: this.url,
+                    type: "GET",
+                    dataType: "json"
+                };
+            },
+            get: function get(query, cb) {
+                var that = this,
+                    settings;
+                if (!cb) {
+                    return;
+                }
+                query = query || "";
+                settings = this.prepare(query, this._settings());
+                return this.transport.get(settings, onResponse);
+                function onResponse(err, resp) {
+                    err ? cb([]) : cb(that.transform(resp));
+                }
+            },
+            cancelLastRequest: function cancelLastRequest() {
+                this.transport.cancel();
+            }
+        });
+        return Remote;
+    }();
+    var oParser = function () {
+        "use strict";
+
+        return function parse(o) {
+            var defaults, sorter;
+            defaults = {
+                initialize: true,
+                identify: _.stringify,
+                datumTokenizer: null,
+                queryTokenizer: null,
+                sufficient: 5,
+                sorter: null,
+                local: [],
+                prefetch: null,
+                remote: null
+            };
+            o = _.mixin(defaults, o || {});
+            !o.datumTokenizer && $.error("datumTokenizer is required");
+            !o.queryTokenizer && $.error("queryTokenizer is required");
+            sorter = o.sorter;
+            o.sorter = sorter ? function (x) {
+                return x.sort(sorter);
+            } : _.identity;
+            o.local = _.isFunction(o.local) ? o.local() : o.local;
+            o.prefetch = parsePrefetch(o.prefetch);
+            o.remote = parseRemote(o.remote);
+            return o;
+        };
+        function parsePrefetch(o) {
+            var defaults;
+            if (!o) {
+                return null;
+            }
+            defaults = {
+                url: null,
+                ttl: 24 * 60 * 60 * 1e3,
+                cache: true,
+                cacheKey: null,
+                thumbprint: "",
+                prepare: _.identity,
+                transform: _.identity,
+                transport: null
+            };
+            o = _.isString(o) ? {
+                url: o
+            } : o;
+            o = _.mixin(defaults, o);
+            !o.url && $.error("prefetch requires url to be set");
+            o.transform = o.filter || o.transform;
+            o.cacheKey = o.cacheKey || o.url;
+            o.thumbprint = VERSION + o.thumbprint;
+            o.transport = o.transport ? callbackToDeferred(o.transport) : $.ajax;
+            return o;
+        }
+        function parseRemote(o) {
+            var defaults;
+            if (!o) {
+                return;
+            }
+            defaults = {
+                url: null,
+                cache: true,
+                prepare: null,
+                replace: null,
+                wildcard: null,
+                limiter: null,
+                rateLimitBy: "debounce",
+                rateLimitWait: 300,
+                transform: _.identity,
+                transport: null
+            };
+            o = _.isString(o) ? {
+                url: o
+            } : o;
+            o = _.mixin(defaults, o);
+            !o.url && $.error("remote requires url to be set");
+            o.transform = o.filter || o.transform;
+            o.prepare = toRemotePrepare(o);
+            o.limiter = toLimiter(o);
+            o.transport = o.transport ? callbackToDeferred(o.transport) : $.ajax;
+            delete o.replace;
+            delete o.wildcard;
+            delete o.rateLimitBy;
+            delete o.rateLimitWait;
+            return o;
+        }
+        function toRemotePrepare(o) {
+            var prepare, replace, wildcard;
+            prepare = o.prepare;
+            replace = o.replace;
+            wildcard = o.wildcard;
+            if (prepare) {
+                return prepare;
+            }
+            if (replace) {
+                prepare = prepareByReplace;
+            } else if (o.wildcard) {
+                prepare = prepareByWildcard;
+            } else {
+                prepare = idenityPrepare;
+            }
+            return prepare;
+            function prepareByReplace(query, settings) {
+                settings.url = replace(settings.url, query);
+                return settings;
+            }
+            function prepareByWildcard(query, settings) {
+                settings.url = settings.url.replace(wildcard, encodeURIComponent(query));
+                return settings;
+            }
+            function idenityPrepare(query, settings) {
+                return settings;
+            }
+        }
+        function toLimiter(o) {
+            var limiter, method, wait;
+            limiter = o.limiter;
+            method = o.rateLimitBy;
+            wait = o.rateLimitWait;
+            if (!limiter) {
+                limiter = /^throttle$/i.test(method) ? throttle(wait) : debounce(wait);
+            }
+            return limiter;
+            function debounce(wait) {
+                return function debounce(fn) {
+                    return _.debounce(fn, wait);
+                };
+            }
+            function throttle(wait) {
+                return function throttle(fn) {
+                    return _.throttle(fn, wait);
+                };
+            }
+        }
+        function callbackToDeferred(fn) {
+            return function wrapper(o) {
+                var deferred = $.Deferred();
+                fn(o, onSuccess, onError);
+                return deferred;
+                function onSuccess(resp) {
+                    _.defer(function () {
+                        deferred.resolve(resp);
+                    });
+                }
+                function onError(err) {
+                    _.defer(function () {
+                        deferred.reject(err);
+                    });
+                }
+            };
+        }
+    }();
+    var Bloodhound = function () {
+        "use strict";
+
+        var old;
+        old = window && window.Bloodhound;
+        function Bloodhound(o) {
+            o = oParser(o);
+            this.sorter = o.sorter;
+            this.identify = o.identify;
+            this.sufficient = o.sufficient;
+            this.local = o.local;
+            this.remote = o.remote ? new Remote(o.remote) : null;
+            this.prefetch = o.prefetch ? new Prefetch(o.prefetch) : null;
+            this.index = new SearchIndex({
+                identify: this.identify,
+                datumTokenizer: o.datumTokenizer,
+                queryTokenizer: o.queryTokenizer
+            });
+            o.initialize !== false && this.initialize();
+        }
+        Bloodhound.noConflict = function noConflict() {
+            window && (window.Bloodhound = old);
+            return Bloodhound;
+        };
+        Bloodhound.tokenizers = tokenizers;
+        _.mixin(Bloodhound.prototype, {
+            __ttAdapter: function ttAdapter() {
+                var that = this;
+                return this.remote ? withAsync : withoutAsync;
+                function withAsync(query, sync, async) {
+                    return that.search(query, sync, async);
+                }
+                function withoutAsync(query, sync) {
+                    return that.search(query, sync);
+                }
+            },
+            _loadPrefetch: function loadPrefetch() {
+                var that = this,
+                    deferred,
+                    serialized;
+                deferred = $.Deferred();
+                if (!this.prefetch) {
+                    deferred.resolve();
+                } else if (serialized = this.prefetch.fromCache()) {
+                    this.index.bootstrap(serialized);
+                    deferred.resolve();
+                } else {
+                    this.prefetch.fromNetwork(done);
+                }
+                return deferred.promise();
+                function done(err, data) {
+                    if (err) {
+                        return deferred.reject();
+                    }
+                    that.add(data);
+                    that.prefetch.store(that.index.serialize());
+                    deferred.resolve();
+                }
+            },
+            _initialize: function initialize() {
+                var that = this,
+                    deferred;
+                this.clear();
+                (this.initPromise = this._loadPrefetch()).done(addLocalToIndex);
+                return this.initPromise;
+                function addLocalToIndex() {
+                    that.add(that.local);
+                }
+            },
+            initialize: function initialize(force) {
+                return !this.initPromise || force ? this._initialize() : this.initPromise;
+            },
+            add: function add(data) {
+                this.index.add(data);
+                return this;
+            },
+            get: function get(ids) {
+                ids = _.isArray(ids) ? ids : [].slice.call(arguments);
+                return this.index.get(ids);
+            },
+            search: function search(query, sync, async) {
+                var that = this,
+                    local;
+                local = this.sorter(this.index.search(query));
+                sync(this.remote ? local.slice() : local);
+                if (this.remote && local.length < this.sufficient) {
+                    this.remote.get(query, processRemote);
+                } else if (this.remote) {
+                    this.remote.cancelLastRequest();
+                }
+                return this;
+                function processRemote(remote) {
+                    var nonDuplicates = [];
+                    _.each(remote, function (r) {
+                        !_.some(local, function (l) {
+                            return that.identify(r) === that.identify(l);
+                        }) && nonDuplicates.push(r);
+                    });
+                    async && async(nonDuplicates);
+                }
+            },
+            all: function all() {
+                return this.index.all();
+            },
+            clear: function clear() {
+                this.index.reset();
+                return this;
+            },
+            clearPrefetchCache: function clearPrefetchCache() {
+                this.prefetch && this.prefetch.clear();
+                return this;
+            },
+            clearRemoteCache: function clearRemoteCache() {
+                Transport.resetCache();
+                return this;
+            },
+            ttAdapter: function ttAdapter() {
+                return this.__ttAdapter();
+            }
+        });
+        return Bloodhound;
+    }();
+    return Bloodhound;
+});
+
+/***/ }),
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -105310,19 +107891,19 @@ if (false) {
 }
 
 /***/ }),
-/* 389 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(390)
+  __webpack_require__(394)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(392)
+var __vue_script__ = __webpack_require__(396)
 /* template */
-var __vue_template__ = __webpack_require__(393)
+var __vue_template__ = __webpack_require__(397)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -105361,13 +107942,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 390 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(391);
+var content = __webpack_require__(395);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -105387,7 +107968,7 @@ if(false) {
 }
 
 /***/ }),
-/* 391 */
+/* 395 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -105401,7 +107982,7 @@ exports.push([module.i, "\n.dropdown-content[data-v-7b64a58b] {\n    margin-top:
 
 
 /***/ }),
-/* 392 */
+/* 396 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -105558,7 +108139,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 393 */
+/* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -105730,19 +108311,19 @@ if (false) {
 }
 
 /***/ }),
-/* 394 */
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(395)
+  __webpack_require__(399)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(397)
+var __vue_script__ = __webpack_require__(401)
 /* template */
-var __vue_template__ = __webpack_require__(398)
+var __vue_template__ = __webpack_require__(402)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -105781,13 +108362,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 395 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(396);
+var content = __webpack_require__(400);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -105807,7 +108388,7 @@ if(false) {
 }
 
 /***/ }),
-/* 396 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -105821,7 +108402,7 @@ exports.push([module.i, "\n.green[data-v-353b391a] {\n    fill: rgb(16, 148, 104
 
 
 /***/ }),
-/* 397 */
+/* 401 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -105943,7 +108524,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 398 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -106158,19 +108739,19 @@ if (false) {
 }
 
 /***/ }),
-/* 399 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(400)
+  __webpack_require__(404)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(402)
+var __vue_script__ = __webpack_require__(406)
 /* template */
-var __vue_template__ = __webpack_require__(407)
+var __vue_template__ = __webpack_require__(411)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -106209,13 +108790,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 400 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(401);
+var content = __webpack_require__(405);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -106235,7 +108816,7 @@ if(false) {
 }
 
 /***/ }),
-/* 401 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -106249,14 +108830,14 @@ exports.push([module.i, "\n.b[data-v-017f41c4] {\n    font-weight: bold;\n}\n.dr
 
 
 /***/ }),
-/* 402 */
+/* 406 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__events_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Customer_AddCustomerComponent_vue__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Customer_AddCustomerComponent_vue__ = __webpack_require__(143);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Customer_AddCustomerComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Customer_AddCustomerComponent_vue__);
 //
 //
@@ -106565,13 +109146,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 403 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(404);
+var content = __webpack_require__(408);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -106591,7 +109172,7 @@ if(false) {
 }
 
 /***/ }),
-/* 404 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -106605,7 +109186,7 @@ exports.push([module.i, "\n.hand[data-v-4efc70b0] {\n    cursor: pointer\n}\n", 
 
 
 /***/ }),
-/* 405 */
+/* 409 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -106767,7 +109348,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 406 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -107025,7 +109606,7 @@ if (false) {
 }
 
 /***/ }),
-/* 407 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -107484,19 +110065,19 @@ if (false) {
 }
 
 /***/ }),
-/* 408 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(409)
+  __webpack_require__(413)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(411)
+var __vue_script__ = __webpack_require__(415)
 /* template */
-var __vue_template__ = __webpack_require__(413)
+var __vue_template__ = __webpack_require__(417)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -107535,13 +110116,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 409 */
+/* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(410);
+var content = __webpack_require__(414);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -107561,7 +110142,7 @@ if(false) {
 }
 
 /***/ }),
-/* 410 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -107575,7 +110156,7 @@ exports.push([module.i, "\n.dropdown-content[data-v-22b3ea02] {\n    margin-top:
 
 
 /***/ }),
-/* 411 */
+/* 415 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107742,248 +110323,248 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 412 */
+/* 416 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 143,
-	"./af.js": 143,
-	"./ar": 144,
-	"./ar-dz": 145,
-	"./ar-dz.js": 145,
-	"./ar-kw": 146,
-	"./ar-kw.js": 146,
-	"./ar-ly": 147,
-	"./ar-ly.js": 147,
-	"./ar-ma": 148,
-	"./ar-ma.js": 148,
-	"./ar-sa": 149,
-	"./ar-sa.js": 149,
-	"./ar-tn": 150,
-	"./ar-tn.js": 150,
-	"./ar.js": 144,
-	"./az": 151,
-	"./az.js": 151,
-	"./be": 152,
-	"./be.js": 152,
-	"./bg": 153,
-	"./bg.js": 153,
-	"./bm": 154,
-	"./bm.js": 154,
-	"./bn": 155,
-	"./bn.js": 155,
-	"./bo": 156,
-	"./bo.js": 156,
-	"./br": 157,
-	"./br.js": 157,
-	"./bs": 158,
-	"./bs.js": 158,
-	"./ca": 159,
-	"./ca.js": 159,
-	"./cs": 160,
-	"./cs.js": 160,
-	"./cv": 161,
-	"./cv.js": 161,
-	"./cy": 162,
-	"./cy.js": 162,
-	"./da": 163,
-	"./da.js": 163,
-	"./de": 164,
-	"./de-at": 165,
-	"./de-at.js": 165,
-	"./de-ch": 166,
-	"./de-ch.js": 166,
-	"./de.js": 164,
-	"./dv": 167,
-	"./dv.js": 167,
-	"./el": 168,
-	"./el.js": 168,
-	"./en-au": 169,
-	"./en-au.js": 169,
-	"./en-ca": 170,
-	"./en-ca.js": 170,
-	"./en-gb": 171,
-	"./en-gb.js": 171,
-	"./en-ie": 172,
-	"./en-ie.js": 172,
-	"./en-nz": 173,
-	"./en-nz.js": 173,
-	"./eo": 174,
-	"./eo.js": 174,
-	"./es": 175,
-	"./es-do": 176,
-	"./es-do.js": 176,
-	"./es-us": 177,
-	"./es-us.js": 177,
-	"./es.js": 175,
-	"./et": 178,
-	"./et.js": 178,
-	"./eu": 179,
-	"./eu.js": 179,
-	"./fa": 180,
-	"./fa.js": 180,
-	"./fi": 181,
-	"./fi.js": 181,
-	"./fo": 182,
-	"./fo.js": 182,
-	"./fr": 183,
-	"./fr-ca": 184,
-	"./fr-ca.js": 184,
-	"./fr-ch": 185,
-	"./fr-ch.js": 185,
-	"./fr.js": 183,
-	"./fy": 186,
-	"./fy.js": 186,
-	"./gd": 187,
-	"./gd.js": 187,
-	"./gl": 188,
-	"./gl.js": 188,
-	"./gom-latn": 189,
-	"./gom-latn.js": 189,
-	"./gu": 190,
-	"./gu.js": 190,
-	"./he": 191,
-	"./he.js": 191,
-	"./hi": 192,
-	"./hi.js": 192,
-	"./hr": 193,
-	"./hr.js": 193,
-	"./hu": 194,
-	"./hu.js": 194,
-	"./hy-am": 195,
-	"./hy-am.js": 195,
-	"./id": 196,
-	"./id.js": 196,
-	"./is": 197,
-	"./is.js": 197,
-	"./it": 198,
-	"./it.js": 198,
-	"./ja": 199,
-	"./ja.js": 199,
-	"./jv": 200,
-	"./jv.js": 200,
-	"./ka": 201,
-	"./ka.js": 201,
-	"./kk": 202,
-	"./kk.js": 202,
-	"./km": 203,
-	"./km.js": 203,
-	"./kn": 204,
-	"./kn.js": 204,
-	"./ko": 205,
-	"./ko.js": 205,
-	"./ky": 206,
-	"./ky.js": 206,
-	"./lb": 207,
-	"./lb.js": 207,
-	"./lo": 208,
-	"./lo.js": 208,
-	"./lt": 209,
-	"./lt.js": 209,
-	"./lv": 210,
-	"./lv.js": 210,
-	"./me": 211,
-	"./me.js": 211,
-	"./mi": 212,
-	"./mi.js": 212,
-	"./mk": 213,
-	"./mk.js": 213,
-	"./ml": 214,
-	"./ml.js": 214,
-	"./mr": 215,
-	"./mr.js": 215,
-	"./ms": 216,
-	"./ms-my": 217,
-	"./ms-my.js": 217,
-	"./ms.js": 216,
-	"./mt": 218,
-	"./mt.js": 218,
-	"./my": 219,
-	"./my.js": 219,
-	"./nb": 220,
-	"./nb.js": 220,
-	"./ne": 221,
-	"./ne.js": 221,
-	"./nl": 222,
-	"./nl-be": 223,
-	"./nl-be.js": 223,
-	"./nl.js": 222,
-	"./nn": 224,
-	"./nn.js": 224,
-	"./pa-in": 225,
-	"./pa-in.js": 225,
-	"./pl": 226,
-	"./pl.js": 226,
-	"./pt": 227,
-	"./pt-br": 228,
-	"./pt-br.js": 228,
-	"./pt.js": 227,
-	"./ro": 229,
-	"./ro.js": 229,
-	"./ru": 230,
-	"./ru.js": 230,
-	"./sd": 231,
-	"./sd.js": 231,
-	"./se": 232,
-	"./se.js": 232,
-	"./si": 233,
-	"./si.js": 233,
-	"./sk": 234,
-	"./sk.js": 234,
-	"./sl": 235,
-	"./sl.js": 235,
-	"./sq": 236,
-	"./sq.js": 236,
-	"./sr": 237,
-	"./sr-cyrl": 238,
-	"./sr-cyrl.js": 238,
-	"./sr.js": 237,
-	"./ss": 239,
-	"./ss.js": 239,
-	"./sv": 240,
-	"./sv.js": 240,
-	"./sw": 241,
-	"./sw.js": 241,
-	"./ta": 242,
-	"./ta.js": 242,
-	"./te": 243,
-	"./te.js": 243,
-	"./tet": 244,
-	"./tet.js": 244,
-	"./th": 245,
-	"./th.js": 245,
-	"./tl-ph": 246,
-	"./tl-ph.js": 246,
-	"./tlh": 247,
-	"./tlh.js": 247,
-	"./tr": 248,
-	"./tr.js": 248,
-	"./tzl": 249,
-	"./tzl.js": 249,
-	"./tzm": 250,
-	"./tzm-latn": 251,
-	"./tzm-latn.js": 251,
-	"./tzm.js": 250,
-	"./uk": 252,
-	"./uk.js": 252,
-	"./ur": 253,
-	"./ur.js": 253,
-	"./uz": 254,
-	"./uz-latn": 255,
-	"./uz-latn.js": 255,
-	"./uz.js": 254,
-	"./vi": 256,
-	"./vi.js": 256,
-	"./x-pseudo": 257,
-	"./x-pseudo.js": 257,
-	"./yo": 258,
-	"./yo.js": 258,
-	"./zh-cn": 259,
-	"./zh-cn.js": 259,
-	"./zh-hk": 260,
-	"./zh-hk.js": 260,
-	"./zh-tw": 261,
-	"./zh-tw.js": 261
+	"./af": 144,
+	"./af.js": 144,
+	"./ar": 145,
+	"./ar-dz": 146,
+	"./ar-dz.js": 146,
+	"./ar-kw": 147,
+	"./ar-kw.js": 147,
+	"./ar-ly": 148,
+	"./ar-ly.js": 148,
+	"./ar-ma": 149,
+	"./ar-ma.js": 149,
+	"./ar-sa": 150,
+	"./ar-sa.js": 150,
+	"./ar-tn": 151,
+	"./ar-tn.js": 151,
+	"./ar.js": 145,
+	"./az": 152,
+	"./az.js": 152,
+	"./be": 153,
+	"./be.js": 153,
+	"./bg": 154,
+	"./bg.js": 154,
+	"./bm": 155,
+	"./bm.js": 155,
+	"./bn": 156,
+	"./bn.js": 156,
+	"./bo": 157,
+	"./bo.js": 157,
+	"./br": 158,
+	"./br.js": 158,
+	"./bs": 159,
+	"./bs.js": 159,
+	"./ca": 160,
+	"./ca.js": 160,
+	"./cs": 161,
+	"./cs.js": 161,
+	"./cv": 162,
+	"./cv.js": 162,
+	"./cy": 163,
+	"./cy.js": 163,
+	"./da": 164,
+	"./da.js": 164,
+	"./de": 165,
+	"./de-at": 166,
+	"./de-at.js": 166,
+	"./de-ch": 167,
+	"./de-ch.js": 167,
+	"./de.js": 165,
+	"./dv": 168,
+	"./dv.js": 168,
+	"./el": 169,
+	"./el.js": 169,
+	"./en-au": 170,
+	"./en-au.js": 170,
+	"./en-ca": 171,
+	"./en-ca.js": 171,
+	"./en-gb": 172,
+	"./en-gb.js": 172,
+	"./en-ie": 173,
+	"./en-ie.js": 173,
+	"./en-nz": 174,
+	"./en-nz.js": 174,
+	"./eo": 175,
+	"./eo.js": 175,
+	"./es": 176,
+	"./es-do": 177,
+	"./es-do.js": 177,
+	"./es-us": 178,
+	"./es-us.js": 178,
+	"./es.js": 176,
+	"./et": 179,
+	"./et.js": 179,
+	"./eu": 180,
+	"./eu.js": 180,
+	"./fa": 181,
+	"./fa.js": 181,
+	"./fi": 182,
+	"./fi.js": 182,
+	"./fo": 183,
+	"./fo.js": 183,
+	"./fr": 184,
+	"./fr-ca": 185,
+	"./fr-ca.js": 185,
+	"./fr-ch": 186,
+	"./fr-ch.js": 186,
+	"./fr.js": 184,
+	"./fy": 187,
+	"./fy.js": 187,
+	"./gd": 188,
+	"./gd.js": 188,
+	"./gl": 189,
+	"./gl.js": 189,
+	"./gom-latn": 190,
+	"./gom-latn.js": 190,
+	"./gu": 191,
+	"./gu.js": 191,
+	"./he": 192,
+	"./he.js": 192,
+	"./hi": 193,
+	"./hi.js": 193,
+	"./hr": 194,
+	"./hr.js": 194,
+	"./hu": 195,
+	"./hu.js": 195,
+	"./hy-am": 196,
+	"./hy-am.js": 196,
+	"./id": 197,
+	"./id.js": 197,
+	"./is": 198,
+	"./is.js": 198,
+	"./it": 199,
+	"./it.js": 199,
+	"./ja": 200,
+	"./ja.js": 200,
+	"./jv": 201,
+	"./jv.js": 201,
+	"./ka": 202,
+	"./ka.js": 202,
+	"./kk": 203,
+	"./kk.js": 203,
+	"./km": 204,
+	"./km.js": 204,
+	"./kn": 205,
+	"./kn.js": 205,
+	"./ko": 206,
+	"./ko.js": 206,
+	"./ky": 207,
+	"./ky.js": 207,
+	"./lb": 208,
+	"./lb.js": 208,
+	"./lo": 209,
+	"./lo.js": 209,
+	"./lt": 210,
+	"./lt.js": 210,
+	"./lv": 211,
+	"./lv.js": 211,
+	"./me": 212,
+	"./me.js": 212,
+	"./mi": 213,
+	"./mi.js": 213,
+	"./mk": 214,
+	"./mk.js": 214,
+	"./ml": 215,
+	"./ml.js": 215,
+	"./mr": 216,
+	"./mr.js": 216,
+	"./ms": 217,
+	"./ms-my": 218,
+	"./ms-my.js": 218,
+	"./ms.js": 217,
+	"./mt": 219,
+	"./mt.js": 219,
+	"./my": 220,
+	"./my.js": 220,
+	"./nb": 221,
+	"./nb.js": 221,
+	"./ne": 222,
+	"./ne.js": 222,
+	"./nl": 223,
+	"./nl-be": 224,
+	"./nl-be.js": 224,
+	"./nl.js": 223,
+	"./nn": 225,
+	"./nn.js": 225,
+	"./pa-in": 226,
+	"./pa-in.js": 226,
+	"./pl": 227,
+	"./pl.js": 227,
+	"./pt": 228,
+	"./pt-br": 229,
+	"./pt-br.js": 229,
+	"./pt.js": 228,
+	"./ro": 230,
+	"./ro.js": 230,
+	"./ru": 231,
+	"./ru.js": 231,
+	"./sd": 232,
+	"./sd.js": 232,
+	"./se": 233,
+	"./se.js": 233,
+	"./si": 234,
+	"./si.js": 234,
+	"./sk": 235,
+	"./sk.js": 235,
+	"./sl": 236,
+	"./sl.js": 236,
+	"./sq": 237,
+	"./sq.js": 237,
+	"./sr": 238,
+	"./sr-cyrl": 239,
+	"./sr-cyrl.js": 239,
+	"./sr.js": 238,
+	"./ss": 240,
+	"./ss.js": 240,
+	"./sv": 241,
+	"./sv.js": 241,
+	"./sw": 242,
+	"./sw.js": 242,
+	"./ta": 243,
+	"./ta.js": 243,
+	"./te": 244,
+	"./te.js": 244,
+	"./tet": 245,
+	"./tet.js": 245,
+	"./th": 246,
+	"./th.js": 246,
+	"./tl-ph": 247,
+	"./tl-ph.js": 247,
+	"./tlh": 248,
+	"./tlh.js": 248,
+	"./tr": 249,
+	"./tr.js": 249,
+	"./tzl": 250,
+	"./tzl.js": 250,
+	"./tzm": 251,
+	"./tzm-latn": 252,
+	"./tzm-latn.js": 252,
+	"./tzm.js": 251,
+	"./uk": 253,
+	"./uk.js": 253,
+	"./ur": 254,
+	"./ur.js": 254,
+	"./uz": 255,
+	"./uz-latn": 256,
+	"./uz-latn.js": 256,
+	"./uz.js": 255,
+	"./vi": 257,
+	"./vi.js": 257,
+	"./x-pseudo": 258,
+	"./x-pseudo.js": 258,
+	"./yo": 259,
+	"./yo.js": 259,
+	"./zh-cn": 260,
+	"./zh-cn.js": 260,
+	"./zh-hk": 261,
+	"./zh-hk.js": 261,
+	"./zh-tw": 262,
+	"./zh-tw.js": 262
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -107999,10 +110580,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 412;
+webpackContext.id = 416;
 
 /***/ }),
-/* 413 */
+/* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -108181,19 +110762,19 @@ if (false) {
 }
 
 /***/ }),
-/* 414 */
+/* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(415)
+  __webpack_require__(419)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(417)
+var __vue_script__ = __webpack_require__(421)
 /* template */
-var __vue_template__ = __webpack_require__(419)
+var __vue_template__ = __webpack_require__(423)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -108232,13 +110813,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 415 */
+/* 419 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(416);
+var content = __webpack_require__(420);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -108258,7 +110839,7 @@ if(false) {
 }
 
 /***/ }),
-/* 416 */
+/* 420 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -108272,14 +110853,14 @@ exports.push([module.i, "\n.green[data-v-6bcc77f9] {\n    fill: rgb(16, 148, 104
 
 
 /***/ }),
-/* 417 */
+/* 421 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__events_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bootstrap_editable_js__ = __webpack_require__(418);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bootstrap_editable_js__ = __webpack_require__(422);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bootstrap_editable_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__bootstrap_editable_js__);
 //
 //
@@ -108425,7 +111006,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 418 */
+/* 422 */
 /***/ (function(module, exports) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -115081,7 +117662,7 @@ Automatically shown in inline mode.
 })(window.jQuery);
 
 /***/ }),
-/* 419 */
+/* 423 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -115337,19 +117918,19 @@ if (false) {
 }
 
 /***/ }),
-/* 420 */
+/* 424 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(421)
+  __webpack_require__(425)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(423)
+var __vue_script__ = __webpack_require__(427)
 /* template */
-var __vue_template__ = __webpack_require__(424)
+var __vue_template__ = __webpack_require__(428)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -115388,13 +117969,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 421 */
+/* 425 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(422);
+var content = __webpack_require__(426);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -115414,7 +117995,7 @@ if(false) {
 }
 
 /***/ }),
-/* 422 */
+/* 426 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -115428,7 +118009,7 @@ exports.push([module.i, "\n.b[data-v-d493666c] {\n    font-weight: bold;\n}\n.dr
 
 
 /***/ }),
-/* 423 */
+/* 427 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -115687,7 +118268,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 424 */
+/* 428 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -115924,19 +118505,19 @@ if (false) {
 }
 
 /***/ }),
-/* 425 */
+/* 429 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(426)
+  __webpack_require__(430)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(428)
+var __vue_script__ = __webpack_require__(432)
 /* template */
-var __vue_template__ = __webpack_require__(431)
+var __vue_template__ = __webpack_require__(435)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -115975,13 +118556,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 426 */
+/* 430 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(427);
+var content = __webpack_require__(431);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -116001,7 +118582,7 @@ if(false) {
 }
 
 /***/ }),
-/* 427 */
+/* 431 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -116015,7 +118596,7 @@ exports.push([module.i, "\n.red[data-v-18acdef2] {\n    color: #cc1136;\n}\n", "
 
 
 /***/ }),
-/* 428 */
+/* 432 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -116024,7 +118605,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__events_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Global_Search_vue__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Global_Search_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Global_Search_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CreateSupplierComponent__ = __webpack_require__(262);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CreateSupplierComponent__ = __webpack_require__(263);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CreateSupplierComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__CreateSupplierComponent__);
 //
 //
@@ -116142,7 +118723,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 429 */
+/* 433 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -116268,7 +118849,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 430 */
+/* 434 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -116538,7 +119119,7 @@ if (false) {
 }
 
 /***/ }),
-/* 431 */
+/* 435 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -116715,15 +119296,15 @@ if (false) {
 }
 
 /***/ }),
-/* 432 */
+/* 436 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(433)
+var __vue_script__ = __webpack_require__(437)
 /* template */
-var __vue_template__ = __webpack_require__(434)
+var __vue_template__ = __webpack_require__(438)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -116762,7 +119343,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 433 */
+/* 437 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -116916,7 +119497,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 434 */
+/* 438 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -117181,15 +119762,15 @@ if (false) {
 }
 
 /***/ }),
-/* 435 */
+/* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(436)
+var __vue_script__ = __webpack_require__(440)
 /* template */
-var __vue_template__ = __webpack_require__(437)
+var __vue_template__ = __webpack_require__(441)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -117228,7 +119809,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 436 */
+/* 440 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -117331,7 +119912,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 437 */
+/* 441 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -117481,15 +120062,15 @@ if (false) {
 }
 
 /***/ }),
-/* 438 */
+/* 442 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(439)
+var __vue_script__ = __webpack_require__(443)
 /* template */
-var __vue_template__ = __webpack_require__(440)
+var __vue_template__ = __webpack_require__(444)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -117528,7 +120109,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 439 */
+/* 443 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -117614,7 +120195,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 440 */
+/* 444 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -117712,19 +120293,19 @@ if (false) {
 }
 
 /***/ }),
-/* 441 */
+/* 445 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(442)
+  __webpack_require__(446)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(444)
+var __vue_script__ = __webpack_require__(448)
 /* template */
-var __vue_template__ = __webpack_require__(445)
+var __vue_template__ = __webpack_require__(449)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -117763,13 +120344,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 442 */
+/* 446 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(443);
+var content = __webpack_require__(447);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -117789,7 +120370,7 @@ if(false) {
 }
 
 /***/ }),
-/* 443 */
+/* 447 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -117803,7 +120384,7 @@ exports.push([module.i, "\n.hidden[data-v-3c02acb2] {\n    display: none;\n}\n",
 
 
 /***/ }),
-/* 444 */
+/* 448 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -117843,7 +120424,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 445 */
+/* 449 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -117865,19 +120446,19 @@ if (false) {
 }
 
 /***/ }),
-/* 446 */
+/* 450 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(447)
+  __webpack_require__(451)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(449)
+var __vue_script__ = __webpack_require__(453)
 /* template */
-var __vue_template__ = __webpack_require__(450)
+var __vue_template__ = __webpack_require__(454)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -117916,13 +120497,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 447 */
+/* 451 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(448);
+var content = __webpack_require__(452);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -117942,7 +120523,7 @@ if(false) {
 }
 
 /***/ }),
-/* 448 */
+/* 452 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -117956,7 +120537,7 @@ exports.push([module.i, "\nli[data-v-3254352c] {\n    list-style: none;\n}\n#icn
 
 
 /***/ }),
-/* 449 */
+/* 453 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -117986,7 +120567,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 450 */
+/* 454 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -118043,19 +120624,19 @@ if (false) {
 }
 
 /***/ }),
-/* 451 */
+/* 455 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(452)
+  __webpack_require__(456)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(454)
+var __vue_script__ = __webpack_require__(458)
 /* template */
-var __vue_template__ = __webpack_require__(456)
+var __vue_template__ = __webpack_require__(460)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -118094,13 +120675,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 452 */
+/* 456 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(453);
+var content = __webpack_require__(457);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -118120,7 +120701,7 @@ if(false) {
 }
 
 /***/ }),
-/* 453 */
+/* 457 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -118134,7 +120715,7 @@ exports.push([module.i, "\n.btn-group > a[data-v-36a076e8] {\n    color: black;\
 
 
 /***/ }),
-/* 454 */
+/* 458 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -118143,7 +120724,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__events_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__daterangepicker_js__ = __webpack_require__(455);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__daterangepicker_js__ = __webpack_require__(459);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__daterangepicker_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__daterangepicker_js__);
 //
 //
@@ -118298,7 +120879,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 455 */
+/* 459 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -118314,7 +120895,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = ty
 (function (root, factory) {
     if (true) {
         // AMD. Make globaly available as well
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0), __webpack_require__(17)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (moment, jquery) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0), __webpack_require__(14)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (moment, jquery) {
             if (!jquery.fn) jquery.fn = {}; // webpack server rendering
             return factory(moment, jquery);
         }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
@@ -119753,7 +122334,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = ty
 });
 
 /***/ }),
-/* 456 */
+/* 460 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -119790,19 +122371,19 @@ if (false) {
 }
 
 /***/ }),
-/* 457 */
+/* 461 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(458)
+  __webpack_require__(462)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(460)
+var __vue_script__ = __webpack_require__(464)
 /* template */
-var __vue_template__ = __webpack_require__(464)
+var __vue_template__ = __webpack_require__(468)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -119841,13 +122422,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 458 */
+/* 462 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(459);
+var content = __webpack_require__(463);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -119867,7 +122448,7 @@ if(false) {
 }
 
 /***/ }),
-/* 459 */
+/* 463 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -119881,12 +122462,12 @@ exports.push([module.i, "\n.well {\n  border-radius: 0;\n}\n.b {\n  font-weight:
 
 
 /***/ }),
-/* 460 */
+/* 464 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Global_Paginator_vue__ = __webpack_require__(461);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Global_Paginator_vue__ = __webpack_require__(465);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Global_Paginator_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Global_Paginator_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Global_Search_vue__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Global_Search_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Global_Search_vue__);
@@ -120209,15 +122790,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 461 */
+/* 465 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(462)
+var __vue_script__ = __webpack_require__(466)
 /* template */
-var __vue_template__ = __webpack_require__(463)
+var __vue_template__ = __webpack_require__(467)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -120256,7 +122837,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 462 */
+/* 466 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -120307,7 +122888,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 463 */
+/* 467 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -120405,7 +122986,7 @@ if (false) {
 }
 
 /***/ }),
-/* 464 */
+/* 468 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -120955,19 +123536,19 @@ if (false) {
 }
 
 /***/ }),
-/* 465 */
+/* 469 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(466)
+  __webpack_require__(470)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(468)
+var __vue_script__ = __webpack_require__(472)
 /* template */
-var __vue_template__ = __webpack_require__(469)
+var __vue_template__ = __webpack_require__(473)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -121006,13 +123587,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 466 */
+/* 470 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(467);
+var content = __webpack_require__(471);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -121032,7 +123613,7 @@ if(false) {
 }
 
 /***/ }),
-/* 467 */
+/* 471 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -121046,14 +123627,14 @@ exports.push([module.i, "\ntr[data-v-5b85b99c]:hover {\n    background-color: #F
 
 
 /***/ }),
-/* 468 */
+/* 472 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__events_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Customer_AddCustomerComponent__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Customer_AddCustomerComponent__ = __webpack_require__(143);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Customer_AddCustomerComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Customer_AddCustomerComponent__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Global_Search_vue__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Global_Search_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__Global_Search_vue__);
@@ -121228,7 +123809,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 469 */
+/* 473 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -121394,19 +123975,19 @@ if (false) {
 }
 
 /***/ }),
-/* 470 */
+/* 474 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(471)
+  __webpack_require__(475)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(473)
+var __vue_script__ = __webpack_require__(477)
 /* template */
-var __vue_template__ = __webpack_require__(479)
+var __vue_template__ = __webpack_require__(483)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -121445,13 +124026,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 471 */
+/* 475 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(472);
+var content = __webpack_require__(476);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -121471,7 +124052,7 @@ if(false) {
 }
 
 /***/ }),
-/* 472 */
+/* 476 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -121485,14 +124066,14 @@ exports.push([module.i, "\n.block1[data-v-ed09b342] {\n    display:inline-block;
 
 
 /***/ }),
-/* 473 */
+/* 477 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__events_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Helpers_Receipt_vue__ = __webpack_require__(474);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Helpers_Receipt_vue__ = __webpack_require__(478);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Helpers_Receipt_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Helpers_Receipt_vue__);
 //
 //
@@ -121786,19 +124367,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 474 */
+/* 478 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(475)
+  __webpack_require__(479)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(477)
+var __vue_script__ = __webpack_require__(481)
 /* template */
-var __vue_template__ = __webpack_require__(478)
+var __vue_template__ = __webpack_require__(482)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -121837,13 +124418,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 475 */
+/* 479 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(476);
+var content = __webpack_require__(480);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -121863,7 +124444,7 @@ if(false) {
 }
 
 /***/ }),
-/* 476 */
+/* 480 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -121877,7 +124458,7 @@ exports.push([module.i, "\n.invoice-box[data-v-07f7eca7] {\n    max-width: 800px
 
 
 /***/ }),
-/* 477 */
+/* 481 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -122034,7 +124615,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 478 */
+/* 482 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -122277,7 +124858,7 @@ if (false) {
 }
 
 /***/ }),
-/* 479 */
+/* 483 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -122806,15 +125387,15 @@ if (false) {
 }
 
 /***/ }),
-/* 480 */
+/* 484 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(481)
+var __vue_script__ = __webpack_require__(485)
 /* template */
-var __vue_template__ = __webpack_require__(482)
+var __vue_template__ = __webpack_require__(486)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -122853,7 +125434,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 481 */
+/* 485 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -122922,7 +125503,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 482 */
+/* 486 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -122986,15 +125567,15 @@ if (false) {
 }
 
 /***/ }),
-/* 483 */
+/* 487 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(484)
+var __vue_script__ = __webpack_require__(488)
 /* template */
-var __vue_template__ = __webpack_require__(488)
+var __vue_template__ = __webpack_require__(492)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -123033,12 +125614,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 484 */
+/* 488 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Customer_CustomerContacts_vue__ = __webpack_require__(485);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Customer_CustomerContacts_vue__ = __webpack_require__(489);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Customer_CustomerContacts_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Customer_CustomerContacts_vue__);
 //
 //
@@ -123117,15 +125698,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 485 */
+/* 489 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(486)
+var __vue_script__ = __webpack_require__(490)
 /* template */
-var __vue_template__ = __webpack_require__(487)
+var __vue_template__ = __webpack_require__(491)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -123164,7 +125745,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 486 */
+/* 490 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -123382,7 +125963,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 487 */
+/* 491 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -123681,7 +126262,7 @@ if (false) {
 }
 
 /***/ }),
-/* 488 */
+/* 492 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -123787,2609 +126368,10 @@ if (false) {
 }
 
 /***/ }),
-/* 489 */
+/* 493 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 490 */,
-/* 491 */,
-/* 492 */,
-/* 493 */,
-/* 494 */,
-/* 495 */,
-/* 496 */,
-/* 497 */,
-/* 498 */,
-/* 499 */,
-/* 500 */,
-/* 501 */,
-/* 502 */,
-/* 503 */,
-/* 504 */,
-/* 505 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(setImmediate) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/*!
- * typeahead.js 0.11.1
- * https://github.com/twitter/typeahead.js
- * Copyright 2013-2015 Twitter, Inc. and other contributors; Licensed MIT
- */
-
-(function (root, factory) {
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(17)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (a0) {
-            return factory(a0);
-        }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === "object") {
-        module.exports = factory(require("jquery"));
-    } else {
-        factory(jQuery);
-    }
-})(this, function ($) {
-    var _ = function () {
-        "use strict";
-
-        return {
-            isMsie: function isMsie() {
-                return (/(msie|trident)/i.test(navigator.userAgent) ? navigator.userAgent.match(/(msie |rv:)(\d+(.\d+)?)/i)[2] : false
-                );
-            },
-            isBlankString: function isBlankString(str) {
-                return !str || /^\s*$/.test(str);
-            },
-            escapeRegExChars: function escapeRegExChars(str) {
-                return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-            },
-            isString: function isString(obj) {
-                return typeof obj === "string";
-            },
-            isNumber: function isNumber(obj) {
-                return typeof obj === "number";
-            },
-            isArray: $.isArray,
-            isFunction: $.isFunction,
-            isObject: $.isPlainObject,
-            isUndefined: function isUndefined(obj) {
-                return typeof obj === "undefined";
-            },
-            isElement: function isElement(obj) {
-                return !!(obj && obj.nodeType === 1);
-            },
-            isJQuery: function isJQuery(obj) {
-                return obj instanceof $;
-            },
-            toStr: function toStr(s) {
-                return _.isUndefined(s) || s === null ? "" : s + "";
-            },
-            bind: $.proxy,
-            each: function each(collection, cb) {
-                $.each(collection, reverseArgs);
-                function reverseArgs(index, value) {
-                    return cb(value, index);
-                }
-            },
-            map: $.map,
-            filter: $.grep,
-            every: function every(obj, test) {
-                var result = true;
-                if (!obj) {
-                    return result;
-                }
-                $.each(obj, function (key, val) {
-                    if (!(result = test.call(null, val, key, obj))) {
-                        return false;
-                    }
-                });
-                return !!result;
-            },
-            some: function some(obj, test) {
-                var result = false;
-                if (!obj) {
-                    return result;
-                }
-                $.each(obj, function (key, val) {
-                    if (result = test.call(null, val, key, obj)) {
-                        return false;
-                    }
-                });
-                return !!result;
-            },
-            mixin: $.extend,
-            identity: function identity(x) {
-                return x;
-            },
-            clone: function clone(obj) {
-                return $.extend(true, {}, obj);
-            },
-            getIdGenerator: function getIdGenerator() {
-                var counter = 0;
-                return function () {
-                    return counter++;
-                };
-            },
-            templatify: function templatify(obj) {
-                return $.isFunction(obj) ? obj : template;
-                function template() {
-                    return String(obj);
-                }
-            },
-            defer: function defer(fn) {
-                setTimeout(fn, 0);
-            },
-            debounce: function debounce(func, wait, immediate) {
-                var timeout, result;
-                return function () {
-                    var context = this,
-                        args = arguments,
-                        later,
-                        callNow;
-                    later = function later() {
-                        timeout = null;
-                        if (!immediate) {
-                            result = func.apply(context, args);
-                        }
-                    };
-                    callNow = immediate && !timeout;
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                    if (callNow) {
-                        result = func.apply(context, args);
-                    }
-                    return result;
-                };
-            },
-            throttle: function throttle(func, wait) {
-                var context, args, timeout, result, previous, later;
-                previous = 0;
-                later = function later() {
-                    previous = new Date();
-                    timeout = null;
-                    result = func.apply(context, args);
-                };
-                return function () {
-                    var now = new Date(),
-                        remaining = wait - (now - previous);
-                    context = this;
-                    args = arguments;
-                    if (remaining <= 0) {
-                        clearTimeout(timeout);
-                        timeout = null;
-                        previous = now;
-                        result = func.apply(context, args);
-                    } else if (!timeout) {
-                        timeout = setTimeout(later, remaining);
-                    }
-                    return result;
-                };
-            },
-            stringify: function stringify(val) {
-                return _.isString(val) ? val : JSON.stringify(val);
-            },
-            noop: function noop() {}
-        };
-    }();
-    var WWW = function () {
-        "use strict";
-
-        var defaultClassNames = {
-            wrapper: "twitter-typeahead",
-            input: "tt-input",
-            hint: "tt-hint",
-            menu: "tt-menu",
-            dataset: "tt-dataset",
-            suggestion: "tt-suggestion",
-            selectable: "tt-selectable",
-            empty: "tt-empty",
-            open: "tt-open",
-            cursor: "tt-cursor",
-            highlight: "tt-highlight"
-        };
-        return build;
-        function build(o) {
-            var www, classes;
-            classes = _.mixin({}, defaultClassNames, o);
-            www = {
-                css: buildCss(),
-                classes: classes,
-                html: buildHtml(classes),
-                selectors: buildSelectors(classes)
-            };
-            return {
-                css: www.css,
-                html: www.html,
-                classes: www.classes,
-                selectors: www.selectors,
-                mixin: function mixin(o) {
-                    _.mixin(o, www);
-                }
-            };
-        }
-        function buildHtml(c) {
-            return {
-                wrapper: '<span class="' + c.wrapper + '"></span>',
-                menu: '<div class="' + c.menu + '"></div>'
-            };
-        }
-        function buildSelectors(classes) {
-            var selectors = {};
-            _.each(classes, function (v, k) {
-                selectors[k] = "." + v;
-            });
-            return selectors;
-        }
-        function buildCss() {
-            var css = {
-                wrapper: {
-                    position: "relative",
-                    display: "inline-block"
-                },
-                hint: {
-                    position: "absolute",
-                    top: "0",
-                    left: "0",
-                    borderColor: "transparent",
-                    boxShadow: "none",
-                    opacity: "1"
-                },
-                input: {
-                    position: "relative",
-                    verticalAlign: "top",
-                    backgroundColor: "transparent"
-                },
-                inputWithNoHint: {
-                    position: "relative",
-                    verticalAlign: "top"
-                },
-                menu: {
-                    position: "absolute",
-                    top: "100%",
-                    left: "0",
-                    zIndex: "100",
-                    display: "none"
-                },
-                ltr: {
-                    left: "0",
-                    right: "auto"
-                },
-                rtl: {
-                    left: "auto",
-                    right: " 0"
-                }
-            };
-            if (_.isMsie()) {
-                _.mixin(css.input, {
-                    backgroundImage: "url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7)"
-                });
-            }
-            return css;
-        }
-    }();
-    var EventBus = function () {
-        "use strict";
-
-        var namespace, deprecationMap;
-        namespace = "typeahead:";
-        deprecationMap = {
-            render: "rendered",
-            cursorchange: "cursorchanged",
-            select: "selected",
-            autocomplete: "autocompleted"
-        };
-        function EventBus(o) {
-            if (!o || !o.el) {
-                $.error("EventBus initialized without el");
-            }
-            this.$el = $(o.el);
-        }
-        _.mixin(EventBus.prototype, {
-            _trigger: function _trigger(type, args) {
-                var $e;
-                $e = $.Event(namespace + type);
-                (args = args || []).unshift($e);
-                this.$el.trigger.apply(this.$el, args);
-                return $e;
-            },
-            before: function before(type) {
-                var args, $e;
-                args = [].slice.call(arguments, 1);
-                $e = this._trigger("before" + type, args);
-                return $e.isDefaultPrevented();
-            },
-            trigger: function trigger(type) {
-                var deprecatedType;
-                this._trigger(type, [].slice.call(arguments, 1));
-                if (deprecatedType = deprecationMap[type]) {
-                    this._trigger(deprecatedType, [].slice.call(arguments, 1));
-                }
-            }
-        });
-        return EventBus;
-    }();
-    var EventEmitter = function () {
-        "use strict";
-
-        var splitter = /\s+/,
-            nextTick = getNextTick();
-        return {
-            onSync: onSync,
-            onAsync: onAsync,
-            off: off,
-            trigger: trigger
-        };
-        function on(method, types, cb, context) {
-            var type;
-            if (!cb) {
-                return this;
-            }
-            types = types.split(splitter);
-            cb = context ? bindContext(cb, context) : cb;
-            this._callbacks = this._callbacks || {};
-            while (type = types.shift()) {
-                this._callbacks[type] = this._callbacks[type] || {
-                    sync: [],
-                    async: []
-                };
-                this._callbacks[type][method].push(cb);
-            }
-            return this;
-        }
-        function onAsync(types, cb, context) {
-            return on.call(this, "async", types, cb, context);
-        }
-        function onSync(types, cb, context) {
-            return on.call(this, "sync", types, cb, context);
-        }
-        function off(types) {
-            var type;
-            if (!this._callbacks) {
-                return this;
-            }
-            types = types.split(splitter);
-            while (type = types.shift()) {
-                delete this._callbacks[type];
-            }
-            return this;
-        }
-        function trigger(types) {
-            var type, callbacks, args, syncFlush, asyncFlush;
-            if (!this._callbacks) {
-                return this;
-            }
-            types = types.split(splitter);
-            args = [].slice.call(arguments, 1);
-            while ((type = types.shift()) && (callbacks = this._callbacks[type])) {
-                syncFlush = getFlush(callbacks.sync, this, [type].concat(args));
-                asyncFlush = getFlush(callbacks.async, this, [type].concat(args));
-                syncFlush() && nextTick(asyncFlush);
-            }
-            return this;
-        }
-        function getFlush(callbacks, context, args) {
-            return flush;
-            function flush() {
-                var cancelled;
-                for (var i = 0, len = callbacks.length; !cancelled && i < len; i += 1) {
-                    cancelled = callbacks[i].apply(context, args) === false;
-                }
-                return !cancelled;
-            }
-        }
-        function getNextTick() {
-            var nextTickFn;
-            if (window.setImmediate) {
-                nextTickFn = function nextTickSetImmediate(fn) {
-                    setImmediate(function () {
-                        fn();
-                    });
-                };
-            } else {
-                nextTickFn = function nextTickSetTimeout(fn) {
-                    setTimeout(function () {
-                        fn();
-                    }, 0);
-                };
-            }
-            return nextTickFn;
-        }
-        function bindContext(fn, context) {
-            return fn.bind ? fn.bind(context) : function () {
-                fn.apply(context, [].slice.call(arguments, 0));
-            };
-        }
-    }();
-    var highlight = function (doc) {
-        "use strict";
-
-        var defaults = {
-            node: null,
-            pattern: null,
-            tagName: "strong",
-            className: null,
-            wordsOnly: false,
-            caseSensitive: false
-        };
-        return function hightlight(o) {
-            var regex;
-            o = _.mixin({}, defaults, o);
-            if (!o.node || !o.pattern) {
-                return;
-            }
-            o.pattern = _.isArray(o.pattern) ? o.pattern : [o.pattern];
-            regex = getRegex(o.pattern, o.caseSensitive, o.wordsOnly);
-            traverse(o.node, hightlightTextNode);
-            function hightlightTextNode(textNode) {
-                var match, patternNode, wrapperNode;
-                if (match = regex.exec(textNode.data)) {
-                    wrapperNode = doc.createElement(o.tagName);
-                    o.className && (wrapperNode.className = o.className);
-                    patternNode = textNode.splitText(match.index);
-                    patternNode.splitText(match[0].length);
-                    wrapperNode.appendChild(patternNode.cloneNode(true));
-                    textNode.parentNode.replaceChild(wrapperNode, patternNode);
-                }
-                return !!match;
-            }
-            function traverse(el, hightlightTextNode) {
-                var childNode,
-                    TEXT_NODE_TYPE = 3;
-                for (var i = 0; i < el.childNodes.length; i++) {
-                    childNode = el.childNodes[i];
-                    if (childNode.nodeType === TEXT_NODE_TYPE) {
-                        i += hightlightTextNode(childNode) ? 1 : 0;
-                    } else {
-                        traverse(childNode, hightlightTextNode);
-                    }
-                }
-            }
-        };
-        function getRegex(patterns, caseSensitive, wordsOnly) {
-            var escapedPatterns = [],
-                regexStr;
-            for (var i = 0, len = patterns.length; i < len; i++) {
-                escapedPatterns.push(_.escapeRegExChars(patterns[i]));
-            }
-            regexStr = wordsOnly ? "\\b(" + escapedPatterns.join("|") + ")\\b" : "(" + escapedPatterns.join("|") + ")";
-            return caseSensitive ? new RegExp(regexStr) : new RegExp(regexStr, "i");
-        }
-    }(window.document);
-    var Input = function () {
-        "use strict";
-
-        var specialKeyCodeMap;
-        specialKeyCodeMap = {
-            9: "tab",
-            27: "esc",
-            37: "left",
-            39: "right",
-            13: "enter",
-            38: "up",
-            40: "down"
-        };
-        function Input(o, www) {
-            o = o || {};
-            if (!o.input) {
-                $.error("input is missing");
-            }
-            www.mixin(this);
-            this.$hint = $(o.hint);
-            this.$input = $(o.input);
-            this.query = this.$input.val();
-            this.queryWhenFocused = this.hasFocus() ? this.query : null;
-            this.$overflowHelper = buildOverflowHelper(this.$input);
-            this._checkLanguageDirection();
-            if (this.$hint.length === 0) {
-                this.setHint = this.getHint = this.clearHint = this.clearHintIfInvalid = _.noop;
-            }
-        }
-        Input.normalizeQuery = function (str) {
-            return _.toStr(str).replace(/^\s*/g, "").replace(/\s{2,}/g, " ");
-        };
-        _.mixin(Input.prototype, EventEmitter, {
-            _onBlur: function onBlur() {
-                this.resetInputValue();
-                this.trigger("blurred");
-            },
-            _onFocus: function onFocus() {
-                this.queryWhenFocused = this.query;
-                this.trigger("focused");
-            },
-            _onKeydown: function onKeydown($e) {
-                var keyName = specialKeyCodeMap[$e.which || $e.keyCode];
-                this._managePreventDefault(keyName, $e);
-                if (keyName && this._shouldTrigger(keyName, $e)) {
-                    this.trigger(keyName + "Keyed", $e);
-                }
-            },
-            _onInput: function onInput() {
-                this._setQuery(this.getInputValue());
-                this.clearHintIfInvalid();
-                this._checkLanguageDirection();
-            },
-            _managePreventDefault: function managePreventDefault(keyName, $e) {
-                var preventDefault;
-                switch (keyName) {
-                    case "up":
-                    case "down":
-                        preventDefault = !withModifier($e);
-                        break;
-
-                    default:
-                        preventDefault = false;
-                }
-                preventDefault && $e.preventDefault();
-            },
-            _shouldTrigger: function shouldTrigger(keyName, $e) {
-                var trigger;
-                switch (keyName) {
-                    case "tab":
-                        trigger = !withModifier($e);
-                        break;
-
-                    default:
-                        trigger = true;
-                }
-                return trigger;
-            },
-            _checkLanguageDirection: function checkLanguageDirection() {
-                var dir = (this.$input.css("direction") || "ltr").toLowerCase();
-                if (this.dir !== dir) {
-                    this.dir = dir;
-                    this.$hint.attr("dir", dir);
-                    this.trigger("langDirChanged", dir);
-                }
-            },
-            _setQuery: function setQuery(val, silent) {
-                var areEquivalent, hasDifferentWhitespace;
-                areEquivalent = areQueriesEquivalent(val, this.query);
-                hasDifferentWhitespace = areEquivalent ? this.query.length !== val.length : false;
-                this.query = val;
-                if (!silent && !areEquivalent) {
-                    this.trigger("queryChanged", this.query);
-                } else if (!silent && hasDifferentWhitespace) {
-                    this.trigger("whitespaceChanged", this.query);
-                }
-            },
-            bind: function bind() {
-                var that = this,
-                    onBlur,
-                    onFocus,
-                    onKeydown,
-                    onInput;
-                onBlur = _.bind(this._onBlur, this);
-                onFocus = _.bind(this._onFocus, this);
-                onKeydown = _.bind(this._onKeydown, this);
-                onInput = _.bind(this._onInput, this);
-                this.$input.on("blur.tt", onBlur).on("focus.tt", onFocus).on("keydown.tt", onKeydown);
-                if (!_.isMsie() || _.isMsie() > 9) {
-                    this.$input.on("input.tt", onInput);
-                } else {
-                    this.$input.on("keydown.tt keypress.tt cut.tt paste.tt", function ($e) {
-                        if (specialKeyCodeMap[$e.which || $e.keyCode]) {
-                            return;
-                        }
-                        _.defer(_.bind(that._onInput, that, $e));
-                    });
-                }
-                return this;
-            },
-            focus: function focus() {
-                this.$input.focus();
-            },
-            blur: function blur() {
-                this.$input.blur();
-            },
-            getLangDir: function getLangDir() {
-                return this.dir;
-            },
-            getQuery: function getQuery() {
-                return this.query || "";
-            },
-            setQuery: function setQuery(val, silent) {
-                this.setInputValue(val);
-                this._setQuery(val, silent);
-            },
-            hasQueryChangedSinceLastFocus: function hasQueryChangedSinceLastFocus() {
-                return this.query !== this.queryWhenFocused;
-            },
-            getInputValue: function getInputValue() {
-                return this.$input.val();
-            },
-            setInputValue: function setInputValue(value) {
-                this.$input.val(value);
-                this.clearHintIfInvalid();
-                this._checkLanguageDirection();
-            },
-            resetInputValue: function resetInputValue() {
-                this.setInputValue(this.query);
-            },
-            getHint: function getHint() {
-                return this.$hint.val();
-            },
-            setHint: function setHint(value) {
-                this.$hint.val(value);
-            },
-            clearHint: function clearHint() {
-                this.setHint("");
-            },
-            clearHintIfInvalid: function clearHintIfInvalid() {
-                var val, hint, valIsPrefixOfHint, isValid;
-                val = this.getInputValue();
-                hint = this.getHint();
-                valIsPrefixOfHint = val !== hint && hint.indexOf(val) === 0;
-                isValid = val !== "" && valIsPrefixOfHint && !this.hasOverflow();
-                !isValid && this.clearHint();
-            },
-            hasFocus: function hasFocus() {
-                return this.$input.is(":focus");
-            },
-            hasOverflow: function hasOverflow() {
-                var constraint = this.$input.width() - 2;
-                this.$overflowHelper.text(this.getInputValue());
-                return this.$overflowHelper.width() >= constraint;
-            },
-            isCursorAtEnd: function isCursorAtEnd() {
-                var valueLength, selectionStart, range;
-                valueLength = this.$input.val().length;
-                selectionStart = this.$input[0].selectionStart;
-                if (_.isNumber(selectionStart)) {
-                    return selectionStart === valueLength;
-                } else if (document.selection) {
-                    range = document.selection.createRange();
-                    range.moveStart("character", -valueLength);
-                    return valueLength === range.text.length;
-                }
-                return true;
-            },
-            destroy: function destroy() {
-                this.$hint.off(".tt");
-                this.$input.off(".tt");
-                this.$overflowHelper.remove();
-                this.$hint = this.$input = this.$overflowHelper = $("<div>");
-            }
-        });
-        return Input;
-        function buildOverflowHelper($input) {
-            return $('<pre aria-hidden="true"></pre>').css({
-                position: "absolute",
-                visibility: "hidden",
-                whiteSpace: "pre",
-                fontFamily: $input.css("font-family"),
-                fontSize: $input.css("font-size"),
-                fontStyle: $input.css("font-style"),
-                fontVariant: $input.css("font-variant"),
-                fontWeight: $input.css("font-weight"),
-                wordSpacing: $input.css("word-spacing"),
-                letterSpacing: $input.css("letter-spacing"),
-                textIndent: $input.css("text-indent"),
-                textRendering: $input.css("text-rendering"),
-                textTransform: $input.css("text-transform")
-            }).insertAfter($input);
-        }
-        function areQueriesEquivalent(a, b) {
-            return Input.normalizeQuery(a) === Input.normalizeQuery(b);
-        }
-        function withModifier($e) {
-            return $e.altKey || $e.ctrlKey || $e.metaKey || $e.shiftKey;
-        }
-    }();
-    var Dataset = function () {
-        "use strict";
-
-        var keys, nameGenerator;
-        keys = {
-            val: "tt-selectable-display",
-            obj: "tt-selectable-object"
-        };
-        nameGenerator = _.getIdGenerator();
-        function Dataset(o, www) {
-            o = o || {};
-            o.templates = o.templates || {};
-            o.templates.notFound = o.templates.notFound || o.templates.empty;
-            if (!o.source) {
-                $.error("missing source");
-            }
-            if (!o.node) {
-                $.error("missing node");
-            }
-            if (o.name && !isValidName(o.name)) {
-                $.error("invalid dataset name: " + o.name);
-            }
-            www.mixin(this);
-            this.highlight = !!o.highlight;
-            this.name = o.name || nameGenerator();
-            this.limit = o.limit || 5;
-            this.displayFn = getDisplayFn(o.display || o.displayKey);
-            this.templates = getTemplates(o.templates, this.displayFn);
-            this.source = o.source.__ttAdapter ? o.source.__ttAdapter() : o.source;
-            this.async = _.isUndefined(o.async) ? this.source.length > 2 : !!o.async;
-            this._resetLastSuggestion();
-            this.$el = $(o.node).addClass(this.classes.dataset).addClass(this.classes.dataset + "-" + this.name);
-        }
-        Dataset.extractData = function extractData(el) {
-            var $el = $(el);
-            if ($el.data(keys.obj)) {
-                return {
-                    val: $el.data(keys.val) || "",
-                    obj: $el.data(keys.obj) || null
-                };
-            }
-            return null;
-        };
-        _.mixin(Dataset.prototype, EventEmitter, {
-            _overwrite: function overwrite(query, suggestions) {
-                suggestions = suggestions || [];
-                if (suggestions.length) {
-                    this._renderSuggestions(query, suggestions);
-                } else if (this.async && this.templates.pending) {
-                    this._renderPending(query);
-                } else if (!this.async && this.templates.notFound) {
-                    this._renderNotFound(query);
-                } else {
-                    this._empty();
-                }
-                this.trigger("rendered", this.name, suggestions, false);
-            },
-            _append: function append(query, suggestions) {
-                suggestions = suggestions || [];
-                if (suggestions.length && this.$lastSuggestion.length) {
-                    this._appendSuggestions(query, suggestions);
-                } else if (suggestions.length) {
-                    this._renderSuggestions(query, suggestions);
-                } else if (!this.$lastSuggestion.length && this.templates.notFound) {
-                    this._renderNotFound(query);
-                }
-                this.trigger("rendered", this.name, suggestions, true);
-            },
-            _renderSuggestions: function renderSuggestions(query, suggestions) {
-                var $fragment;
-                $fragment = this._getSuggestionsFragment(query, suggestions);
-                this.$lastSuggestion = $fragment.children().last();
-                this.$el.html($fragment).prepend(this._getHeader(query, suggestions)).append(this._getFooter(query, suggestions));
-            },
-            _appendSuggestions: function appendSuggestions(query, suggestions) {
-                var $fragment, $lastSuggestion;
-                $fragment = this._getSuggestionsFragment(query, suggestions);
-                $lastSuggestion = $fragment.children().last();
-                this.$lastSuggestion.after($fragment);
-                this.$lastSuggestion = $lastSuggestion;
-            },
-            _renderPending: function renderPending(query) {
-                var template = this.templates.pending;
-                this._resetLastSuggestion();
-                template && this.$el.html(template({
-                    query: query,
-                    dataset: this.name
-                }));
-            },
-            _renderNotFound: function renderNotFound(query) {
-                var template = this.templates.notFound;
-                this._resetLastSuggestion();
-                template && this.$el.html(template({
-                    query: query,
-                    dataset: this.name
-                }));
-            },
-            _empty: function empty() {
-                this.$el.empty();
-                this._resetLastSuggestion();
-            },
-            _getSuggestionsFragment: function getSuggestionsFragment(query, suggestions) {
-                var that = this,
-                    fragment;
-                fragment = document.createDocumentFragment();
-                _.each(suggestions, function getSuggestionNode(suggestion) {
-                    var $el, context;
-                    context = that._injectQuery(query, suggestion);
-                    $el = $(that.templates.suggestion(context)).data(keys.obj, suggestion).data(keys.val, that.displayFn(suggestion)).addClass(that.classes.suggestion + " " + that.classes.selectable);
-                    fragment.appendChild($el[0]);
-                });
-                this.highlight && highlight({
-                    className: this.classes.highlight,
-                    node: fragment,
-                    pattern: query
-                });
-                return $(fragment);
-            },
-            _getFooter: function getFooter(query, suggestions) {
-                return this.templates.footer ? this.templates.footer({
-                    query: query,
-                    suggestions: suggestions,
-                    dataset: this.name
-                }) : null;
-            },
-            _getHeader: function getHeader(query, suggestions) {
-                return this.templates.header ? this.templates.header({
-                    query: query,
-                    suggestions: suggestions,
-                    dataset: this.name
-                }) : null;
-            },
-            _resetLastSuggestion: function resetLastSuggestion() {
-                this.$lastSuggestion = $();
-            },
-            _injectQuery: function injectQuery(query, obj) {
-                return _.isObject(obj) ? _.mixin({
-                    _query: query
-                }, obj) : obj;
-            },
-            update: function update(query) {
-                var that = this,
-                    canceled = false,
-                    syncCalled = false,
-                    rendered = 0;
-                this.cancel();
-                this.cancel = function cancel() {
-                    canceled = true;
-                    that.cancel = $.noop;
-                    that.async && that.trigger("asyncCanceled", query);
-                };
-                this.source(query, sync, async);
-                !syncCalled && sync([]);
-                function sync(suggestions) {
-                    if (syncCalled) {
-                        return;
-                    }
-                    syncCalled = true;
-                    suggestions = (suggestions || []).slice(0, that.limit);
-                    rendered = suggestions.length;
-                    that._overwrite(query, suggestions);
-                    if (rendered < that.limit && that.async) {
-                        that.trigger("asyncRequested", query);
-                    }
-                }
-                function async(suggestions) {
-                    suggestions = suggestions || [];
-                    if (!canceled && rendered < that.limit) {
-                        that.cancel = $.noop;
-                        rendered += suggestions.length;
-                        that._append(query, suggestions.slice(0, that.limit - rendered));
-                        that.async && that.trigger("asyncReceived", query);
-                    }
-                }
-            },
-            cancel: $.noop,
-            clear: function clear() {
-                this._empty();
-                this.cancel();
-                this.trigger("cleared");
-            },
-            isEmpty: function isEmpty() {
-                return this.$el.is(":empty");
-            },
-            destroy: function destroy() {
-                this.$el = $("<div>");
-            }
-        });
-        return Dataset;
-        function getDisplayFn(display) {
-            display = display || _.stringify;
-            return _.isFunction(display) ? display : displayFn;
-            function displayFn(obj) {
-                return obj[display];
-            }
-        }
-        function getTemplates(templates, displayFn) {
-            return {
-                notFound: templates.notFound && _.templatify(templates.notFound),
-                pending: templates.pending && _.templatify(templates.pending),
-                header: templates.header && _.templatify(templates.header),
-                footer: templates.footer && _.templatify(templates.footer),
-                suggestion: templates.suggestion || suggestionTemplate
-            };
-            function suggestionTemplate(context) {
-                return $("<div>").text(displayFn(context));
-            }
-        }
-        function isValidName(str) {
-            return (/^[_a-zA-Z0-9-]+$/.test(str)
-            );
-        }
-    }();
-    var Menu = function () {
-        "use strict";
-
-        function Menu(o, www) {
-            var that = this;
-            o = o || {};
-            if (!o.node) {
-                $.error("node is required");
-            }
-            www.mixin(this);
-            this.$node = $(o.node);
-            this.query = null;
-            this.datasets = _.map(o.datasets, initializeDataset);
-            function initializeDataset(oDataset) {
-                var node = that.$node.find(oDataset.node).first();
-                oDataset.node = node.length ? node : $("<div>").appendTo(that.$node);
-                return new Dataset(oDataset, www);
-            }
-        }
-        _.mixin(Menu.prototype, EventEmitter, {
-            _onSelectableClick: function onSelectableClick($e) {
-                this.trigger("selectableClicked", $($e.currentTarget));
-            },
-            _onRendered: function onRendered(type, dataset, suggestions, async) {
-                this.$node.toggleClass(this.classes.empty, this._allDatasetsEmpty());
-                this.trigger("datasetRendered", dataset, suggestions, async);
-            },
-            _onCleared: function onCleared() {
-                this.$node.toggleClass(this.classes.empty, this._allDatasetsEmpty());
-                this.trigger("datasetCleared");
-            },
-            _propagate: function propagate() {
-                this.trigger.apply(this, arguments);
-            },
-            _allDatasetsEmpty: function allDatasetsEmpty() {
-                return _.every(this.datasets, isDatasetEmpty);
-                function isDatasetEmpty(dataset) {
-                    return dataset.isEmpty();
-                }
-            },
-            _getSelectables: function getSelectables() {
-                return this.$node.find(this.selectors.selectable);
-            },
-            _removeCursor: function _removeCursor() {
-                var $selectable = this.getActiveSelectable();
-                $selectable && $selectable.removeClass(this.classes.cursor);
-            },
-            _ensureVisible: function ensureVisible($el) {
-                var elTop, elBottom, nodeScrollTop, nodeHeight;
-                elTop = $el.position().top;
-                elBottom = elTop + $el.outerHeight(true);
-                nodeScrollTop = this.$node.scrollTop();
-                nodeHeight = this.$node.height() + parseInt(this.$node.css("paddingTop"), 10) + parseInt(this.$node.css("paddingBottom"), 10);
-                if (elTop < 0) {
-                    this.$node.scrollTop(nodeScrollTop + elTop);
-                } else if (nodeHeight < elBottom) {
-                    this.$node.scrollTop(nodeScrollTop + (elBottom - nodeHeight));
-                }
-            },
-            bind: function bind() {
-                var that = this,
-                    onSelectableClick;
-                onSelectableClick = _.bind(this._onSelectableClick, this);
-                this.$node.on("click.tt", this.selectors.selectable, onSelectableClick);
-                _.each(this.datasets, function (dataset) {
-                    dataset.onSync("asyncRequested", that._propagate, that).onSync("asyncCanceled", that._propagate, that).onSync("asyncReceived", that._propagate, that).onSync("rendered", that._onRendered, that).onSync("cleared", that._onCleared, that);
-                });
-                return this;
-            },
-            isOpen: function isOpen() {
-                return this.$node.hasClass(this.classes.open);
-            },
-            open: function open() {
-                this.$node.addClass(this.classes.open);
-            },
-            close: function close() {
-                this.$node.removeClass(this.classes.open);
-                this._removeCursor();
-            },
-            setLanguageDirection: function setLanguageDirection(dir) {
-                this.$node.attr("dir", dir);
-            },
-            selectableRelativeToCursor: function selectableRelativeToCursor(delta) {
-                var $selectables, $oldCursor, oldIndex, newIndex;
-                $oldCursor = this.getActiveSelectable();
-                $selectables = this._getSelectables();
-                oldIndex = $oldCursor ? $selectables.index($oldCursor) : -1;
-                newIndex = oldIndex + delta;
-                newIndex = (newIndex + 1) % ($selectables.length + 1) - 1;
-                newIndex = newIndex < -1 ? $selectables.length - 1 : newIndex;
-                return newIndex === -1 ? null : $selectables.eq(newIndex);
-            },
-            setCursor: function setCursor($selectable) {
-                this._removeCursor();
-                if ($selectable = $selectable && $selectable.first()) {
-                    $selectable.addClass(this.classes.cursor);
-                    this._ensureVisible($selectable);
-                }
-            },
-            getSelectableData: function getSelectableData($el) {
-                return $el && $el.length ? Dataset.extractData($el) : null;
-            },
-            getActiveSelectable: function getActiveSelectable() {
-                var $selectable = this._getSelectables().filter(this.selectors.cursor).first();
-                return $selectable.length ? $selectable : null;
-            },
-            getTopSelectable: function getTopSelectable() {
-                var $selectable = this._getSelectables().first();
-                return $selectable.length ? $selectable : null;
-            },
-            update: function update(query) {
-                var isValidUpdate = query !== this.query;
-                if (isValidUpdate) {
-                    this.query = query;
-                    _.each(this.datasets, updateDataset);
-                }
-                return isValidUpdate;
-                function updateDataset(dataset) {
-                    dataset.update(query);
-                }
-            },
-            empty: function empty() {
-                _.each(this.datasets, clearDataset);
-                this.query = null;
-                this.$node.addClass(this.classes.empty);
-                function clearDataset(dataset) {
-                    dataset.clear();
-                }
-            },
-            destroy: function destroy() {
-                this.$node.off(".tt");
-                this.$node = $("<div>");
-                _.each(this.datasets, destroyDataset);
-                function destroyDataset(dataset) {
-                    dataset.destroy();
-                }
-            }
-        });
-        return Menu;
-    }();
-    var DefaultMenu = function () {
-        "use strict";
-
-        var s = Menu.prototype;
-        function DefaultMenu() {
-            Menu.apply(this, [].slice.call(arguments, 0));
-        }
-        _.mixin(DefaultMenu.prototype, Menu.prototype, {
-            open: function open() {
-                !this._allDatasetsEmpty() && this._show();
-                return s.open.apply(this, [].slice.call(arguments, 0));
-            },
-            close: function close() {
-                this._hide();
-                return s.close.apply(this, [].slice.call(arguments, 0));
-            },
-            _onRendered: function onRendered() {
-                if (this._allDatasetsEmpty()) {
-                    this._hide();
-                } else {
-                    this.isOpen() && this._show();
-                }
-                return s._onRendered.apply(this, [].slice.call(arguments, 0));
-            },
-            _onCleared: function onCleared() {
-                if (this._allDatasetsEmpty()) {
-                    this._hide();
-                } else {
-                    this.isOpen() && this._show();
-                }
-                return s._onCleared.apply(this, [].slice.call(arguments, 0));
-            },
-            setLanguageDirection: function setLanguageDirection(dir) {
-                this.$node.css(dir === "ltr" ? this.css.ltr : this.css.rtl);
-                return s.setLanguageDirection.apply(this, [].slice.call(arguments, 0));
-            },
-            _hide: function hide() {
-                this.$node.hide();
-            },
-            _show: function show() {
-                this.$node.css("display", "block");
-            }
-        });
-        return DefaultMenu;
-    }();
-    var Typeahead = function () {
-        "use strict";
-
-        function Typeahead(o, www) {
-            var onFocused, onBlurred, onEnterKeyed, onTabKeyed, onEscKeyed, onUpKeyed, onDownKeyed, onLeftKeyed, onRightKeyed, onQueryChanged, onWhitespaceChanged;
-            o = o || {};
-            if (!o.input) {
-                $.error("missing input");
-            }
-            if (!o.menu) {
-                $.error("missing menu");
-            }
-            if (!o.eventBus) {
-                $.error("missing event bus");
-            }
-            www.mixin(this);
-            this.eventBus = o.eventBus;
-            this.minLength = _.isNumber(o.minLength) ? o.minLength : 1;
-            this.input = o.input;
-            this.menu = o.menu;
-            this.enabled = true;
-            this.active = false;
-            this.input.hasFocus() && this.activate();
-            this.dir = this.input.getLangDir();
-            this._hacks();
-            this.menu.bind().onSync("selectableClicked", this._onSelectableClicked, this).onSync("asyncRequested", this._onAsyncRequested, this).onSync("asyncCanceled", this._onAsyncCanceled, this).onSync("asyncReceived", this._onAsyncReceived, this).onSync("datasetRendered", this._onDatasetRendered, this).onSync("datasetCleared", this._onDatasetCleared, this);
-            onFocused = c(this, "activate", "open", "_onFocused");
-            onBlurred = c(this, "deactivate", "_onBlurred");
-            onEnterKeyed = c(this, "isActive", "isOpen", "_onEnterKeyed");
-            onTabKeyed = c(this, "isActive", "isOpen", "_onTabKeyed");
-            onEscKeyed = c(this, "isActive", "_onEscKeyed");
-            onUpKeyed = c(this, "isActive", "open", "_onUpKeyed");
-            onDownKeyed = c(this, "isActive", "open", "_onDownKeyed");
-            onLeftKeyed = c(this, "isActive", "isOpen", "_onLeftKeyed");
-            onRightKeyed = c(this, "isActive", "isOpen", "_onRightKeyed");
-            onQueryChanged = c(this, "_openIfActive", "_onQueryChanged");
-            onWhitespaceChanged = c(this, "_openIfActive", "_onWhitespaceChanged");
-            this.input.bind().onSync("focused", onFocused, this).onSync("blurred", onBlurred, this).onSync("enterKeyed", onEnterKeyed, this).onSync("tabKeyed", onTabKeyed, this).onSync("escKeyed", onEscKeyed, this).onSync("upKeyed", onUpKeyed, this).onSync("downKeyed", onDownKeyed, this).onSync("leftKeyed", onLeftKeyed, this).onSync("rightKeyed", onRightKeyed, this).onSync("queryChanged", onQueryChanged, this).onSync("whitespaceChanged", onWhitespaceChanged, this).onSync("langDirChanged", this._onLangDirChanged, this);
-        }
-        _.mixin(Typeahead.prototype, {
-            _hacks: function hacks() {
-                var $input, $menu;
-                $input = this.input.$input || $("<div>");
-                $menu = this.menu.$node || $("<div>");
-                $input.on("blur.tt", function ($e) {
-                    var active, isActive, hasActive;
-                    active = document.activeElement;
-                    isActive = $menu.is(active);
-                    hasActive = $menu.has(active).length > 0;
-                    if (_.isMsie() && (isActive || hasActive)) {
-                        $e.preventDefault();
-                        $e.stopImmediatePropagation();
-                        _.defer(function () {
-                            $input.focus();
-                        });
-                    }
-                });
-                $menu.on("mousedown.tt", function ($e) {
-                    $e.preventDefault();
-                });
-            },
-            _onSelectableClicked: function onSelectableClicked(type, $el) {
-                this.select($el);
-            },
-            _onDatasetCleared: function onDatasetCleared() {
-                this._updateHint();
-            },
-            _onDatasetRendered: function onDatasetRendered(type, dataset, suggestions, async) {
-                this._updateHint();
-                this.eventBus.trigger("render", suggestions, async, dataset);
-            },
-            _onAsyncRequested: function onAsyncRequested(type, dataset, query) {
-                this.eventBus.trigger("asyncrequest", query, dataset);
-            },
-            _onAsyncCanceled: function onAsyncCanceled(type, dataset, query) {
-                this.eventBus.trigger("asynccancel", query, dataset);
-            },
-            _onAsyncReceived: function onAsyncReceived(type, dataset, query) {
-                this.eventBus.trigger("asyncreceive", query, dataset);
-            },
-            _onFocused: function onFocused() {
-                this._minLengthMet() && this.menu.update(this.input.getQuery());
-            },
-            _onBlurred: function onBlurred() {
-                if (this.input.hasQueryChangedSinceLastFocus()) {
-                    this.eventBus.trigger("change", this.input.getQuery());
-                }
-            },
-            _onEnterKeyed: function onEnterKeyed(type, $e) {
-                var $selectable;
-                if ($selectable = this.menu.getActiveSelectable()) {
-                    this.select($selectable) && $e.preventDefault();
-                }
-            },
-            _onTabKeyed: function onTabKeyed(type, $e) {
-                var $selectable;
-                if ($selectable = this.menu.getActiveSelectable()) {
-                    this.select($selectable) && $e.preventDefault();
-                } else if ($selectable = this.menu.getTopSelectable()) {
-                    this.autocomplete($selectable) && $e.preventDefault();
-                }
-            },
-            _onEscKeyed: function onEscKeyed() {
-                this.close();
-            },
-            _onUpKeyed: function onUpKeyed() {
-                this.moveCursor(-1);
-            },
-            _onDownKeyed: function onDownKeyed() {
-                this.moveCursor(+1);
-            },
-            _onLeftKeyed: function onLeftKeyed() {
-                if (this.dir === "rtl" && this.input.isCursorAtEnd()) {
-                    this.autocomplete(this.menu.getTopSelectable());
-                }
-            },
-            _onRightKeyed: function onRightKeyed() {
-                if (this.dir === "ltr" && this.input.isCursorAtEnd()) {
-                    this.autocomplete(this.menu.getTopSelectable());
-                }
-            },
-            _onQueryChanged: function onQueryChanged(e, query) {
-                this._minLengthMet(query) ? this.menu.update(query) : this.menu.empty();
-            },
-            _onWhitespaceChanged: function onWhitespaceChanged() {
-                this._updateHint();
-            },
-            _onLangDirChanged: function onLangDirChanged(e, dir) {
-                if (this.dir !== dir) {
-                    this.dir = dir;
-                    this.menu.setLanguageDirection(dir);
-                }
-            },
-            _openIfActive: function openIfActive() {
-                this.isActive() && this.open();
-            },
-            _minLengthMet: function minLengthMet(query) {
-                query = _.isString(query) ? query : this.input.getQuery() || "";
-                return query.length >= this.minLength;
-            },
-            _updateHint: function updateHint() {
-                var $selectable, data, val, query, escapedQuery, frontMatchRegEx, match;
-                $selectable = this.menu.getTopSelectable();
-                data = this.menu.getSelectableData($selectable);
-                val = this.input.getInputValue();
-                if (data && !_.isBlankString(val) && !this.input.hasOverflow()) {
-                    query = Input.normalizeQuery(val);
-                    escapedQuery = _.escapeRegExChars(query);
-                    frontMatchRegEx = new RegExp("^(?:" + escapedQuery + ")(.+$)", "i");
-                    match = frontMatchRegEx.exec(data.val);
-                    match && this.input.setHint(val + match[1]);
-                } else {
-                    this.input.clearHint();
-                }
-            },
-            isEnabled: function isEnabled() {
-                return this.enabled;
-            },
-            enable: function enable() {
-                this.enabled = true;
-            },
-            disable: function disable() {
-                this.enabled = false;
-            },
-            isActive: function isActive() {
-                return this.active;
-            },
-            activate: function activate() {
-                if (this.isActive()) {
-                    return true;
-                } else if (!this.isEnabled() || this.eventBus.before("active")) {
-                    return false;
-                } else {
-                    this.active = true;
-                    this.eventBus.trigger("active");
-                    return true;
-                }
-            },
-            deactivate: function deactivate() {
-                if (!this.isActive()) {
-                    return true;
-                } else if (this.eventBus.before("idle")) {
-                    return false;
-                } else {
-                    this.active = false;
-                    this.close();
-                    this.eventBus.trigger("idle");
-                    return true;
-                }
-            },
-            isOpen: function isOpen() {
-                return this.menu.isOpen();
-            },
-            open: function open() {
-                if (!this.isOpen() && !this.eventBus.before("open")) {
-                    this.menu.open();
-                    this._updateHint();
-                    this.eventBus.trigger("open");
-                }
-                return this.isOpen();
-            },
-            close: function close() {
-                if (this.isOpen() && !this.eventBus.before("close")) {
-                    this.menu.close();
-                    this.input.clearHint();
-                    this.input.resetInputValue();
-                    this.eventBus.trigger("close");
-                }
-                return !this.isOpen();
-            },
-            setVal: function setVal(val) {
-                this.input.setQuery(_.toStr(val));
-            },
-            getVal: function getVal() {
-                return this.input.getQuery();
-            },
-            select: function select($selectable) {
-                var data = this.menu.getSelectableData($selectable);
-                if (data && !this.eventBus.before("select", data.obj)) {
-                    this.input.setQuery(data.val, true);
-                    this.eventBus.trigger("select", data.obj);
-                    this.close();
-                    return true;
-                }
-                return false;
-            },
-            autocomplete: function autocomplete($selectable) {
-                var query, data, isValid;
-                query = this.input.getQuery();
-                data = this.menu.getSelectableData($selectable);
-                isValid = data && query !== data.val;
-                if (isValid && !this.eventBus.before("autocomplete", data.obj)) {
-                    this.input.setQuery(data.val);
-                    this.eventBus.trigger("autocomplete", data.obj);
-                    return true;
-                }
-                return false;
-            },
-            moveCursor: function moveCursor(delta) {
-                var query, $candidate, data, payload, cancelMove;
-                query = this.input.getQuery();
-                $candidate = this.menu.selectableRelativeToCursor(delta);
-                data = this.menu.getSelectableData($candidate);
-                payload = data ? data.obj : null;
-                cancelMove = this._minLengthMet() && this.menu.update(query);
-                if (!cancelMove && !this.eventBus.before("cursorchange", payload)) {
-                    this.menu.setCursor($candidate);
-                    if (data) {
-                        this.input.setInputValue(data.val);
-                    } else {
-                        this.input.resetInputValue();
-                        this._updateHint();
-                    }
-                    this.eventBus.trigger("cursorchange", payload);
-                    return true;
-                }
-                return false;
-            },
-            destroy: function destroy() {
-                this.input.destroy();
-                this.menu.destroy();
-            }
-        });
-        return Typeahead;
-        function c(ctx) {
-            var methods = [].slice.call(arguments, 1);
-            return function () {
-                var args = [].slice.call(arguments);
-                _.each(methods, function (method) {
-                    return ctx[method].apply(ctx, args);
-                });
-            };
-        }
-    }();
-    (function () {
-        "use strict";
-
-        var old, keys, methods;
-        old = $.fn.typeahead;
-        keys = {
-            www: "tt-www",
-            attrs: "tt-attrs",
-            typeahead: "tt-typeahead"
-        };
-        methods = {
-            initialize: function initialize(o, datasets) {
-                var www;
-                datasets = _.isArray(datasets) ? datasets : [].slice.call(arguments, 1);
-                o = o || {};
-                www = WWW(o.classNames);
-                return this.each(attach);
-                function attach() {
-                    var $input, $wrapper, $hint, $menu, defaultHint, defaultMenu, eventBus, input, menu, typeahead, MenuConstructor;
-                    _.each(datasets, function (d) {
-                        d.highlight = !!o.highlight;
-                    });
-                    $input = $(this);
-                    $wrapper = $(www.html.wrapper);
-                    $hint = $elOrNull(o.hint);
-                    $menu = $elOrNull(o.menu);
-                    defaultHint = o.hint !== false && !$hint;
-                    defaultMenu = o.menu !== false && !$menu;
-                    defaultHint && ($hint = buildHintFromInput($input, www));
-                    defaultMenu && ($menu = $(www.html.menu).css(www.css.menu));
-                    $hint && $hint.val("");
-                    $input = prepInput($input, www);
-                    if (defaultHint || defaultMenu) {
-                        $wrapper.css(www.css.wrapper);
-                        $input.css(defaultHint ? www.css.input : www.css.inputWithNoHint);
-                        $input.wrap($wrapper).parent().prepend(defaultHint ? $hint : null).append(defaultMenu ? $menu : null);
-                    }
-                    MenuConstructor = defaultMenu ? DefaultMenu : Menu;
-                    eventBus = new EventBus({
-                        el: $input
-                    });
-                    input = new Input({
-                        hint: $hint,
-                        input: $input
-                    }, www);
-                    menu = new MenuConstructor({
-                        node: $menu,
-                        datasets: datasets
-                    }, www);
-                    typeahead = new Typeahead({
-                        input: input,
-                        menu: menu,
-                        eventBus: eventBus,
-                        minLength: o.minLength
-                    }, www);
-                    $input.data(keys.www, www);
-                    $input.data(keys.typeahead, typeahead);
-                }
-            },
-            isEnabled: function isEnabled() {
-                var enabled;
-                ttEach(this.first(), function (t) {
-                    enabled = t.isEnabled();
-                });
-                return enabled;
-            },
-            enable: function enable() {
-                ttEach(this, function (t) {
-                    t.enable();
-                });
-                return this;
-            },
-            disable: function disable() {
-                ttEach(this, function (t) {
-                    t.disable();
-                });
-                return this;
-            },
-            isActive: function isActive() {
-                var active;
-                ttEach(this.first(), function (t) {
-                    active = t.isActive();
-                });
-                return active;
-            },
-            activate: function activate() {
-                ttEach(this, function (t) {
-                    t.activate();
-                });
-                return this;
-            },
-            deactivate: function deactivate() {
-                ttEach(this, function (t) {
-                    t.deactivate();
-                });
-                return this;
-            },
-            isOpen: function isOpen() {
-                var open;
-                ttEach(this.first(), function (t) {
-                    open = t.isOpen();
-                });
-                return open;
-            },
-            open: function open() {
-                ttEach(this, function (t) {
-                    t.open();
-                });
-                return this;
-            },
-            close: function close() {
-                ttEach(this, function (t) {
-                    t.close();
-                });
-                return this;
-            },
-            select: function select(el) {
-                var success = false,
-                    $el = $(el);
-                ttEach(this.first(), function (t) {
-                    success = t.select($el);
-                });
-                return success;
-            },
-            autocomplete: function autocomplete(el) {
-                var success = false,
-                    $el = $(el);
-                ttEach(this.first(), function (t) {
-                    success = t.autocomplete($el);
-                });
-                return success;
-            },
-            moveCursor: function moveCursoe(delta) {
-                var success = false;
-                ttEach(this.first(), function (t) {
-                    success = t.moveCursor(delta);
-                });
-                return success;
-            },
-            val: function val(newVal) {
-                var query;
-                if (!arguments.length) {
-                    ttEach(this.first(), function (t) {
-                        query = t.getVal();
-                    });
-                    return query;
-                } else {
-                    ttEach(this, function (t) {
-                        t.setVal(newVal);
-                    });
-                    return this;
-                }
-            },
-            destroy: function destroy() {
-                ttEach(this, function (typeahead, $input) {
-                    revert($input);
-                    typeahead.destroy();
-                });
-                return this;
-            }
-        };
-        $.fn.typeahead = function (method) {
-            if (methods[method]) {
-                return methods[method].apply(this, [].slice.call(arguments, 1));
-            } else {
-                return methods.initialize.apply(this, arguments);
-            }
-        };
-        $.fn.typeahead.noConflict = function noConflict() {
-            $.fn.typeahead = old;
-            return this;
-        };
-        function ttEach($els, fn) {
-            $els.each(function () {
-                var $input = $(this),
-                    typeahead;
-                (typeahead = $input.data(keys.typeahead)) && fn(typeahead, $input);
-            });
-        }
-        function buildHintFromInput($input, www) {
-            return $input.clone().addClass(www.classes.hint).removeData().css(www.css.hint).css(getBackgroundStyles($input)).prop("readonly", true).removeAttr("id name placeholder required").attr({
-                autocomplete: "off",
-                spellcheck: "false",
-                tabindex: -1
-            });
-        }
-        function prepInput($input, www) {
-            $input.data(keys.attrs, {
-                dir: $input.attr("dir"),
-                autocomplete: $input.attr("autocomplete"),
-                spellcheck: $input.attr("spellcheck"),
-                style: $input.attr("style")
-            });
-            $input.addClass(www.classes.input).attr({
-                autocomplete: "off",
-                spellcheck: false
-            });
-            try {
-                !$input.attr("dir") && $input.attr("dir", "auto");
-            } catch (e) {}
-            return $input;
-        }
-        function getBackgroundStyles($el) {
-            return {
-                backgroundAttachment: $el.css("background-attachment"),
-                backgroundClip: $el.css("background-clip"),
-                backgroundColor: $el.css("background-color"),
-                backgroundImage: $el.css("background-image"),
-                backgroundOrigin: $el.css("background-origin"),
-                backgroundPosition: $el.css("background-position"),
-                backgroundRepeat: $el.css("background-repeat"),
-                backgroundSize: $el.css("background-size")
-            };
-        }
-        function revert($input) {
-            var www, $wrapper;
-            www = $input.data(keys.www);
-            $wrapper = $input.parent().filter(www.selectors.wrapper);
-            _.each($input.data(keys.attrs), function (val, key) {
-                _.isUndefined(val) ? $input.removeAttr(key) : $input.attr(key, val);
-            });
-            $input.removeData(keys.typeahead).removeData(keys.www).removeData(keys.attr).removeClass(www.classes.input);
-            if ($wrapper.length) {
-                $input.detach().insertAfter($wrapper);
-                $wrapper.remove();
-            }
-        }
-        function $elOrNull(obj) {
-            var isValid, $el;
-            isValid = _.isJQuery(obj) || _.isElement(obj);
-            $el = isValid ? $(obj).first() : [];
-            return $el.length ? $el : null;
-        }
-    })();
-});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(336).setImmediate))
-
-/***/ }),
-/* 506 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/*!
- * typeahead.js 0.11.1
- * https://github.com/twitter/typeahead.js
- * Copyright 2013-2015 Twitter, Inc. and other contributors; Licensed MIT
- */
-
-(function (root, factory) {
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(17)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (a0) {
-            return root["Bloodhound"] = factory(a0);
-        }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === "object") {
-        module.exports = factory(require("jquery"));
-    } else {
-        root["Bloodhound"] = factory(jQuery);
-    }
-})(this, function ($) {
-    var _ = function () {
-        "use strict";
-
-        return {
-            isMsie: function isMsie() {
-                return (/(msie|trident)/i.test(navigator.userAgent) ? navigator.userAgent.match(/(msie |rv:)(\d+(.\d+)?)/i)[2] : false
-                );
-            },
-            isBlankString: function isBlankString(str) {
-                return !str || /^\s*$/.test(str);
-            },
-            escapeRegExChars: function escapeRegExChars(str) {
-                return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-            },
-            isString: function isString(obj) {
-                return typeof obj === "string";
-            },
-            isNumber: function isNumber(obj) {
-                return typeof obj === "number";
-            },
-            isArray: $.isArray,
-            isFunction: $.isFunction,
-            isObject: $.isPlainObject,
-            isUndefined: function isUndefined(obj) {
-                return typeof obj === "undefined";
-            },
-            isElement: function isElement(obj) {
-                return !!(obj && obj.nodeType === 1);
-            },
-            isJQuery: function isJQuery(obj) {
-                return obj instanceof $;
-            },
-            toStr: function toStr(s) {
-                return _.isUndefined(s) || s === null ? "" : s + "";
-            },
-            bind: $.proxy,
-            each: function each(collection, cb) {
-                $.each(collection, reverseArgs);
-                function reverseArgs(index, value) {
-                    return cb(value, index);
-                }
-            },
-            map: $.map,
-            filter: $.grep,
-            every: function every(obj, test) {
-                var result = true;
-                if (!obj) {
-                    return result;
-                }
-                $.each(obj, function (key, val) {
-                    if (!(result = test.call(null, val, key, obj))) {
-                        return false;
-                    }
-                });
-                return !!result;
-            },
-            some: function some(obj, test) {
-                var result = false;
-                if (!obj) {
-                    return result;
-                }
-                $.each(obj, function (key, val) {
-                    if (result = test.call(null, val, key, obj)) {
-                        return false;
-                    }
-                });
-                return !!result;
-            },
-            mixin: $.extend,
-            identity: function identity(x) {
-                return x;
-            },
-            clone: function clone(obj) {
-                return $.extend(true, {}, obj);
-            },
-            getIdGenerator: function getIdGenerator() {
-                var counter = 0;
-                return function () {
-                    return counter++;
-                };
-            },
-            templatify: function templatify(obj) {
-                return $.isFunction(obj) ? obj : template;
-                function template() {
-                    return String(obj);
-                }
-            },
-            defer: function defer(fn) {
-                setTimeout(fn, 0);
-            },
-            debounce: function debounce(func, wait, immediate) {
-                var timeout, result;
-                return function () {
-                    var context = this,
-                        args = arguments,
-                        later,
-                        callNow;
-                    later = function later() {
-                        timeout = null;
-                        if (!immediate) {
-                            result = func.apply(context, args);
-                        }
-                    };
-                    callNow = immediate && !timeout;
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                    if (callNow) {
-                        result = func.apply(context, args);
-                    }
-                    return result;
-                };
-            },
-            throttle: function throttle(func, wait) {
-                var context, args, timeout, result, previous, later;
-                previous = 0;
-                later = function later() {
-                    previous = new Date();
-                    timeout = null;
-                    result = func.apply(context, args);
-                };
-                return function () {
-                    var now = new Date(),
-                        remaining = wait - (now - previous);
-                    context = this;
-                    args = arguments;
-                    if (remaining <= 0) {
-                        clearTimeout(timeout);
-                        timeout = null;
-                        previous = now;
-                        result = func.apply(context, args);
-                    } else if (!timeout) {
-                        timeout = setTimeout(later, remaining);
-                    }
-                    return result;
-                };
-            },
-            stringify: function stringify(val) {
-                return _.isString(val) ? val : JSON.stringify(val);
-            },
-            noop: function noop() {}
-        };
-    }();
-    var VERSION = "0.11.1";
-    var tokenizers = function () {
-        "use strict";
-
-        return {
-            nonword: nonword,
-            whitespace: whitespace,
-            obj: {
-                nonword: getObjTokenizer(nonword),
-                whitespace: getObjTokenizer(whitespace)
-            }
-        };
-        function whitespace(str) {
-            str = _.toStr(str);
-            return str ? str.split(/\s+/) : [];
-        }
-        function nonword(str) {
-            str = _.toStr(str);
-            return str ? str.split(/\W+/) : [];
-        }
-        function getObjTokenizer(tokenizer) {
-            return function setKey(keys) {
-                keys = _.isArray(keys) ? keys : [].slice.call(arguments, 0);
-                return function tokenize(o) {
-                    var tokens = [];
-                    _.each(keys, function (k) {
-                        tokens = tokens.concat(tokenizer(_.toStr(o[k])));
-                    });
-                    return tokens;
-                };
-            };
-        }
-    }();
-    var LruCache = function () {
-        "use strict";
-
-        function LruCache(maxSize) {
-            this.maxSize = _.isNumber(maxSize) ? maxSize : 100;
-            this.reset();
-            if (this.maxSize <= 0) {
-                this.set = this.get = $.noop;
-            }
-        }
-        _.mixin(LruCache.prototype, {
-            set: function set(key, val) {
-                var tailItem = this.list.tail,
-                    node;
-                if (this.size >= this.maxSize) {
-                    this.list.remove(tailItem);
-                    delete this.hash[tailItem.key];
-                    this.size--;
-                }
-                if (node = this.hash[key]) {
-                    node.val = val;
-                    this.list.moveToFront(node);
-                } else {
-                    node = new Node(key, val);
-                    this.list.add(node);
-                    this.hash[key] = node;
-                    this.size++;
-                }
-            },
-            get: function get(key) {
-                var node = this.hash[key];
-                if (node) {
-                    this.list.moveToFront(node);
-                    return node.val;
-                }
-            },
-            reset: function reset() {
-                this.size = 0;
-                this.hash = {};
-                this.list = new List();
-            }
-        });
-        function List() {
-            this.head = this.tail = null;
-        }
-        _.mixin(List.prototype, {
-            add: function add(node) {
-                if (this.head) {
-                    node.next = this.head;
-                    this.head.prev = node;
-                }
-                this.head = node;
-                this.tail = this.tail || node;
-            },
-            remove: function remove(node) {
-                node.prev ? node.prev.next = node.next : this.head = node.next;
-                node.next ? node.next.prev = node.prev : this.tail = node.prev;
-            },
-            moveToFront: function moveToFront(node) {
-                this.remove(node);
-                this.add(node);
-            }
-        });
-        function Node(key, val) {
-            this.key = key;
-            this.val = val;
-            this.prev = this.next = null;
-        }
-        return LruCache;
-    }();
-    var PersistentStorage = function () {
-        "use strict";
-
-        var LOCAL_STORAGE;
-        try {
-            LOCAL_STORAGE = window.localStorage;
-            LOCAL_STORAGE.setItem("~~~", "!");
-            LOCAL_STORAGE.removeItem("~~~");
-        } catch (err) {
-            LOCAL_STORAGE = null;
-        }
-        function PersistentStorage(namespace, override) {
-            this.prefix = ["__", namespace, "__"].join("");
-            this.ttlKey = "__ttl__";
-            this.keyMatcher = new RegExp("^" + _.escapeRegExChars(this.prefix));
-            this.ls = override || LOCAL_STORAGE;
-            !this.ls && this._noop();
-        }
-        _.mixin(PersistentStorage.prototype, {
-            _prefix: function _prefix(key) {
-                return this.prefix + key;
-            },
-            _ttlKey: function _ttlKey(key) {
-                return this._prefix(key) + this.ttlKey;
-            },
-            _noop: function _noop() {
-                this.get = this.set = this.remove = this.clear = this.isExpired = _.noop;
-            },
-            _safeSet: function _safeSet(key, val) {
-                try {
-                    this.ls.setItem(key, val);
-                } catch (err) {
-                    if (err.name === "QuotaExceededError") {
-                        this.clear();
-                        this._noop();
-                    }
-                }
-            },
-            get: function get(key) {
-                if (this.isExpired(key)) {
-                    this.remove(key);
-                }
-                return decode(this.ls.getItem(this._prefix(key)));
-            },
-            set: function set(key, val, ttl) {
-                if (_.isNumber(ttl)) {
-                    this._safeSet(this._ttlKey(key), encode(now() + ttl));
-                } else {
-                    this.ls.removeItem(this._ttlKey(key));
-                }
-                return this._safeSet(this._prefix(key), encode(val));
-            },
-            remove: function remove(key) {
-                this.ls.removeItem(this._ttlKey(key));
-                this.ls.removeItem(this._prefix(key));
-                return this;
-            },
-            clear: function clear() {
-                var i,
-                    keys = gatherMatchingKeys(this.keyMatcher);
-                for (i = keys.length; i--;) {
-                    this.remove(keys[i]);
-                }
-                return this;
-            },
-            isExpired: function isExpired(key) {
-                var ttl = decode(this.ls.getItem(this._ttlKey(key)));
-                return _.isNumber(ttl) && now() > ttl ? true : false;
-            }
-        });
-        return PersistentStorage;
-        function now() {
-            return new Date().getTime();
-        }
-        function encode(val) {
-            return JSON.stringify(_.isUndefined(val) ? null : val);
-        }
-        function decode(val) {
-            return $.parseJSON(val);
-        }
-        function gatherMatchingKeys(keyMatcher) {
-            var i,
-                key,
-                keys = [],
-                len = LOCAL_STORAGE.length;
-            for (i = 0; i < len; i++) {
-                if ((key = LOCAL_STORAGE.key(i)).match(keyMatcher)) {
-                    keys.push(key.replace(keyMatcher, ""));
-                }
-            }
-            return keys;
-        }
-    }();
-    var Transport = function () {
-        "use strict";
-
-        var pendingRequestsCount = 0,
-            pendingRequests = {},
-            maxPendingRequests = 6,
-            sharedCache = new LruCache(10);
-        function Transport(o) {
-            o = o || {};
-            this.cancelled = false;
-            this.lastReq = null;
-            this._send = o.transport;
-            this._get = o.limiter ? o.limiter(this._get) : this._get;
-            this._cache = o.cache === false ? new LruCache(0) : sharedCache;
-        }
-        Transport.setMaxPendingRequests = function setMaxPendingRequests(num) {
-            maxPendingRequests = num;
-        };
-        Transport.resetCache = function resetCache() {
-            sharedCache.reset();
-        };
-        _.mixin(Transport.prototype, {
-            _fingerprint: function fingerprint(o) {
-                o = o || {};
-                return o.url + o.type + $.param(o.data || {});
-            },
-            _get: function _get(o, cb) {
-                var that = this,
-                    fingerprint,
-                    jqXhr;
-                fingerprint = this._fingerprint(o);
-                if (this.cancelled || fingerprint !== this.lastReq) {
-                    return;
-                }
-                if (jqXhr = pendingRequests[fingerprint]) {
-                    jqXhr.done(done).fail(fail);
-                } else if (pendingRequestsCount < maxPendingRequests) {
-                    pendingRequestsCount++;
-                    pendingRequests[fingerprint] = this._send(o).done(done).fail(fail).always(always);
-                } else {
-                    this.onDeckRequestArgs = [].slice.call(arguments, 0);
-                }
-                function done(resp) {
-                    cb(null, resp);
-                    that._cache.set(fingerprint, resp);
-                }
-                function fail() {
-                    cb(true);
-                }
-                function always() {
-                    pendingRequestsCount--;
-                    delete pendingRequests[fingerprint];
-                    if (that.onDeckRequestArgs) {
-                        that._get.apply(that, that.onDeckRequestArgs);
-                        that.onDeckRequestArgs = null;
-                    }
-                }
-            },
-            get: function get(o, cb) {
-                var resp, fingerprint;
-                cb = cb || $.noop;
-                o = _.isString(o) ? {
-                    url: o
-                } : o || {};
-                fingerprint = this._fingerprint(o);
-                this.cancelled = false;
-                this.lastReq = fingerprint;
-                if (resp = this._cache.get(fingerprint)) {
-                    cb(null, resp);
-                } else {
-                    this._get(o, cb);
-                }
-            },
-            cancel: function cancel() {
-                this.cancelled = true;
-            }
-        });
-        return Transport;
-    }();
-    var SearchIndex = window.SearchIndex = function () {
-        "use strict";
-
-        var CHILDREN = "c",
-            IDS = "i";
-        function SearchIndex(o) {
-            o = o || {};
-            if (!o.datumTokenizer || !o.queryTokenizer) {
-                $.error("datumTokenizer and queryTokenizer are both required");
-            }
-            this.identify = o.identify || _.stringify;
-            this.datumTokenizer = o.datumTokenizer;
-            this.queryTokenizer = o.queryTokenizer;
-            this.reset();
-        }
-        _.mixin(SearchIndex.prototype, {
-            bootstrap: function bootstrap(o) {
-                this.datums = o.datums;
-                this.trie = o.trie;
-            },
-            add: function add(data) {
-                var that = this;
-                data = _.isArray(data) ? data : [data];
-                _.each(data, function (datum) {
-                    var id, tokens;
-                    that.datums[id = that.identify(datum)] = datum;
-                    tokens = normalizeTokens(that.datumTokenizer(datum));
-                    _.each(tokens, function (token) {
-                        var node, chars, ch;
-                        node = that.trie;
-                        chars = token.split("");
-                        while (ch = chars.shift()) {
-                            node = node[CHILDREN][ch] || (node[CHILDREN][ch] = newNode());
-                            node[IDS].push(id);
-                        }
-                    });
-                });
-            },
-            get: function get(ids) {
-                var that = this;
-                return _.map(ids, function (id) {
-                    return that.datums[id];
-                });
-            },
-            search: function search(query) {
-                var that = this,
-                    tokens,
-                    matches;
-                tokens = normalizeTokens(this.queryTokenizer(query));
-                _.each(tokens, function (token) {
-                    var node, chars, ch, ids;
-                    if (matches && matches.length === 0) {
-                        return false;
-                    }
-                    node = that.trie;
-                    chars = token.split("");
-                    while (node && (ch = chars.shift())) {
-                        node = node[CHILDREN][ch];
-                    }
-                    if (node && chars.length === 0) {
-                        ids = node[IDS].slice(0);
-                        matches = matches ? getIntersection(matches, ids) : ids;
-                    } else {
-                        matches = [];
-                        return false;
-                    }
-                });
-                return matches ? _.map(unique(matches), function (id) {
-                    return that.datums[id];
-                }) : [];
-            },
-            all: function all() {
-                var values = [];
-                for (var key in this.datums) {
-                    values.push(this.datums[key]);
-                }
-                return values;
-            },
-            reset: function reset() {
-                this.datums = {};
-                this.trie = newNode();
-            },
-            serialize: function serialize() {
-                return {
-                    datums: this.datums,
-                    trie: this.trie
-                };
-            }
-        });
-        return SearchIndex;
-        function normalizeTokens(tokens) {
-            tokens = _.filter(tokens, function (token) {
-                return !!token;
-            });
-            tokens = _.map(tokens, function (token) {
-                return token.toLowerCase();
-            });
-            return tokens;
-        }
-        function newNode() {
-            var node = {};
-            node[IDS] = [];
-            node[CHILDREN] = {};
-            return node;
-        }
-        function unique(array) {
-            var seen = {},
-                uniques = [];
-            for (var i = 0, len = array.length; i < len; i++) {
-                if (!seen[array[i]]) {
-                    seen[array[i]] = true;
-                    uniques.push(array[i]);
-                }
-            }
-            return uniques;
-        }
-        function getIntersection(arrayA, arrayB) {
-            var ai = 0,
-                bi = 0,
-                intersection = [];
-            arrayA = arrayA.sort();
-            arrayB = arrayB.sort();
-            var lenArrayA = arrayA.length,
-                lenArrayB = arrayB.length;
-            while (ai < lenArrayA && bi < lenArrayB) {
-                if (arrayA[ai] < arrayB[bi]) {
-                    ai++;
-                } else if (arrayA[ai] > arrayB[bi]) {
-                    bi++;
-                } else {
-                    intersection.push(arrayA[ai]);
-                    ai++;
-                    bi++;
-                }
-            }
-            return intersection;
-        }
-    }();
-    var Prefetch = function () {
-        "use strict";
-
-        var keys;
-        keys = {
-            data: "data",
-            protocol: "protocol",
-            thumbprint: "thumbprint"
-        };
-        function Prefetch(o) {
-            this.url = o.url;
-            this.ttl = o.ttl;
-            this.cache = o.cache;
-            this.prepare = o.prepare;
-            this.transform = o.transform;
-            this.transport = o.transport;
-            this.thumbprint = o.thumbprint;
-            this.storage = new PersistentStorage(o.cacheKey);
-        }
-        _.mixin(Prefetch.prototype, {
-            _settings: function settings() {
-                return {
-                    url: this.url,
-                    type: "GET",
-                    dataType: "json"
-                };
-            },
-            store: function store(data) {
-                if (!this.cache) {
-                    return;
-                }
-                this.storage.set(keys.data, data, this.ttl);
-                this.storage.set(keys.protocol, location.protocol, this.ttl);
-                this.storage.set(keys.thumbprint, this.thumbprint, this.ttl);
-            },
-            fromCache: function fromCache() {
-                var stored = {},
-                    isExpired;
-                if (!this.cache) {
-                    return null;
-                }
-                stored.data = this.storage.get(keys.data);
-                stored.protocol = this.storage.get(keys.protocol);
-                stored.thumbprint = this.storage.get(keys.thumbprint);
-                isExpired = stored.thumbprint !== this.thumbprint || stored.protocol !== location.protocol;
-                return stored.data && !isExpired ? stored.data : null;
-            },
-            fromNetwork: function fromNetwork(cb) {
-                var that = this,
-                    settings;
-                if (!cb) {
-                    return;
-                }
-                settings = this.prepare(this._settings());
-                this.transport(settings).fail(onError).done(onResponse);
-                function onError() {
-                    cb(true);
-                }
-                function onResponse(resp) {
-                    cb(null, that.transform(resp));
-                }
-            },
-            clear: function clear() {
-                this.storage.clear();
-                return this;
-            }
-        });
-        return Prefetch;
-    }();
-    var Remote = function () {
-        "use strict";
-
-        function Remote(o) {
-            this.url = o.url;
-            this.prepare = o.prepare;
-            this.transform = o.transform;
-            this.transport = new Transport({
-                cache: o.cache,
-                limiter: o.limiter,
-                transport: o.transport
-            });
-        }
-        _.mixin(Remote.prototype, {
-            _settings: function settings() {
-                return {
-                    url: this.url,
-                    type: "GET",
-                    dataType: "json"
-                };
-            },
-            get: function get(query, cb) {
-                var that = this,
-                    settings;
-                if (!cb) {
-                    return;
-                }
-                query = query || "";
-                settings = this.prepare(query, this._settings());
-                return this.transport.get(settings, onResponse);
-                function onResponse(err, resp) {
-                    err ? cb([]) : cb(that.transform(resp));
-                }
-            },
-            cancelLastRequest: function cancelLastRequest() {
-                this.transport.cancel();
-            }
-        });
-        return Remote;
-    }();
-    var oParser = function () {
-        "use strict";
-
-        return function parse(o) {
-            var defaults, sorter;
-            defaults = {
-                initialize: true,
-                identify: _.stringify,
-                datumTokenizer: null,
-                queryTokenizer: null,
-                sufficient: 5,
-                sorter: null,
-                local: [],
-                prefetch: null,
-                remote: null
-            };
-            o = _.mixin(defaults, o || {});
-            !o.datumTokenizer && $.error("datumTokenizer is required");
-            !o.queryTokenizer && $.error("queryTokenizer is required");
-            sorter = o.sorter;
-            o.sorter = sorter ? function (x) {
-                return x.sort(sorter);
-            } : _.identity;
-            o.local = _.isFunction(o.local) ? o.local() : o.local;
-            o.prefetch = parsePrefetch(o.prefetch);
-            o.remote = parseRemote(o.remote);
-            return o;
-        };
-        function parsePrefetch(o) {
-            var defaults;
-            if (!o) {
-                return null;
-            }
-            defaults = {
-                url: null,
-                ttl: 24 * 60 * 60 * 1e3,
-                cache: true,
-                cacheKey: null,
-                thumbprint: "",
-                prepare: _.identity,
-                transform: _.identity,
-                transport: null
-            };
-            o = _.isString(o) ? {
-                url: o
-            } : o;
-            o = _.mixin(defaults, o);
-            !o.url && $.error("prefetch requires url to be set");
-            o.transform = o.filter || o.transform;
-            o.cacheKey = o.cacheKey || o.url;
-            o.thumbprint = VERSION + o.thumbprint;
-            o.transport = o.transport ? callbackToDeferred(o.transport) : $.ajax;
-            return o;
-        }
-        function parseRemote(o) {
-            var defaults;
-            if (!o) {
-                return;
-            }
-            defaults = {
-                url: null,
-                cache: true,
-                prepare: null,
-                replace: null,
-                wildcard: null,
-                limiter: null,
-                rateLimitBy: "debounce",
-                rateLimitWait: 300,
-                transform: _.identity,
-                transport: null
-            };
-            o = _.isString(o) ? {
-                url: o
-            } : o;
-            o = _.mixin(defaults, o);
-            !o.url && $.error("remote requires url to be set");
-            o.transform = o.filter || o.transform;
-            o.prepare = toRemotePrepare(o);
-            o.limiter = toLimiter(o);
-            o.transport = o.transport ? callbackToDeferred(o.transport) : $.ajax;
-            delete o.replace;
-            delete o.wildcard;
-            delete o.rateLimitBy;
-            delete o.rateLimitWait;
-            return o;
-        }
-        function toRemotePrepare(o) {
-            var prepare, replace, wildcard;
-            prepare = o.prepare;
-            replace = o.replace;
-            wildcard = o.wildcard;
-            if (prepare) {
-                return prepare;
-            }
-            if (replace) {
-                prepare = prepareByReplace;
-            } else if (o.wildcard) {
-                prepare = prepareByWildcard;
-            } else {
-                prepare = idenityPrepare;
-            }
-            return prepare;
-            function prepareByReplace(query, settings) {
-                settings.url = replace(settings.url, query);
-                return settings;
-            }
-            function prepareByWildcard(query, settings) {
-                settings.url = settings.url.replace(wildcard, encodeURIComponent(query));
-                return settings;
-            }
-            function idenityPrepare(query, settings) {
-                return settings;
-            }
-        }
-        function toLimiter(o) {
-            var limiter, method, wait;
-            limiter = o.limiter;
-            method = o.rateLimitBy;
-            wait = o.rateLimitWait;
-            if (!limiter) {
-                limiter = /^throttle$/i.test(method) ? throttle(wait) : debounce(wait);
-            }
-            return limiter;
-            function debounce(wait) {
-                return function debounce(fn) {
-                    return _.debounce(fn, wait);
-                };
-            }
-            function throttle(wait) {
-                return function throttle(fn) {
-                    return _.throttle(fn, wait);
-                };
-            }
-        }
-        function callbackToDeferred(fn) {
-            return function wrapper(o) {
-                var deferred = $.Deferred();
-                fn(o, onSuccess, onError);
-                return deferred;
-                function onSuccess(resp) {
-                    _.defer(function () {
-                        deferred.resolve(resp);
-                    });
-                }
-                function onError(err) {
-                    _.defer(function () {
-                        deferred.reject(err);
-                    });
-                }
-            };
-        }
-    }();
-    var Bloodhound = function () {
-        "use strict";
-
-        var old;
-        old = window && window.Bloodhound;
-        function Bloodhound(o) {
-            o = oParser(o);
-            this.sorter = o.sorter;
-            this.identify = o.identify;
-            this.sufficient = o.sufficient;
-            this.local = o.local;
-            this.remote = o.remote ? new Remote(o.remote) : null;
-            this.prefetch = o.prefetch ? new Prefetch(o.prefetch) : null;
-            this.index = new SearchIndex({
-                identify: this.identify,
-                datumTokenizer: o.datumTokenizer,
-                queryTokenizer: o.queryTokenizer
-            });
-            o.initialize !== false && this.initialize();
-        }
-        Bloodhound.noConflict = function noConflict() {
-            window && (window.Bloodhound = old);
-            return Bloodhound;
-        };
-        Bloodhound.tokenizers = tokenizers;
-        _.mixin(Bloodhound.prototype, {
-            __ttAdapter: function ttAdapter() {
-                var that = this;
-                return this.remote ? withAsync : withoutAsync;
-                function withAsync(query, sync, async) {
-                    return that.search(query, sync, async);
-                }
-                function withoutAsync(query, sync) {
-                    return that.search(query, sync);
-                }
-            },
-            _loadPrefetch: function loadPrefetch() {
-                var that = this,
-                    deferred,
-                    serialized;
-                deferred = $.Deferred();
-                if (!this.prefetch) {
-                    deferred.resolve();
-                } else if (serialized = this.prefetch.fromCache()) {
-                    this.index.bootstrap(serialized);
-                    deferred.resolve();
-                } else {
-                    this.prefetch.fromNetwork(done);
-                }
-                return deferred.promise();
-                function done(err, data) {
-                    if (err) {
-                        return deferred.reject();
-                    }
-                    that.add(data);
-                    that.prefetch.store(that.index.serialize());
-                    deferred.resolve();
-                }
-            },
-            _initialize: function initialize() {
-                var that = this,
-                    deferred;
-                this.clear();
-                (this.initPromise = this._loadPrefetch()).done(addLocalToIndex);
-                return this.initPromise;
-                function addLocalToIndex() {
-                    that.add(that.local);
-                }
-            },
-            initialize: function initialize(force) {
-                return !this.initPromise || force ? this._initialize() : this.initPromise;
-            },
-            add: function add(data) {
-                this.index.add(data);
-                return this;
-            },
-            get: function get(ids) {
-                ids = _.isArray(ids) ? ids : [].slice.call(arguments);
-                return this.index.get(ids);
-            },
-            search: function search(query, sync, async) {
-                var that = this,
-                    local;
-                local = this.sorter(this.index.search(query));
-                sync(this.remote ? local.slice() : local);
-                if (this.remote && local.length < this.sufficient) {
-                    this.remote.get(query, processRemote);
-                } else if (this.remote) {
-                    this.remote.cancelLastRequest();
-                }
-                return this;
-                function processRemote(remote) {
-                    var nonDuplicates = [];
-                    _.each(remote, function (r) {
-                        !_.some(local, function (l) {
-                            return that.identify(r) === that.identify(l);
-                        }) && nonDuplicates.push(r);
-                    });
-                    async && async(nonDuplicates);
-                }
-            },
-            all: function all() {
-                return this.index.all();
-            },
-            clear: function clear() {
-                this.index.reset();
-                return this;
-            },
-            clearPrefetchCache: function clearPrefetchCache() {
-                this.prefetch && this.prefetch.clear();
-                return this;
-            },
-            clearRemoteCache: function clearRemoteCache() {
-                Transport.resetCache();
-                return this;
-            },
-            ttAdapter: function ttAdapter() {
-                return this.__ttAdapter();
-            }
-        });
-        return Bloodhound;
-    }();
-    return Bloodhound;
-});
-
-/***/ }),
-/* 507 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(508);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(7)("3d6e53b0", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9921de34\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SuppliersTypeahead.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9921de34\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SuppliersTypeahead.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 508 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(6)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\nspan.twitter-typeahead .tt-menu, span.twitter-typeahead .tt-dropdown-menu {\n  cursor: pointer;\n  position: absolute;\n  top: 100%;\n  left: 0;\n  z-index: 1000;\n  display: none;\n  float: left;\n  min-width: 160px;\n  padding: 5px 0;\n  margin: 2px 0 0;\n  list-style: none;\n  font-size: 14px;\n  text-align: left;\n  background-color: #ffffff;\n  border: 1px solid #cccccc;\n  border: 1px solid rgba(0, 0, 0, 0.15);\n  border-radius: 4px;\n  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);\n  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);\n  background-clip: padding-box;\n}\nspan.twitter-typeahead .tt-suggestion {\n  display: block;\n  padding: 3px 20px;\n  clear: both;\n  font-weight: normal;\n  line-height: 1.42857143;\n  color: #333333;\n  white-space: nowrap;\n}\nspan.twitter-typeahead .tt-suggestion.tt-cursor,\nspan.twitter-typeahead .tt-suggestion:hover,\nspan.twitter-typeahead .tt-suggestion:focus {\n  color: #ffffff;\n  text-decoration: none;\n  outline: 0;\n  background-color: #337ab7;\n}\n.input-group.input-group-lg span.twitter-typeahead .form-control {\n  height: 46px;\n  padding: 10px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n  border-radius: 6px;\n}\n.input-group.input-group-sm span.twitter-typeahead .form-control {\n  height: 30px;\n  padding: 5px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\nspan.twitter-typeahead {\n  width: 100%;\n}\n.input-group span.twitter-typeahead {\n  display: block !important;\n  height: 34px;\n}\n.input-group span.twitter-typeahead .tt-menu,\n.input-group span.twitter-typeahead .tt-dropdown-menu {\n  top: 32px !important;\n}\n.input-group span.twitter-typeahead:not(:first-child):not(:last-child) .form-control {\n  border-radius: 0;\n}\n.input-group span.twitter-typeahead:first-child .form-control {\n  border-top-left-radius: 4px;\n  border-bottom-left-radius: 4px;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.input-group span.twitter-typeahead:last-child .form-control {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n  border-top-right-radius: 4px;\n  border-bottom-right-radius: 4px;\n}\n.input-group.input-group-sm span.twitter-typeahead {\n  height: 30px;\n}\n.input-group.input-group-sm span.twitter-typeahead .tt-menu,\n.input-group.input-group-sm span.twitter-typeahead .tt-dropdown-menu {\n  top: 30px !important;\n}\n.input-group.input-group-lg span.twitter-typeahead {\n  height: 46px;\n}\n.input-group.input-group-lg span.twitter-typeahead .tt-menu,\n.input-group.input-group-lg span.twitter-typeahead .tt-dropdown-menu {\n  top: 46px !important;\n}\n\n", ""]);
-
-// exports
-
 
 /***/ })
 /******/ ]);

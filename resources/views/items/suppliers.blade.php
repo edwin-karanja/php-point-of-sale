@@ -2,10 +2,10 @@
 
 @section('item-data')
     <div class="row">
-        <div class="col-md-6">
-            <p class="fs-24">Registered Suppliers</p>
+        <div class="col-xs-6">
+            <p class="fs-16">Registered Suppliers</p>
         </div>
-        <div class="col-md-6">
+        <div class="col-xs-6">
             <item-suppliers :item="{{ $item }}"></item-suppliers>
             <!-- <typeahead-suppliers :dataset="{{ $suppliers->pluck('name') }}"></typeahead-suppliers> -->
         </div>

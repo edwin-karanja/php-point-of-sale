@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Helpers\Breadcrumbs\Breadcrumbs;
 use App\Models\Setting;
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -16,6 +18,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Request::macro('breadcrumbs', function () {
+            return new Breadcrumbs( $this );
+        });
+
         Schema::defaultStringLength(191);
 
         View::composer('layouts.app', function ($view) {

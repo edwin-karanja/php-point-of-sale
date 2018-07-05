@@ -1,0 +1,1 @@
+<?php $router->model('item', 'App\Models\Item');

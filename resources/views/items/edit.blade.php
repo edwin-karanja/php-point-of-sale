@@ -2,7 +2,7 @@
 
 @section('item-data')
     <form action="{{ route('item.update', [$item->id]) }}" method="post">
-        <h1>Product Properties</h1>
+        <h3>Product Properties</h3>
         <hr>
         <div class="row">
             <div class="col-md-6">

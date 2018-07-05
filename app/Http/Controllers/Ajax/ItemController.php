@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\Ajax;
 
+use Collective\Annotations\Routing\Annotations\Annotations\Delete;
+use Collective\Annotations\Routing\Annotations\Annotations\Get;
+use Collective\Annotations\Routing\Annotations\Annotations\Middleware;
+use Collective\Annotations\Routing\Annotations\Annotations\Post;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -13,6 +17,10 @@ use App\Events\QuantityModified;
 use App\Http\Requests\Ajax\ItemUpdateRequest;
 use Maatwebsite\Excel\Facades\Excel;
 
+/**
+ * @Middleware({"web", "auth"})
+ * @package App\Http\Controllers\Ajax
+ */
 class ItemController extends AjaxController
 {
     public function builder()
@@ -20,6 +28,10 @@ class ItemController extends AjaxController
         return Item::query();
     }
 
+    /**
+     * @Get("ajax/items", as="item.ajax.index")
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $data = [
@@ -35,6 +47,11 @@ class ItemController extends AjaxController
         return response()->json($data);
     }
 
+    /**
+     * @Post("ajax/items", as="item.ajax.store")
+     * @param ItemCreateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(ItemCreateRequest $request)
     {
         $data = $request->only(['name', 'description', 'selling_price', 'buying_price', 'reorder_level', 'category_id']);
@@ -49,6 +66,12 @@ class ItemController extends AjaxController
         ]);
     }
 
+    /**
+     * @Post("ajax/items/{item}", as="item.ajax.update")
+     * @param Item $item
+     * @param ItemUpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Item $item, ItemUpdateRequest $request)
     {
         $data = $request->only(['name', 'description', 'selling_price', 'buying_price', 'reorder_level', 'category_id']);
@@ -65,6 +88,11 @@ class ItemController extends AjaxController
         ]);
     }
 
+    /**
+     * @Delete("ajax/items/{id}", as="item.ajax.delete", where={"id": "[0-9]+"})
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete($id)
     {
         $this->builder->find($id)->delete();
@@ -74,6 +102,11 @@ class ItemController extends AjaxController
         ]);
     }
 
+    /**
+     * @Post("ajax/items/import", as="item.ajax.import")
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function import(Request $request)
     {
         $request->validate([
@@ -92,6 +125,10 @@ class ItemController extends AjaxController
         return response()->json(['success' => true]); //@TODO add proper response
     }
 
+    /**
+     * @Get("ajax/items/download_sample", as="item.ajax.download_sample")
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function download()
     {
         $file = public_path(). "/download/products.xlsx";

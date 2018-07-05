@@ -176,6 +176,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\AnnotationsServiceProvider::class,
         // App\Providers\PermissionServiceProvider::class,   //@TODO will be implemented once ad admin section is added.
 
     ],

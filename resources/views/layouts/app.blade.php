@@ -28,6 +28,7 @@
         @include('layouts.partials._nav')
 
         <div class="container-fluid">
+            @include('components._breadcrumbs')
             <alert-component></alert-component>
             <page-refresh-component></page-refresh-component>
             @include('layouts.partials.alerts._alerts')

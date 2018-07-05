@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Quantity;
 use App\Models\Category;
+use Collective\Annotations\Database\Eloquent\Annotations\Annotations\Bind;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Cache;
 use OwenIt\Auditing\Auditable;
 use \OwenIt\Auditing\Contracts\Auditable as AuditableContract;
 
+/**
+ * @Bind("item")
+ */
 class Item extends Model implements AuditableContract
 {
     use SoftDeletes, Auditable;

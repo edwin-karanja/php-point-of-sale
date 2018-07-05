@@ -3,7 +3,7 @@
 if (!function_exists('on_page')) {
     function on_page($path)
     {
-        return request()->is($path) || strpos(request()->path(), $path) !== false ? true : false;
+        return request()->url() === $path ? true : false;
     }
 }
 
