@@ -2,14 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use Collective\Annotations\Routing\Annotations\Annotations\Get;
+use Collective\Annotations\Routing\Annotations\Annotations\Middleware;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Validation\Rule;
 
+/**
+ * @Middleware({"web", "auth"})
+ */
 class CategoryController extends Controller
 {
     public $paginate = 15;
 
+    /**
+     * @Get("categories")
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         $categories = Category::paginate($this->paginate);

@@ -1,18 +1,10 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading clear-fix">
-            <div class="input-group">
-                <search title="Products"
-                        v-on:search:front="updateResults"
-                        floated="left"
-                        size=40
-                >
-                </search>
-            </div>
-
+            <AppInput placeholder="Search Item name" v-model="searchText" />
         </div>
 
-        <div class="panel-body">
+        <div class="panel-body table-view">
             <div class="panel-default panel" v-if="loading">
                 <div class="panel-body text-center" style="min-height: 300px">
                     <div style="line-height: 300px">
@@ -22,7 +14,7 @@
                 </div>
             </div>
 
-            <table class="table table-responsive" v-if="response.items && !loading">
+            <table class="table table-responsive table-condensed table-bordered" v-if="response.items && !loading">
                 <thead>
                     <tr>
                         <th>Item</th>
@@ -53,10 +45,12 @@
 <script type="text/babel">
 import eventHub from '../events.js';
 import Search from './Global/Search.vue';
+import AppInput from './Global/AppInput';
 
     export default {
         components: {
-            Search
+            Search,
+            AppInput
         },
 
         data () {
@@ -151,6 +145,10 @@ import Search from './Global/Search.vue';
 
 
 <style scoped lang="scss">
+    .table-view {
+        max-height: 70vh;
+        overflow: scroll;
+    }
     tr:hover {
         background-color: #F5F8FC;
     }

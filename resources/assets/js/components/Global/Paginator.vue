@@ -6,7 +6,7 @@
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <li :class="{'active': meta.current_page === x}" v-for="x in meta.last_page">
+            <li :class="{'active': meta.current_page === x}" v-for="x in meta.last_page" v-if="x - meta.current_page <= 4 && x - meta.current_page > -4 || x === 1 || x === 2 || x === meta.last_page || x === (meta.last_page-1)">
                 <a href="#" @click.prevent="switchPage(x)">{{ x }}</a>
             </li>
             <li :class="{'disabled': meta.current_page === meta.last_page }">
@@ -29,12 +29,17 @@
             }
         },
 
+        data () {
+            return {
+                pagesShown: 5
+            };
+        },
+
         methods: {
             switchPage (page) {
                 if (this.pageIsOutOfBounds(page)) {
                     return;
                 }
-
                 this.$emit('pagination:switched', page);
             },
 

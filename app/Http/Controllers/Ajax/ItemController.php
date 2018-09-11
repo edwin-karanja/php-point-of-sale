@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Ajax;
 
+use App\Helpers\Cache\ItemsCache;
 use Collective\Annotations\Routing\Annotations\Annotations\Delete;
 use Collective\Annotations\Routing\Annotations\Annotations\Get;
 use Collective\Annotations\Routing\Annotations\Annotations\Middleware;
 use Collective\Annotations\Routing\Annotations\Annotations\Post;
+use Collective\Annotations\Routing\Annotations\Annotations\Put;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,13 +18,21 @@ use App\Models\Category;
 use App\Events\QuantityModified;
 use App\Http\Requests\Ajax\ItemUpdateRequest;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @Middleware({"web", "auth"})
- * @package App\Http\Controllers\Ajax
  */
 class ItemController extends AjaxController
 {
+    protected $cache;
+
+    public function __construct(ItemsCache $cache)
+    {
+        parent::__construct();
+        $this->cache = $cache;
+    }
+
     public function builder()
     {
         return Item::query();
@@ -31,6 +41,7 @@ class ItemController extends AjaxController
     /**
      * @Get("ajax/items", as="item.ajax.index")
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function index()
     {
@@ -67,7 +78,7 @@ class ItemController extends AjaxController
     }
 
     /**
-     * @Post("ajax/items/{item}", as="item.ajax.update")
+     * @Put("ajax/items/{item}", as="item.ajax.update")
      * @param Item $item
      * @param ItemUpdateRequest $request
      * @return \Illuminate\Http\JsonResponse

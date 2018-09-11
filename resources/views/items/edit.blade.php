@@ -25,7 +25,7 @@
             <div class="col-md-6">
                 <div class="form-group {{ $errors->has('buying_price') ? 'has-error' : '' }}">
                     <label for="" class="control-label">Buying Price</label>
-                    <input type="number" name="buying_price" value="{{ old('buying_price', $item->buying_price) }}" class="form-control">
+                    <input type="number" step="0.01" min="0" name="buying_price" value="{{ old('buying_price', $item->buying_price) }}" class="form-control">
 
                     @if ($errors->has('buying_price'))
                         <span class="help-block">
@@ -36,7 +36,7 @@
 
                 <div class="form-group {{ $errors->has('selling_price') ? 'has-error' : '' }}">
                     <label for="" class="control-label">Selling Price</label>
-                    <input type="number" name="selling_price" class="form-control" value="{{ old('selling_price', $item->selling_price) }}">
+                    <input type="number" step="0.01" min="0" name="selling_price" class="form-control" value="{{ old('selling_price', $item->selling_price) }}">
 
                     @if ($errors->has('selling_price'))
                         <span class="help-block">

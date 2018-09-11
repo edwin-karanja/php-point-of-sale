@@ -22,9 +22,13 @@ class AnnotationsServiceProvider extends ServiceProvider
         \App\Http\Controllers\HomeController::class,
         \App\Http\Controllers\DashboardController::class,
         \App\Http\Controllers\ItemController::class,
+        \App\Http\Controllers\Ajax\ItemController::class,
         \App\Http\Controllers\ItemSuppliersController::class,
         \App\Http\Controllers\InventoryController::class,
-        \App\Http\Controllers\Ajax\ItemController::class
+        \App\Http\Controllers\Ajax\InventoryController::class,
+        \App\Http\Controllers\CategoryController::class,
+        \App\Http\Controllers\Ajax\CategoriesController::class,
+
     ];
 
     /**

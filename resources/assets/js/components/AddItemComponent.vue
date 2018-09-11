@@ -1,9 +1,9 @@
 <template>
     <div>
-        <button class="btn btn-success pull-right mr-4" @click.prevent="addItem">
+        <AppButton theme="success" @click.prevent="addItem" class="pull-right mr-4">
             <i class="fa fa-plus"></i>
             Add Item
-        </button>
+        </AppButton>
 
         <!-- Modal -->
         <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -40,13 +40,13 @@
                                     <span v-if="column === 'buying_price'">
                                         <label :for="column" id="lbl" class="control-label">{{ customColumns[column] || column }}</label>
 
-                                        <input :id="column" type="text" class="form-control" v-model="creating.form[column]" autofocus>
+                                        <input :id="column" type="number" step="0.01" min="0" class="form-control" v-model="creating.form[column]" autofocus>
                                     </span>
 
                                     <span v-if="column === 'selling_price'">
                                         <label :for="column" id="lbl" class="control-label">{{ customColumns[column] || column }}</label>
 
-                                        <input :id="column" type="text" class="form-control" v-model="creating.form[column]" autofocus>
+                                        <input :id="column" type="number" step="0.01" min="0" class="form-control" v-model="creating.form[column]" autofocus>
                                     </span>
 
                                     <span v-if="column === 'qtty'">
@@ -76,7 +76,7 @@
 
                         <div class="form-group">
                             <div class="">
-                                <button type="submit" class="ui button primary">
+                                <AppButton type="submit" theme="primary" @click.prevent="store">
                                     <span v-if="!creating.active">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                     </span>
@@ -84,13 +84,13 @@
                                         <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
                                     </span>
                                     {{ buttonText }}
-                                </button>
+                                </AppButton>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="ui button" @click.prevent="closeModal">Close</button>
+                    <AppButton @click.prevent="closeModal"> Close </AppButton>
                 </div>
                 </div>
             </div>
@@ -100,9 +100,13 @@
 
 <script>
     import eventHub from '../events.js'
+    import AppButton from './Global/AppButton'
 
     export default {
         props: ['customColumns', 'createColumns', 'categories'],
+        components: {
+            AppButton
+        },
 
         data () {
             return {
@@ -160,7 +164,7 @@
 
             update () {
                 let id = this.editing.id;
-                axios.post('/ajax/items/' + id, this.creating.form).then((response) => {
+                axios.put('/ajax/items/' + id, this.creating.form).then((response) => {
                     this.creating.active = false;
                     this.editing.id = null;
                     this.closeModal();

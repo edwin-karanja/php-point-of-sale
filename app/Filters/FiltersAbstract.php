@@ -17,10 +17,16 @@ abstract class FiltersAbstract
     public function filter(Builder $builder)
     {
         foreach($this->getFilters() as $filter => $class) {
-            var_dump($this->resolveFilter($filter));
+            $this->resolveFilter($filter)->handle($builder, $class);
         }
-
         return $builder;
+    }
+
+    public function add(array $filters)
+    {
+        $this->filters = array_merge($this->filters, $filters);
+
+        return $this;
     }
 
     protected function getFilters()

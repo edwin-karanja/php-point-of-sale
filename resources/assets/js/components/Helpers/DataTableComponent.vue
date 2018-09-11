@@ -1,27 +1,26 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a v-if="response.allow.creation" href="#" class="ui button secondary b" @click.prevent="creating.active = !creating.active">
-                <i v-show="!creating.active" class="fa fa-plus"></i>
-                <i v-show="creating.active" class="fa fa-minus"></i>
-                {{ creating.active ? 'Hide' : 'New record' }}
-            </a>
-
-            <search v-if="response.searching.allowed"
-                    :title="title"
-                    :search="response.searching.type"
-                    :endpoint="endpoint"
-                    v-on:search:backend="searchRecords"
-                    v-on:search:front="updateResults"
-            ></search>
+            <div class="row">
+                <div class="col-sm-6">
+                    <AppButton theme="link" class="b" v-if="response.allow.creation" @click.prevent="creating.active = !creating.active">
+                        <i v-show="!creating.active" class="fa fa-plus"></i>
+                        <i v-show="creating.active" class="fa fa-minus"></i>
+                        {{ creating.active ? 'Hide' : 'New record' }}
+                    </AppButton>
+                </div>
+                <div class="col-sm-4 pull-right">
+                    <AppInput placeholder="Search Category" v-model="searchText" />
+                </div>
+            </div>
 
         </div>
 
         <transition name="fade">
             <div class="well" v-if="response.allow.creation && creating.active">
                 <form action="#" class="form-horizontal" @submit.prevent="store">
-                    <div class="form-group" v-for="column in response.updatable" :class="{ 'has-error': creating.errors[column] }">
-                        <label :for="column" class="col-md-3 control-label">{{ column }}</label>
+                    <div class="form-group" v-for="column in response.updatable" :class="{ 'has-error': creating.errors[column] }" :key="column">
+                        <label :for="column" class="col-md-3 control-label">{{ response.customColumns[column] || column }}</label>
 
                         <div class="col-md-6" v-if="response.columnTypes[column] === 'text'">
                             <input type="text" class="form-control" :id="column" v-model="creating.form[column]">
@@ -32,17 +31,19 @@
                         </div>
 
                         <div class="col-md-6" v-if="response.columnTypes[column] === 'textarea'">
-                            <textarea class="form-control" :id="column" cols="30" rows="5" v-model="creating.form[column]"></textarea>
+                            <!-- <textarea class="form-control" :id="column" cols="30" rows="5" v-model="creating.form[column]"></textarea> -->
+                            <AppTextArea :name="column" v-model="creating.form[column]" />
 
                             <span class="help-block" v-if="creating.errors[column]">
                                 <strong>{{ creating.errors[column][0] }}</strong>
                             </span>
                         </div>
+
                     </div>
 
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
-                            <button class="ui button primary">Create</button>
+                            <AppButton @click.prevent="store" theme="primary"> Create </AppButton>
                         </div>
                     </div>
                 </form>
@@ -55,26 +56,26 @@
                 <thead>
                     <tr>
                         <th>##</th>
-                        <th v-for="column in response.displayColumns">{{ response.customColumns[column] || column | capitalize }}</th>
+                        <th v-for="column in response.displayColumns" :key="column">{{ response.customColumns[column] || column | capitalize }}</th>
                         <th v-if="response.allow.creation">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(record, index) in filteredRecords" :key="record.id">
                         <td>{{ index + 1 }}</td>
-                        <td v-for="column in response.displayColumns">
+                        <td v-for="column in response.displayColumns" :key="column">
                             {{ record[column] }}
                         </td>
                         <th v-if="response.allow.creation">
-                            <a href="#" class="ui small button" @click.prevent="edit(record)">Edit</a>
-                            <a href="#" class="ui small button" v-if="response.allow.deletion" @click.prevent="destroy(record.id)">
+                            <a href="#" class="" @click.prevent="edit(record)">Edit</a> |
+                            <a href="#" class="" v-if="response.allow.deletion" @click.prevent="destroy(record.id)">
                                 Delete
                             </a>
                         </th>
                     </tr>
                 </tbody>
             </table>
-            <pagination v-if="response.meta"
+            <pagination v-if="response.meta.last_page > 1"
                         :meta="response.meta"
                         v-on:pagination:switched="getRecords"
                         position="right"
@@ -91,7 +92,7 @@
                     </div>
                     <div class="modal-body">
                         <form action="#" class="form-horizontal" @submit.prevent="update">
-                            <div class="form-group" v-for="column in response.updatable" :class="{ 'has-error': editing.errors[column] }">
+                            <div class="form-group" v-for="column in response.updatable" :class="{ 'has-error': editing.errors[column] }" :key="column">
                                 <label :for="column" class="col-md-3 control-label">{{ column }}</label>
 
                                 <div class="col-md-6" v-if="response.columnTypes[column] === 'text'">
@@ -103,7 +104,8 @@
                                 </div>
 
                                 <div class="col-md-6" v-if="response.columnTypes[column] === 'textarea'">
-                                    <textarea class="form-control" :id="column" cols="30" rows="5" v-model="editing.form[column]"></textarea>
+                                    <!-- <textarea class="form-control" :id="column" cols="30" rows="5" v-model="editing.form[column]"></textarea> -->
+                                    <AppTextArea :name="column" v-model="editing.form[column]" />
 
                                     <span class="help-block" v-if="editing.errors[column]">
                                 <strong>{{ editing.errors[column][0] }}</strong>
@@ -113,16 +115,18 @@
 
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-3">
-                                    <button class="ui button primary">
+                                    <AppButton theme="primary" @click.prevent="update">
                                         <i class="fa fa-save"></i>
                                         Update
-                                    </button>
+                                    </AppButton>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="ui button" @click.prevent="closeModal">Close</button>
+                        <AppButton @click.prevent="closeModal">
+                            Close
+                        </AppButton>
                     </div>
                 </div>
             </div>
@@ -134,6 +138,9 @@
     import Pagination from '../Global/Paginator.vue';
     import Search from '../Global/Search.vue';
     import eventHub from '../../events';
+    import AppInput from  '../Global/AppInput';
+    import AppButton from '../Global/AppButton';
+    import AppTextArea from '../Global/AppTextArea';
 
     export default {
         props: {
@@ -148,7 +155,10 @@
 
         components: {
             Pagination,
-            Search
+            Search,
+            AppInput,
+            AppButton,
+            AppTextArea
         },
 
         data () {
@@ -161,10 +171,6 @@
                     allow: {
                         creation: null,
                         deletion: null,
-                    },
-                    searching: {
-                        allowed: false,
-                        type: "front"
                     },
                     meta: {},
                     updatable: []
@@ -222,7 +228,7 @@
             },
 
             update () {
-                axios.patch(`${this.endpoint}/${this.editing.id}`, this.editing.form).then(() => {
+                axios.put(`${this.endpoint}/${this.editing.id}`, this.editing.form).then(() => {
                     this.getRecords().then(() => {
                         this.editing.id = null;
                         this.editing.form = {};

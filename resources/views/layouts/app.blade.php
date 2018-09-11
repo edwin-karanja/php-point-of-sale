@@ -18,6 +18,9 @@
     {{-- Semantic UI Buttons --}}
     <!-- {{--<link href="{{ asset('css/semantic/button.css') }}" rel="stylesheet"> --}} -->
 
+    {{-- Table Component --}}
+    <link rel="stylesheet" href="{{ asset('css/table-component.css') }}">
+
 
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 
@@ -28,9 +31,13 @@
         @include('layouts.partials._nav')
 
         <div class="container-fluid">
-            @include('components._breadcrumbs')
-            <alert-component></alert-component>
-            <page-refresh-component></page-refresh-component>
+            @if( auth()->check())
+                @include('components._breadcrumbs')
+                <alert-component></alert-component>
+                <page-refresh-component></page-refresh-component>
+            @endif
+
+
             @include('layouts.partials.alerts._alerts')
             @yield('content')
         </div>

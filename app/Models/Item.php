@@ -13,6 +13,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use OwenIt\Auditing\Auditable;
 use \OwenIt\Auditing\Contracts\Auditable as AuditableContract;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filters\ItemsFilter;
 
 /**
  * @Bind("item")
@@ -26,7 +28,7 @@ class Item extends Model implements AuditableContract
     ];
 
     protected $hidden = [
-        'deleted_at', 'created_at'
+        'created_at'
     ];
 
     protected $fillable = [
@@ -36,6 +38,11 @@ class Item extends Model implements AuditableContract
     protected $appends = [
         'updated_at_human', 'qtty', 'cat'
     ];
+
+    public function scopeFilter(Builder $builder, $request, array $filters = [])
+    {
+        return (new ItemsFilter($request))->add($filters)->filter($builder);
+    }
 
     /**
      * Only store 20 audit events for this model
@@ -71,6 +78,11 @@ class Item extends Model implements AuditableContract
     public function scopeUpdatesFirst($query)
     {
         return $query->orderBy('updated_at', 'desc');
+    }
+
+    public function scopeVisibleOnListing( $query )
+    {
+        return $query->where('show_on_listing', 1);
     }
 
     public function getCatAttribute()
@@ -134,7 +146,9 @@ class Item extends Model implements AuditableContract
 
     public static function getGroupedItems()
     {
-        return static::updatesFirst()
+        $request = request();
+
+        return static::filter($request)->updatesFirst()
             ->with(['category', 'quantity'])
             ->get()
             ->groupBy(function ($item) {

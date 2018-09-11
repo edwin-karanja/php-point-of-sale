@@ -9,17 +9,22 @@ require('./bootstrap');
 
 
 window.Vue = require('vue');
-import VeeValidate from 'vee-validate';
+import router from './router';
+import store from './vuex';
 
-Vue.use(VeeValidate, {
-    errorBagName: 'vErrors'
-});
+import { TableComponent, TableColumn } from 'vue-table-component';
+
+Vue.component('table-component', TableComponent);
+Vue.component('table-column', TableColumn);
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+Vue.component('app-table', require('./components/Global/AppTable.vue'));
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('items-component', require('./components/ItemsComponent.vue'));
@@ -72,11 +77,15 @@ Vue.component('customer-account-overview-component', require('./components/Custo
 // Vue.component('customer-monthly-sales', require('./components/Customer/CustomerMonthlySales.vue'));
 Vue.component('customer-profile', require('./components/Customer/CustomerProfile.vue'));
 
+// Register the SPA component starter
+Vue.component('app', require('./App.vue'));
+
 
 const app = new Vue({
 
     el: '#app',
-    data: {},
+    router: router,
+    store: store,
     created: function () {
         var eventHub = require('./events.js')
 

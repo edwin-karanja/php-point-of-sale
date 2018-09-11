@@ -1,9 +1,9 @@
 <template>
     <div>
-        <button class="btn btn-success pull-right mr-4" @click.prevent="openModal">
+        <AppButton class="pull-right mr-4" theme="success" @click.prevent="openModal">
             <i class="fa fa-upload"></i>
             Import Items
-        </button>
+        </AppButton>
 
         <!-- Modal -->
         <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -32,7 +32,7 @@
                         </div>
                         <br>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">
+                            <AppButton type="submit" @click.prevent="uploadExcel" theme="primary">
                                 <span v-if="!this.uploading">
                                     <svg class="icon-sm color-w" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M13 5.41V17a1 1 0 0 1-2 0V5.41l-3.3 3.3a1 1 0 0 1-1.4-1.42l5-5a1 1 0 0 1 1.4 0l5 5a1 1 0 1 1-1.4 1.42L13 5.4zM3 17a1 1 0 0 1 2 0v3h14v-3a1 1 0 0 1 2 0v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3z"/></svg>
                                 </span>
@@ -40,19 +40,21 @@
                                     <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
                                 </span>
                                 Upload Excel
-                            </button>
+                            </AppButton>
 
-                            <button class="btn btn-primary pull-right" @click.prevent="downloadSample">
+                            <AppButton theme="primary" @click.prevent="downloadSample" class="pull-right">
                                 <span>
                                     <i class="fa fa-download" aria-hidden="true"></i>
                                 </span>
                                 Download Sample
-                            </button>
+                            </AppButton>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" @click.prevent="closeModal">Close</button>
+                    <AppButton @click.prevent="closeModal">
+                        Close
+                    </AppButton>
                 </div>
                 </div>
             </div>
@@ -63,10 +65,13 @@
 </template>
 
 <script>
-    import eventHub from '../../events.js'
+    import eventHub from '../../events.js';
+    import AppButton from '../Global/AppButton'
 
     export default {
-        props: ['url'],
+        components: {
+            AppButton
+        },
 
         data() {
             return {
@@ -109,15 +114,14 @@
 
             uploadExcel () {
                 this.uploading = true;
-                var input = $('#file-upload');
+                let input = $('#file-upload');
                 this.upload.file = input.get(0).files[0];
 
                 let formData = new FormData();
                 formData.append('file', this.upload.file);
 
-                axios.post(this.url, formData).then((response) => {
+                axios.post('/ajax/items/import', formData).then((response) => {
                     if (response.status === 200) {
-                        let data = response.data;
                         this.closeModal();
 
                         eventHub.$emit('item-created');

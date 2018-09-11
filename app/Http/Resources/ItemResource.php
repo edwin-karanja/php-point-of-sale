@@ -21,7 +21,9 @@ class ItemResource extends JsonResource
             'quantity' => $this->qtty,
             'selling_price' => $this->selling_price,
             'buying_price' => $this->buying_price,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at->toDateTimeString(),
+            'category' => $this->category,
+            'deleted_at' => $this->deleted_at ? $this->deleted_at->toDateTimeString() : $this->deleted_at
         ];
     }
 }

@@ -2,24 +2,52 @@
 <div>
     <div class="panel panel-default">
         <div class="panel-body">
-            <div class="col-md-6">
-                <search title="Products"
-                        v-on:search:front="updateResults"
-                        floated="left"
-                        size=50
-                >
-                </search>
+            <div class="row">
+                <div class="col-sm-6">
+                    <AppInput placeholder="Search Item name or Category" v-model="searchText" />
+                </div>
 
+                <div class="col-sm-4">
+
+                    <excel-upload :url="'/ajax/items/import'"></excel-upload>
+
+                    <add-item v-if="response.createColumns"
+                        :customColumns="response.customColumns"
+                        :createColumns="response.createColumns"
+                        :categories="response.categories"
+                    >
+                    </add-item>
+
+
+                    <div class="btn-group">
+                        <AppButton class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="glyphicon glyphicon-filter"></i>
+                        </AppButton>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <label class="checkbox">
+                                    <input  type="checkbox"> Listed Items
+                                </label>
+                            </li>
+                            <li>
+                                <label class="checkbox">
+                                    <input  type="checkbox"> Unlisted Items
+                                </label>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-2 pull-right">
+                    <label>
+                        <input type="radio" name="listed" value="true" @change="getItems()" v-model="listed"> Listed
+                        <input type="radio" name="listed" value="false" @change="getItems()" v-model="listed"> Unlisted
+                    </label>
+                </div>
             </div>
-
-            <excel-upload :url="'/ajax/items/import'"></excel-upload>
-
-            <add-item v-if="response.createColumns"
-                 :customColumns="response.customColumns"
-                 :createColumns="response.createColumns"
-                 :categories="response.categories"
-            >
-            </add-item>
 
         </div>
     </div>
@@ -56,11 +84,11 @@
                                     {{ item[column] }}
                                 </a>
                             </span>
-                            <span v-else-if="column === 'qtty'" class="ui small circular grey label">
+                            <span v-else-if="column === 'qtty'" class="badge">
                                 {{ item[column] || 0 }}
                             </span>
                             <span class="b" v-else-if="column === 'buying_price' || column === 'selling_price'">
-                                {{ parseInt(item[column]).toLocaleString('en-US') }}
+                                {{ parseFloat(item[column]).toLocaleString('en-US') }}
                             </span>
                             <span v-else-if="column === 'description'">
                                 <i v-if="item[column]" class="fa fa-television tippy" style="margin-right: 10px" :title="item[column]"></i>
@@ -104,17 +132,21 @@
     import AddItem from './AddItemComponent.vue';
     import ExcelUpload from './Helpers/UploadExcelComponent';
     import tippy from 'tippy.js';
+    import AppInput from './Global/AppInput';
+    import AppButton from './Global/AppButton';
 
     export default {
         components: {
             Search,
             AddItem,
-            ExcelUpload
+            ExcelUpload,
+            AppInput,
+            AppButton
         },
 
         data () {
             return {
-                loading: true,
+                loading: false,
                 dataExists: false,
                 response: {
                     items: [],
@@ -126,6 +158,7 @@
                     admin: false
                 },
                 searchText: '',
+                listed: true,
                 sort: {
                     key: 'updated_at',
                     order: 'desc'
@@ -135,7 +168,9 @@
 
         methods: {
             getItems () {
-                return axios.get('/ajax/items').then((response) => {
+                this.loading = true;
+
+                return axios.get('/ajax/items?listed=' + this.listed).then((response) => {
                     this.loading = false;
                     this.response = response.data;
                     this.dataExists = true;
@@ -178,6 +213,14 @@
                 let data = this.response.items;
                 let search = this.searchText.toLowerCase();
 
+                if (!_.isEmpty( data )) {
+                    this.dataExists = true;
+                }
+
+                if (search.length < 3) {
+                    return data;
+                }
+
                 let dt = {};
                 for (let group in data) {
                    _.forEach(data[group], function (){
@@ -192,6 +235,10 @@
                   if (_.isEmpty(dt[group])) {
                     delete dt[group];
                   }
+                }
+
+                if (_.isEmpty( dt )) {
+                    this.dataExists = false;
                 }
 
                 return dt
@@ -249,5 +296,10 @@
     tr.group,
     tr.group:hover {
         background-color: #ddd !important;
+    }
+
+    label.checkbox {
+        padding-left: 40px;
+        font-weight: normal;
     }
 </style>

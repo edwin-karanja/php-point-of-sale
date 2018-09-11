@@ -35,7 +35,9 @@ class CategoryCollection extends ResourceCollection
     protected function customColumns()
     {
         return [
-            'items_count' => 'Items Count'
+            'items_count' => 'Items Count',
+            'name' => 'Name',
+            'description' => 'Description'
         ];
     }
 

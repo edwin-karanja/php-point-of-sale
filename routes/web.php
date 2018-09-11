@@ -7,8 +7,15 @@ Route::post('/keep-token-alive', function() {
     return 'hit...'; //https://stackoverflow.com/q/31449434/470749
 });
 
-//Route::group(['middleware' => ['auth']], function () {
-//
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+    Route::get('/', 'DashboardController@index');
+    Route::post('items/restore/{id}', 'ItemsController@restore');
+    Route::name('admin')->resource('items', 'ItemsController');
+    Route::get('inventory/{item}', 'InventoryController@index');
+});
+
+// Route::group(['middleware' => ['auth']], function () {
+
 //    if (config('pos.modules.products')) {
 //        /** Routes dealing with Products */
 //        require_once base_path('routes/web/products_routes.php');
@@ -38,4 +45,4 @@ Route::post('/keep-token-alive', function() {
 //    }
 //
 //
-//});
+// });

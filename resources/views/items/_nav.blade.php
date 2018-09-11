@@ -2,7 +2,7 @@
     <div class="panel-body">
         <ul class="nav nav-pills nav-stacked">
             <li class="{{ return_if(on_page( route('item.edit', [$item->id]) ), 'active') }}">
-                <a href="/items/{{ $item->id }}/edit">
+                <a href="/items/{{ $item->id }}">
                     Item Properties
                 </a>
             </li>

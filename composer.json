@@ -19,10 +19,11 @@
         "yajra/laravel-datatables-oracle": "~8.0"
     },
     "require-dev": {
+        "beyondcode/laravel-dump-server": "^0.1.0",
         "filp/whoops": "~2.0",
-        "nunomaduro/collision": "~1.1",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "~1.0",
+        "nunomaduro/collision": "~1.1",
         "phpunit/phpunit": "~7.0",
         "symfony/thanks": "^1.0"
     },
